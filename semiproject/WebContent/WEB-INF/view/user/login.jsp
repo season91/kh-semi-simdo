@@ -33,7 +33,7 @@
 	
 	<section class="content">
 		<div class="text-login">Login</div>
-		<form class="frm_login" action="${context}/user/loginimpl.do">
+		<form class="frm_login" action="${context}/user/loginimpl.do" method="post">
 			<label class="id-login lab_login"><i class="fas fa-user pic-login"></i><input class="input_login" type="email" name="userEmail" placeholder="simdo@simdo.com" required="required"></label>
 			<label class="pw-login lab_login"><i class="fas fa-key pic-login"></i><input class="input_login" type="password" name="userPw" placeholder="****" required="required"></label>
 			<button class="btn_login">Login</button>
