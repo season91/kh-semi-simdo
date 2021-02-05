@@ -20,6 +20,7 @@ public class UserReviewService {
 	
 	UserReviewDao userReviewDao = new UserReviewDao();
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
+
 	
 	public List<UserReview> selectReviewByUserNo(int UserNo) {
 		

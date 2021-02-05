@@ -17,6 +17,7 @@ import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.common.util.http.HttpUtils;
 import com.kh.simdo.movie.model.dao.MovieDao;
 import com.kh.simdo.movie.model.vo.Movie;
+import com.kh.simdo.mypage.model.vo.UserReview;
 /**
  * 
  * @author 조아영
@@ -26,6 +27,45 @@ public class MovieService {
 	
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 	MovieDao movieDao = new MovieDao();
+	
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 5.
+	   @param mvNo
+	   @return 제네릭 미설정이유는 객체 타입이 2개이기 떄문임. (UserReview, string)
+	   @work :
+	 */
+	public List selectFmslineByMvNo(String mvNo) {
+		Connection conn = jdt.getConnection();
+		List<UserReview> reviewList = null;
+		try {
+			reviewList = movieDao.selectFmslineByMvNo(conn, mvNo);
+		}finally {
+			jdt.close(conn);
+		}
+		return reviewList;
+	}
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 5.
+	   @param mvNo
+	   @return 제네릭 미설정이유는 객체 타입이 2개이기 떄문임. (UserReview, User)
+	   @work : 영화 상세정보에 나올 유저 리뷰
+	 */
+	
+	public List selectReviewByMvNo(String mvNo) {
+		Connection conn = jdt.getConnection();
+		List<UserReview> reviewList = null;
+		try {
+			reviewList = movieDao.selectReviewByMvNo(conn, mvNo);
+		}finally {
+			jdt.close(conn);
+		}
+		return reviewList;
+	}
+	
 	
 	//영화 상세정보 조회
 	public Movie selectDetail(String mvNo){

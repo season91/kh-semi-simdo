@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.kh.simdo.movie.model.service.MovieService;
 import com.kh.simdo.movie.model.vo.Movie;
+import com.kh.simdo.mypage.model.service.UserReviewService;
+import com.kh.simdo.mypage.model.vo.UserReview;
 /**
  * @author 조아영
  */
@@ -73,20 +75,64 @@ public class MovieController extends HttpServlet {
 		doGet(request, response);
 	}
 	
+	//평점구하는 메서드
+	protected String scoreAvg(List reviewList) {
+		double parseScore = 0.0;
+		for (int i = 0; i < reviewList.size(); i++) {
+			String json = new Gson().toJson(reviewList.get(i));
+			Map<String, Object> commandMap =  new Gson().fromJson(json, Map.class);
+			Map<String, String>  res = (Map<String, String>) commandMap.get("review");
+			//String ia = String.valueOf(res.get("score"));
+			String score = String.valueOf(res.get("score"));
+			parseScore += Double.parseDouble(score);
+		}
+		double scoreAvg = parseScore / reviewList.size();
+		String avg = String.format("%.1f", scoreAvg);
+		return avg;
+	}
+	
+	// 영화 명대사 출력 메서드 기준: 젤 첫번째꺼
+	protected String headFms(List fmsList) {
+		String json = new Gson().toJson(fmsList.get(0));
+		Map<String, Object> commandMap =  new Gson().fromJson(json, Map.class);
+		Map<String, String>  res = (Map<String, String>) commandMap.get("fmsline");
+		String headfms  = res.get("fmlContent");
+		return headfms;
+	}
 	// 더보기 메서드
 	protected void readMore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mvNo = request.getParameter("mvno");
-		System.out.println(mvNo);
-		// 영화 제목으로 영화정보 받아오기
+		// 영화 제목으로 영화정보와 고객리뷰, 명대사
 		// 제목검색이랑 같이쓰려고했는데, 제목검색부분은 너프한기준이고 여기는 딱맞게 1개여애해서 따로 dao 생성하기로 결심
 		Movie detailRes = movieService.selectDetail(mvNo);
-		System.out.println(detailRes);
 		request.setAttribute("res", detailRes);
+		
+		List reviewList = movieService.selectReviewByMvNo(mvNo);
+		List fmsList = movieService.selectFmslineByMvNo(mvNo);
+		
+		
+		List parseJsonrev = parseJson(reviewList);
+		request.setAttribute("reviewList", parseJsonrev);
+		// 평점 출력
+		String scoreAvg = scoreAvg(parseJsonrev);
+		request.setAttribute("score", scoreAvg);
+		
+		List parseJsonfms = parseJson(fmsList);
+		request.setAttribute("fmsList", parseJsonfms);
+		
+		String headfms = null;
+		if(parseJsonfms.size() > 0) {
+			headfms = headFms(parseJsonfms);
+		} 
+		// 상세화면 상단에 넣어줄 명대사 출력.
+		request.setAttribute("headfms", headfms);
+		
 		request.getRequestDispatcher("/WEB-INF/view/movie/detailview.jsp").forward(request, response);
 	}
 	
-	// 영화정보를 jsp로 보내려면 gson을 이용해 map obj로 변환해주어야함. 자주사용해서 기능분리.
-	protected List parseJson(List<Movie> res) {
+	
+	// 영화용 파싱 메서드 영화정보를 jsp로 보내려면 gson을 이용해 map obj로 변환해주어야함. 자주사용해서 기능분리.
+	protected List parseJson(List res) {
 		List list = new ArrayList();
 		Map<String, Object> commandMap = new HashMap<String, Object>();
 		for (int i = 0; i < res.size(); i++) {

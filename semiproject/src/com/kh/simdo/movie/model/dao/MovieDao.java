@@ -5,12 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.kh.simdo.common.code.ErrorCode;
 import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.movie.model.vo.Movie;
+import com.kh.simdo.mypage.model.vo.UserFmsline;
+import com.kh.simdo.mypage.model.vo.UserReview;
 /**
  * 
  * @Author : 조아영
@@ -20,6 +24,109 @@ import com.kh.simdo.movie.model.vo.Movie;
 public class MovieDao {
 	
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
+
+	/**
+	 * 
+	 * @Author :
+	   @Date : 2021. 2. 5.
+	   @param conn
+	   @param mvNo
+	   @return 유저닉네임과 명대사객체, 제네릭 미설정이유는 객체 타입이 2개이기 떄문임. (UserFmsline, String)
+	   @work :영화상세내용에 보여줄 명대사 리스트
+	 */
+	
+	public List selectFmslineByMvNo(Connection conn, String mvNo){
+		UserFmsline userFmsline = null;
+		List reviewList = new ArrayList();
+		
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			
+			String sql = "select u.fmsline_no, u.user_no, u.fml_content, u.mv_no, u.mv_title, u.thumbnail, us.user_nm from user_fmsline u "
+					+"inner join \"USER\" us on(u.user_no = us.user_no) where u.mv_no = ? and us.is_leave = 0";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, mvNo);
+			rset = pstm.executeQuery();
+			
+			while(rset.next()) {
+
+				userFmsline = new UserFmsline();
+				userFmsline.setFmslineNo(rset.getInt("fmsline_no"));
+				userFmsline.setUserNo(rset.getInt("user_no"));
+				userFmsline.setFmlContent(rset.getString("fml_content"));
+				userFmsline.setMvNo(rset.getString("mv_no"));
+				userFmsline.setMvTitle(rset.getString("mv_title"));
+				userFmsline.setThumbnail(rset.getString("thumbnail"));
+				Map<String, Object> commandMap = new HashMap<String, Object>();
+				commandMap.put("fmsline", userFmsline);
+				commandMap.put("nick", rset.getString("user_nm"));
+				
+				reviewList.add(commandMap);
+				
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(ErrorCode.SU01, e);
+		} finally {
+			jdt.close(rset, pstm);
+		}
+		System.out.println(reviewList);
+		return reviewList;
+	}
+	
+	
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 5.
+	   @param conn
+	   @param mvNo
+	   @return 유저닉네임과 리뷰객체, 제네릭 미설정이유는 객체 타입이 2개이기 떄문임. (UserReview, String)
+	   @work :영화상세내용에 보여줄 리뷰 리스트
+	 */
+	public List selectReviewByMvNo(Connection conn, String mvNo){
+		UserReview userReview = null;
+		List reviewList = new ArrayList();
+		
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			
+			String sql = "select u.review_no, u.user_no, u.score, u.rv_reg_date, u.rv_content, u.watch_date, u.mv_no, u.mv_title, u.thumbnail, us.user_nm from user_review u "
+					+"inner join \"USER\" us on(u.user_no = us.user_no) where u.mv_no = ? and us.is_leave = 0 order by u.rv_reg_date desc";
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, mvNo);
+			rset = pstm.executeQuery();
+			
+			while(rset.next()) {
+				userReview = new UserReview();
+				Map<String, Object> commandMap = new HashMap<String, Object>();
+				
+				userReview.setReviewNo(rset.getInt("review_no"));
+				userReview.setUserNo(rset.getInt("user_no"));
+				userReview.setScore(rset.getDouble("score"));
+				userReview.setRvRegDate(rset.getDate("rv_reg_date"));
+				userReview.setRvContent(rset.getString("rv_content"));
+				userReview.setWatchDate(rset.getDate("watch_date"));
+				userReview.setMvNo(rset.getString("mv_no"));
+				userReview.setMvTitle(rset.getString("mv_title"));
+				userReview.setThumbnail(rset.getString("thumbnail"));
+				commandMap.put("review", userReview);
+				commandMap.put("nick", rset.getString("user_nm"));
+				
+				reviewList.add(commandMap);
+				
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(ErrorCode.SU01, e);
+		} finally {
+			jdt.close(rset, pstm);
+		}
+
+		return reviewList;
+	}
 	
 	
 	//영화 상세조회
