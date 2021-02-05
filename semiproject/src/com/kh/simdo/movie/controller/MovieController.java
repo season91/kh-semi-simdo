@@ -52,14 +52,8 @@ public class MovieController extends HttpServlet {
 		switch (uriArr[uriArr.length - 1]) {
 		case "db.do": setDB(); break;
 		case "naviview.do": searchNavi(request, response); break;
-		case "scoreview.do":
-			// 더미데이터 들어오면 테스트예정.
-			request.getRequestDispatcher("/WEB-INF/view/movie/scoreview.jsp").forward(request, response);
-			break;
-		case "reviewview.do":
-			// 더미데이터 들어오면 테스트 예정.
-			request.getRequestDispatcher("/WEB-INF/view/movie/reviewview.jsp").forward(request, response);
-			break;
+		case "scoreview.do": searchReview(request, response); break;
+		case "reviewview.do": selectMovieByReviewCount(request,response); break;
 		case "detailview.do": readMore(request, response); break;
 		case "searchview.do": searchTitle(request, response); break;
 		}
@@ -74,6 +68,13 @@ public class MovieController extends HttpServlet {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
+	
+	// 상위 10개만 조회해주는 거로
+	protected void searchReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		request.getRequestDispatcher("/WEB-INF/view/movie/scoreview.jsp").forward(request, response);
+	}
+	
 	
 	//평점구하는 메서드
 	protected String scoreAvg(List reviewList) {
@@ -166,6 +167,46 @@ public class MovieController extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/view/movie/naviview.jsp").forward(request, response);
 	}
 
+	protected void selectMovieByReviewCount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Movie> res = movieService.selectMovieByReviewCount();
+		// 영화 번호 추출해서 후기 가져온다.
+		List mv_rvList = new ArrayList();
+		
+		//영화 정보 담긴 리스트
+		List movieList = parseJson(res);
+		
+		List<String> mvnoList = new ArrayList<String>();
+		Gson gson = new Gson();
+		for (int i = 0; i < movieList.size(); i++) {
+			String resStr =gson.toJson(movieList.get(i));
+			Map resmap = gson.fromJson(resStr, Map.class);
+			mvnoList.add((String) resmap.get("mvNo"));
+		}
+		
+		Map<String, Object> resMap = new HashMap();
+		
+		// 생각해보니까 후기순인데 명대사는 굳이 없어도될 듯 왜냐면 상세화면 들어갈 이유가 없음..
+		for (int i = 0; i < mvnoList.size(); i++) {
+			List reviewRes = movieService.selectReviewByMvNo(mvnoList.get(i));
+			List parseRes = parseJson(reviewRes);
+			List reviewList =  new ArrayList();
+			for (int j = 0; j < parseRes.size(); j++) {
+				reviewList.add(parseRes.get(j));				
+			}
+			System.out.println(reviewList);
+			resMap.put("moviereview", reviewList);
+		}
+		
+		//검색된 영화 목록만큼 후기가 딸려와야함
+		// 해당번쨰 영화찾아야하니깐 리스트로(영화리스트, 해당영화리뷰 맵)
+		// 1번째영화 movie vo 객체가담긴 맵, 이영화 리뷰가 담긴 맵/ 총 2개의 맵이 담긴 list를 보내줘야한다.
+		
+		request.setAttribute("res", movieList);
+		request.setAttribute("review", mv_rvList);
+		request.getRequestDispatcher("/WEB-INF/view/movie/reviewview.jsp").forward(request, response);
+	}
+	
+	
 	// 영화제목 검색 메서드
 	protected void searchTitle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

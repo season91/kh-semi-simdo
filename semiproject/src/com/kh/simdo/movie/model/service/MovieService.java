@@ -55,6 +55,7 @@ public class MovieService {
 	   @work : 영화 상세정보에 나올 유저 리뷰
 	 */
 	
+	
 	public List selectReviewByMvNo(String mvNo) {
 		Connection conn = jdt.getConnection();
 		List<UserReview> reviewList = null;
@@ -64,6 +65,17 @@ public class MovieService {
 			jdt.close(conn);
 		}
 		return reviewList;
+	}
+	
+	public List<Movie> selectMovieByReviewCount(){
+		Connection conn = jdt.getConnection();
+		List<Movie> res = new ArrayList();
+		try {
+			res = movieDao.selectMovieByReviewCount(conn);
+		} finally {
+			jdt.close(conn);
+		}
+		return res;
 	}
 	
 	
