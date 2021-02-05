@@ -1,0 +1,397 @@
+@charset "UTF-8";
+
+
+body{
+	background-color: #DADAD9;
+	color: #696765;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+/* header */
+
+.header-wrapper{
+   display: flex;
+   flex-direction: column;
+   position: fixed;
+   width: 100%;
+   background-color: #DADAD9;
+   display: block;
+   z-index:999;
+   top:0%; /**/
+}
+
+.header-section{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   top: 0%;
+   width: 100%;
+   height: 10vh;
+}
+
+
+.top-logo-text{
+   margin-left: 5%;
+   font-size: 5vh;
+   font-weight: bold;
+   color: #696765;
+}
+
+.top-right{
+   display: flex;
+   justify-content: space-around;
+   margin-right: 5%;
+   color: #696765;
+}
+
+.div_top-search{
+   background-color: white;
+}
+
+/* nav */
+/* 전체 메뉴 틀, 양식 지정 */
+.navi{
+   height: 5vh;
+   background-color: #959493;
+   color: #DADAD9;
+   width: 100%;
+
+}
+
+/* 각메뉴들을 감싼 wrap 정렬지정 */
+.navi-wrapper{
+	height:100%;
+	display: flex;
+	justify-content: space-between;
+
+}
+
+/* 각메뉴의 정렬 지정*/
+.navi-wrapper>div{
+	display: flex;
+	align-items:center;
+	justify-content:center;
+	height:100%;
+	width: 200px;
+	text-align: center;
+	font-weight: bold;
+	transition-duration:0.2s;
+}
+.navi-wrapper>div:hover{
+	font-size: 2vw;
+}
+.navi-wrapper a{
+	color: #DADAD9;
+}
+
+.input_navi-search{
+	width: 15vw;
+}
+.search-view{
+	display: flex;
+	align-items: center;
+}
+
+
+/* footer */
+.bottom{
+   height:15vh;   
+   background-color: #DADAD9;
+   color: #696765;
+}
+.bottom_main{
+   font-weight:bold;
+   height:2vh;
+   padding-left:1%;
+   padding-top:1%;
+   
+}
+.bottom_left{
+   padding-left:1%;
+   
+}
+.bottom_content{
+   display:flex;
+   
+}
+.bottom_right{
+   padding-left:70%;
+   
+}
+
+/* 나라별 조회 클릭시 뜨는 나라선택 창 */
+.navi-extend-wrapper{
+	height: 10vh;
+	background-color: #959493;
+	transition-duration:0.5s;
+	
+}
+.navi-extend-wrapper>ul{
+	height:100%;
+	display: flex;
+	justify-content: space-evenly;
+	align-items:center;
+}
+
+.navi-extend-list>a{
+	color: #DADAD9;
+	
+}
+
+.navi-extend-list{
+	transition-duration:0.5s;
+	color: #DADAD9;
+}
+
+.navi-extend-list:hover {
+	font-size:3vw;
+	font-weight: bold;
+}
+
+/* 본문 */
+
+.content{
+	display: flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+	min-height: 70vh;
+	margin-top: 18vh;
+	width: 100%;
+
+}
+
+.mv_info_detail{
+	font-size: 4.5vh;
+	font-weight: bold;
+	
+}
+
+.mv_info_title{
+	font-size:3vh;
+	background-color:#696765;
+	color:#DADAD9;
+}
+	
+	
+.mv_info_basic{
+	font-size:3vh;
+	width: 20vh;
+}
+
+.mv_info_wrap{
+	width: 100vh;
+	display:flex;
+	flex-direction:column;
+	border-style:outset;
+	border-radius:10px;
+	box-shadow: 4px 4px 2px 1px gray;
+	background-color: rgba(255,255,255,0.5);
+	transition-duration:0.5s;
+}
+
+.mv_info_top-wrap{
+	display:flex;
+	flex-direction:column;
+	justify-content:space-around;
+	align-items:center;
+	height: 10vh;
+}
+
+/* 중간 기본정보부분 */
+/* 전체 틀 */
+.mv_info_middle-wrap{
+	display:flex;
+	justify-content:space-evenly;
+	min-height:50vh;
+	max-height:70vh;
+	padding-top: 1vh;
+	padding-bottom: 1vh;
+	
+}
+.mv_info_top_left{
+	width: 40vh;
+	min-height:50vh;
+	max-height:70vh;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.mv_info_img>img{
+	height: 90%;
+}
+
+/* 오른쪽틀 */
+.mv_info_top_right{
+	display: flex;
+	flex-direction:column;
+	justify-content: space-around;
+	width: 40vh;
+	
+}
+
+/* 오른쪽 첫번째줄 기본정보 */
+.mv_info-title_wrap{
+	display: flex;	
+	justify-content: space-between;
+	font-size: 3.5vh;
+	font-weight: bold;
+	position: relative;
+	bottom: 1vh;
+	margin-bottom: 1vh;
+}
+
+
+/* 아이콘 버튼 */
+
+
+.mv_info_btn{
+	display: flex;
+}
+
+.mv_info_btn i{
+	display: flex;
+	font-size: 3.5vh;
+	justify-content: space-between;
+	color: black;
+	transition-duration:0.5s;
+}
+
+
+.mv_info_btn #btn_like:hover{
+	color: skyblue;
+}
+
+.mv_info_btn #btn_wish:hover{
+	color: red;
+}
+.mv_info_btn #btn_write-is:hover{
+	color: pink;
+}
+
+/* 영화제목,감독,장르 부분 */
+.mv_info_basic_content{
+	font-size: 1.5vh;
+	position: relative;
+	bottom: 2vh;
+	margin-bottom: 2vh;
+}
+
+.mv_info_plot>p{
+	font-size: 3vh;
+	font-weight: bold;
+	position: relative;
+	bottom: 1.5vh;
+}
+
+.mv_info_plot_content{
+	font-size: 1.5vh;
+	margin-bottom: 2vh;
+}
+
+/* 심도평점 점수 부분 */
+.mv_info_score{
+	font-size: 3vh;
+	font-weight: bold;
+	margin-bottom: 2vh;
+}
+/* 후기,명대사,번역작성하기 부분  */
+.mv_info_write{
+	width: 40vh;
+	display: flex;
+	justify-content: space-between;
+	
+}
+.mv_info_write>span{
+	height:3vh;
+	width: 13vh;
+	background-color: gray;
+	text-align: center;
+	border-radius: 5px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 1.5vh;
+	transition-duration:0.5s;
+}
+
+.mv_info_write>span:hover{
+	background-color: white;
+}
+
+
+/* 맨 하단 심도후기,평점 부분 */
+/* 후기부분 */
+.mv_info_bottom-wrap{
+	display:flex;
+	justify-content:center;
+	height: 25vh;
+	border-top: 1px #696765 solid;
+
+}
+.mv_info_bottom-wrap>div{
+	width: 40vh;
+}
+
+.mv_info_simdo-review-wrapper{
+	height: 90%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 38vh;
+	padding-top: 1vh;
+}
+
+.mv_info_simdo-review{
+	font-weight: bold;
+	background-color: pink;
+	border-radius: 5px;
+	width: 12vh;
+	height: 3vh;
+	text-align: center;
+	font-size: 2.5vh;
+	box-shadow: 2px 2px 1px 1px rgb(255, 217, 217);
+}
+
+.mv_review{
+	margin-top: 1vh;
+}
+
+.name{
+	background-color: black;
+	border-radius: 5px;
+	font-size: 1.5vh;
+	color: white;
+	text-align: center;
+	width: 12vh;
+}
+
+
+.review{
+	padding-top:1vh;
+	display:flex;
+	flex-wrap:wrap;
+	font-size: 1.5vh;
+}
+
+/* 명대사부분 */
+
+.mv_info_simdo-fmsline-wrapper{
+	height: 90%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	width: 38vh;
+	padding-top: 1vh;
+	padding-bottom: 1vh;
+}
+
+.mv_info_simdo-fmsline{
+	font-weight: bold;
+	background-color: yellow;
+	border-radius: 5px;
+	width: 15vh;
+	height:3vh;
+	text-align: center;
+	font-size: 2.5vh;
+	box-shadow: 2px 2px 1px 1px rgb(255, 255, 198);
+}
