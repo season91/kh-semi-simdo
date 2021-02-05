@@ -52,7 +52,7 @@
 					<div class="mv_view_text">
 						<p class="mv_title">${movie.mvTitle}</p>
 						<p class="mv_info">${movie.nation} / ${movie.director} 감독</p>
-						<a class="mv_readmore" href="/movie/detailview.do&mvno=?" name="mvno">더보기</a>
+						<a class="mv_readmore" href="/movie/detailview.do?mvno=${movie.mvNo}">더보기</a>
 					</div>
 				</div>
 			</c:forEach>
