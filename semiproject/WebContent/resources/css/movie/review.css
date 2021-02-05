@@ -166,8 +166,13 @@ body{
 	margin-top: 15vh;
 }
 .mv_wrapper{
+<<<<<<< Updated upstream
 	width:100vh;
 	height:100%;
+=======
+	width:120vh;
+	min-height:30vh;
+>>>>>>> Stashed changes
 	padding-top: 5vh;
 	padding-bottom:10vh;
 	display: flex;
@@ -179,7 +184,11 @@ body{
 
 .mv_list_wrap{
 	display: flex;
+<<<<<<< Updated upstream
 	max-width:90%;
+=======
+	width:100%;
+>>>>>>> Stashed changes
 	height: 50vh;
 	background-color: rgba(255,255,255,0.2);
 	border-style:outset;
