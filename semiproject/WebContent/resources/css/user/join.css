@@ -1,0 +1,224 @@
+@charset "UTF-8";
+body{
+	background-color: #DADAD9;
+	color: #696765;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+input{
+	border: 0 none;
+}
+
+a{
+	cursor: pointer;
+}
+
+/* header */
+
+.header-wrapper{
+   display: flex;
+   flex-direction: column;
+   position: fixed;
+   width: 100%;
+   background-color: #DADAD9;
+   display: block;
+   z-index:999;
+   top:0%; /**/
+}
+
+.header-section{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   top: 0%;
+   width: 100%;
+   height: 10vh;
+   border-bottom: 1px solid;
+}
+
+
+.top-logo-text{
+   margin-left: 5%;
+   font-size: 5vh;
+   font-weight: bold;
+   color: #696765;
+}
+
+.top-right{
+   display: flex;
+   justify-content: space-around;
+   width: 20vh;
+   margin-right: 5%;
+   color: #696765;
+}
+
+/* section */
+
+.content{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	height: 60vh;
+	width: 40vh;
+	align-items: center;
+	position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.top_content{
+	text-align: center;
+	padding-bottom: 2vh;
+	font-size: 3vh;
+}
+
+.underline{
+	border-bottom: 0.5px solid;
+	width: 100%
+}
+
+.btn-wrapper{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	padding: 1vh 0 1vh 0;
+}
+
+.btn_naver-login{
+	margin-bottom: 3%;
+	width: 70%;
+}
+
+.btn_kakao-login{
+	width: 70%;
+}
+
+.frm_join{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	width: 100%;
+	margin-top: 1vh;
+}
+
+.join-info{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	margin-bottom: 1vh;
+}
+
+.input_width{
+	width: 70%;
+}
+
+.input_join{
+	background-color: transparent;
+}
+
+.label_join{
+	text-align: left;
+	margin-bottom: 0.6vh;
+}
+
+.email-wrapper{
+	display: flex;
+	justify-content: space-between;
+}
+
+.btn_emailCheck{
+	background-color: rgb(102,102,102);
+	color: white;
+	margin-bottom: 1%;
+}
+
+.btn_pwCheck{
+	background-color: rgb(102,102,102);
+	color: white;
+	margin-bottom: 1%;
+}
+
+.pwCheck-wrapper{
+	display: flex;
+	justify-content: space-between;
+}
+
+.btn_certify{
+	background-color: rgb(102,102,102);
+	color: white;
+	padding: 0.7vh 0 0.7vh 0;
+	margin-bottom: 1vh;
+}
+
+.div_certify{
+	display:flex;
+	justify-content: space-around;
+	margin-bottom: 1vh;
+	height: 2.8vh;
+}
+
+.input_certify{
+	background-color: white;
+	border: 0.1px solid;
+	width: 70%;
+}
+
+.btn_confirm{
+	background-color: rgb(102,102,102);
+	color: white;
+	width: 20%;
+}
+
+.join-checkbox{
+	margin-bottom: 1vh;
+}
+
+.check-more{
+	display: flex;
+	justify-content: space-between;
+}
+
+.read-more{
+	cursor: pointer;
+}
+
+.register{
+	font-size: 2vh;
+	text-decoration: underline;
+	text-align: center;
+	margin-top: 1.5vh;
+}
+
+/* footer */
+
+.bottom{
+   height:15vh;
+   background-color: #DADAD9;
+   color: #696765;
+   bottom: 0;
+   position: absolute;
+   width: 100%;
+}
+
+.bottom_main{
+   font-weight: bold;
+   height: 2vh;
+   padding-left: 1%;
+   padding-top: 1%;
+   
+}
+
+.bottom_left{
+   padding-left: 1%;
+}
+
+.bottom_content{
+   display: flex;
+   justify-content: space-between;
+}
+
+.bottom_right{
+   padding-right: 1%;
+}

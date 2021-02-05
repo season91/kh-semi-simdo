@@ -1,0 +1,148 @@
+@charset "UTF-8";
+body{
+	background-color: #DADAD9;
+	color: #696765;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+input{
+	border: 0 none;
+}
+
+a{
+	cursor: pointer;
+}
+
+/* header */
+
+.header-wrapper{
+   display: flex;
+   flex-direction: column;
+   position: fixed;
+   width: 100%;
+   background-color: #DADAD9;
+   display: block;
+   z-index:999;
+   top:0%; /**/
+}
+
+.header-section{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   top: 0%;
+   width: 100%;
+   height: 10vh;
+   border-bottom: 1px solid;
+}
+
+
+.top-logo-text{
+   margin-left: 5%;
+   font-size: 5vh;
+   font-weight: bold;
+   color: #696765;
+}
+
+.top-right{
+   display: flex;
+   justify-content: space-around;
+   margin-right: 5%;
+   color: #696765;
+}
+
+/* section */
+
+.content{
+	display: flex;
+	flex-direction: column;
+	min-height: 30vh;
+	width: 70vh;
+	position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.find-wrapper{
+	display: flex;
+}
+
+.find{
+	height: 3.5vh;
+	margin-right: 1%;
+}
+
+.btn_find-id{
+	background-color: white;
+}
+
+.btn_find-pw{
+	background-color: #696765;
+	color: white;
+}
+
+.frm_find{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-evenly;
+	background-color: white;
+	border: 1px solid;
+	height: 40vh;
+	align-items: center;
+}
+
+.find-id-text{
+	font-size: 5.8vh;
+}
+
+.email-tofind{
+	border: 1px solid;
+	width: 80%;
+	height: 3.5vh;
+}
+
+.tel-tofind{
+	border: 1px solid;
+	width: 80%;
+	height: 3.5vh;
+}
+
+.btn_find{
+	width: 80%;
+	height: 4vh;
+	background-color: #696765;
+	color: white;
+}
+
+/* footer */
+
+.bottom{
+   height:15vh;
+   background-color: #DADAD9;
+   color: #696765;
+   bottom: 0;
+   position: absolute;
+   width: 100%;
+}
+
+.bottom_main{
+   font-weight: bold;
+   height: 2vh;
+   padding-left: 1%;
+   padding-top: 1%;
+   
+}
+
+.bottom_left{
+   padding-left: 1%;
+}
+
+.bottom_content{
+   display: flex;
+   justify-content: space-between;
+}
+
+.bottom_right{
+   padding-right: 1%;
+}
