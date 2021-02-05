@@ -11,7 +11,7 @@
 <body>
 	<div class="header-wrapper">
 		<header class="header-section">
-			<a class="top-logo-text" href="/index/index.do"><img class="top-logo-img" style="width: 20vh; margin-left: 5%" alt="logo" src="/resources/image/logo.png"></a>
+			<a class="top-logo-text" href="/index.do"><img class="top-logo-img" style="width: 20vh; margin-left: 5%" alt="logo" src="/resources/image/logo.png"></a>
 			<c:choose>
 			<c:when test="${empty sessionScope.user}">
 				<%-- 비로그인 상태 --%>

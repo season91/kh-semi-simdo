@@ -21,6 +21,14 @@ public class UserReviewDao {
 	
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 	
+	//달력눌렸을때 DB 인설트메서드
+	//달력눌렀을때 DB 업데이트
+	//달
+	
+	/**
+	 * 
+	 * @author 조민희
+	 */
 	public List<UserReview> selectReviewByUserNo(Connection conn, int userNo) {
 		
 		List<UserReview> reviewList = new ArrayList<>();
@@ -66,6 +74,11 @@ public class UserReviewDao {
 		
 	}
 	
+
+	/**
+	 * 
+	 * @author 조민희
+	 */
 	public List<UserFmsline> selectFmslineByUserNo(Connection conn, int userNo) {
 		
 		List<UserFmsline> fmslineList = new ArrayList<>();

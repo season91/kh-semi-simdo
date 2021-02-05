@@ -18,7 +18,8 @@
 
 	  <div class="header-wrapper">
      <header class="header-section">
-         <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%" alt="logo" src="/resources/image/logo.png"></a>
+         <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
+         		  OnClick="location.href ='/index.do'"></a>
          <c:choose>
             <c:when test="${empty sessionScope.user}">
                <%-- 비로그인 상태 --%>
@@ -38,18 +39,15 @@
          </c:choose>
       </header>
 
-      <nav class="navi">
-	      <div class="navi-wrapper">
-	      	<div class="nation-view">영화달력</div>
-	        <div class="year-view">영화후기</div>
-	        <div class="rank-view"><a>찜목록</a></div>
-	        <div class="new-view"><a>회원정보변경</a></div>
-	        <div class="search-view">
-					<input type="search" class="input_navi-search" name="search">
-	        		<button class="btn_navi-search"><i class="fas fa-search"></i></button>
+     <nav class="navi">
+			<div class="navi-wrapper">
+				<div class="my-mv-calendar navi-menu" onclick="location.href='/mypage/calendar.do'">영화 달력</div>
+				<div class="my-mv-review navi-menu" onclick="location.href='/mypage/mywritelist.do'">영화 후기</div>
+				<div class="my-mv navi-menu" onclick="location.href='/mypage/mywish.do'">찜목록</div>
+				<div class="my-info navi-menu" onclick="location.href='/user/infochange.do'">회원 정보 변경</div>
+				<div class="my-qna navi-menu" onclick="location.href='/mypage/myqnalist.do'">나의 문의 & 요청</div>
 			</div>
-		</div>
-      </nav>
+	</nav>
    </div>
    
  
