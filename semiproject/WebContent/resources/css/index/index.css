@@ -6,9 +6,11 @@
 .header-wrapper{
    display: flex;
    flex-direction: column;
+   position: fixed;
    width: 100%;
    background-color: #DADAD9;
    display: block;
+   z-index:999;
    top:0%; /**/
 }
 
@@ -28,7 +30,7 @@
    font-size: 5vh;
    font-weight: bold;
    color: #696765;
-   cursor:pointer;
+   
 }
 
 .top-right{
@@ -69,7 +71,11 @@
 .navi-wrapper a{
 	color: #DADAD9;
 }
-
+/* 백관님 검색 가운데정렬 추가했습니다. -아영*/
+.search-view{
+	display: flex;
+	align-items: center;
+}
 
 /* 나라별 조회 클릭시 뜨는 나라선택 창 */
 
@@ -104,7 +110,9 @@
 }
 
 /* section */
-
+section{
+	margin-top: 15vh;
+}
 .content{
 	display: flex;
 	flex-direction: column;
