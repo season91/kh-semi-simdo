@@ -11,8 +11,9 @@
 
 	<div class="header-wrapper">
 		<header class="header-section">
-			 <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
-         		  OnClick="location.href ='/index.do'"></a>
+			<a class="top-logo-text"><img class="top-logo-img"
+				style="width: 20vh; margin-left: 5%" alt="logo"
+				src="/resources/image/logo.png"></a>
 			<c:choose>
 				<c:when test="${empty sessionScope.user}">
 					<%-- 비로그인 상태 --%>
