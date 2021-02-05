@@ -1,5 +1,0 @@
-INDEX VERSION 1.131
-C:\CODE\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1185154088.index
-\semiproject\src
-C:\CODE\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1067810785.index
-\semiproject\src
