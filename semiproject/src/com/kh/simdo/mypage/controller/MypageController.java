@@ -65,6 +65,13 @@ public class MypageController extends HttpServlet {
 		case "mydailylist.do": 
 			myDailyList(request,response);
 			break;
+		case "writereview.do" :
+			writeReview(request, response);
+			break;
+		case "writeline.do" :
+			writeLine(request, response);
+			break;
+
 		}
 	}
 
@@ -158,5 +165,16 @@ public class MypageController extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/view/mypage/mydailylist.jsp")
 		.forward(request, response);
 	}
+	
+	private void writeReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/view/mypage/writereview.jsp")
+		.forward(request, response);
+	}
+	
+	private void writeLine(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/view/mypage/writeline.jsp")
+		.forward(request, response);
+	}
+
 
 }
