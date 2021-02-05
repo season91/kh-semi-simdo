@@ -4,8 +4,8 @@ public enum ConfigCode {
 	//런칭용
 	//DOMAIN("https://www.bookmanager.ga"),
 	//개발용
-	DOMAIN("http://localhost:8989"),
-	EMAIL("choayoung91@naver.com"),
+	DOMAIN("http://localhost:9090"),
+	EMAIL("hhieathdd_@naver.com"),
 	// 파일 저장은 내부에다하면 배포할때 다날라가니까 꼭 외부 파일서버에다가 업로드 할 것
 	UPLOAD_PATH("C:\\CODE\\05_Servlet\\resources\\upload\\");
 	
