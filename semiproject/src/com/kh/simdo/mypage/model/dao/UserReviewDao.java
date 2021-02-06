@@ -67,12 +67,68 @@ public class UserReviewDao {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			throw new DataAccessException(ErrorCode.SU01, e);
+			throw new DataAccessException(ErrorCode.SRV01, e);
 		} finally {
 			jdt.close(rset, pstm);
 		}
 		
 		return reviewList;
+		
+	}
+	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	public Map<String, Object> selectReviewByReviewNo(Connection conn, int reviewNo) {
+		
+		Map<String, Object> reviewContent = new HashMap<>();
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			
+			String query = "select u.review_no, u.user_no, u.score, u.rv_reg_date, u.rv_content, u.watch_date, "
+					+ "u.mv_no, u.mv_title, u.thumbnail, m.poster "
+					+ "from user_review u inner join mv_basic_info m on(u.mv_no = m.mv_no) "
+					+ "where review_no = ?";
+			
+			pstm = conn.prepareStatement(query);
+			pstm.setInt(1, reviewNo);
+			
+			rset = pstm.executeQuery();
+			
+			if(rset.next()) {
+				
+				UserReview userReview = new UserReview();
+				String poster = null;
+				
+				userReview.setReviewNo(rset.getInt("review_no"));
+				userReview.setUserNo(rset.getInt("user_no"));
+				userReview.setScore(rset.getDouble("score"));
+				userReview.setRvRegDate(rset.getDate("rv_reg_date"));
+				userReview.setRvContent(rset.getString("rv_content"));
+				userReview.setWatchDate(rset.getDate("watch_date"));
+				userReview.setMvNo(rset.getString("mv_no"));
+				userReview.setMvTitle(rset.getString("mv_title"));
+				userReview.setThumbnail(rset.getString("thumbnail"));
+				poster = rset.getString("poster");
+				
+				reviewContent.put("userReview", userReview);
+				reviewContent.put("poster", poster);
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new DataAccessException(ErrorCode.SRV01, e);
+		} finally {
+			jdt.close(rset, pstm);
+		}
+		
+		return reviewContent;
 		
 	}
 	
@@ -113,7 +169,7 @@ public class UserReviewDao {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			throw new DataAccessException(ErrorCode.SU01, e);
+			throw new DataAccessException(ErrorCode.SFL01, e);
 		} finally {
 			jdt.close(rset, pstm);
 		}
@@ -122,6 +178,62 @@ public class UserReviewDao {
 		
 	}
 	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	public Map<String, Object> selectFmslineByFmslineNo(Connection conn, int fmslineNo) {
+
+		Map<String, Object> fmslineContent = new HashMap<>();
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			
+			String query = "select u.fmsline_no, u.user_no, u.fml_content, u.mv_no, u.mv_title, u.thumbnail, m.poster "
+					+ "from user_fmsline u inner join mv_basic_info m on(u.mv_no = m.mv_no) "
+					+ "where u.fmsline_no = ?";
+			
+			pstm = conn.prepareStatement(query);
+			pstm.setInt(1, fmslineNo);
+			
+			rset = pstm.executeQuery();
+			
+			if(rset.next()) {
+				
+				UserFmsline userFmsline = new UserFmsline();
+				String poster = null;
+				
+				userFmsline.setFmslineNo(rset.getInt("fmsline_no"));
+				userFmsline.setUserNo(rset.getInt("user_no"));
+				userFmsline.setFmlContent(rset.getString("fml_content"));
+				userFmsline.setMvNo(rset.getString("mv_no"));
+				userFmsline.setMvTitle(rset.getString("mv_title"));
+				userFmsline.setThumbnail(rset.getString("thumbnail"));
+				poster = rset.getString("poster");
+				
+				fmslineContent.put("userFmsline", userFmsline);
+				fmslineContent.put("poster", poster);
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new DataAccessException(ErrorCode.SFL01, e);
+		} finally {
+			jdt.close(rset, pstm);
+		}
+		
+		return fmslineContent;
+		
+	}
+	
+	/**
+	 * 
+	 * @author 조민희
+	 */
 	public int deleteReview(Connection conn, int reviewNo) {
 		
 		int res = 0;
@@ -137,7 +249,7 @@ public class UserReviewDao {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			throw new DataAccessException(ErrorCode.DU01, e);
+			throw new DataAccessException(ErrorCode.DRV01, e);
 		} finally {
 			jdt.close(pstm);
 		}
@@ -146,6 +258,10 @@ public class UserReviewDao {
 		
 	}
 	
+	/**
+	 * 
+	 * @author 조민희
+	 */
 	public int deleteFmsline(Connection conn, int fmslineNo) {
 		
 		int res = 0;
@@ -161,7 +277,73 @@ public class UserReviewDao {
 			
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			throw new DataAccessException(ErrorCode.DU01, e);
+			throw new DataAccessException(ErrorCode.DFL01, e);
+		} finally {
+			jdt.close(pstm);
+		}
+		
+		return res;
+		
+	}
+	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	public int updateReview(Connection conn, UserReview userReview) {
+		
+		int res = 0;
+		PreparedStatement pstm = null;
+		
+		try {
+			
+			String query = "update user_review set score = ?, rv_reg_date = sysdate, rv_content = ?, "
+					+ "watch_date = ? where review_no = ?";
+			pstm = conn.prepareStatement(query);
+			pstm.setDouble(1, userReview.getScore());
+			pstm.setString(2, userReview.getRvContent());
+			pstm.setDate(3, userReview.getWatchDate());
+			pstm.setInt(4, userReview.getReviewNo());
+			
+			res = pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new DataAccessException(ErrorCode.URV01, e);
+		} finally {
+			jdt.close(pstm);
+		}
+		
+		return res;
+		
+	}
+	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	public int updateFmsline(Connection conn, UserFmsline userFmsline) {
+		
+		int res = 0;
+		PreparedStatement pstm = null;
+		
+		try {
+			
+			String query = "update user_fmsline set fml_content = ? "
+					+ "where fmsline_no = ?";
+			pstm = conn.prepareStatement(query);
+			pstm.setString(1, userFmsline.getFmlContent());
+			pstm.setInt(2, userFmsline.getFmslineNo());
+			
+			res = pstm.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new DataAccessException(ErrorCode.UFL01, e);
 		} finally {
 			jdt.close(pstm);
 		}

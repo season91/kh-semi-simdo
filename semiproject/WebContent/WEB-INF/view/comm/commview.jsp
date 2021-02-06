@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
 	<link rel="stylesheet" href="/resources/css/comm/comm.css">
-	<link rel="stylesheet" href="/resources/css/index/index.css">
+	
 
 
 </head>
@@ -49,40 +49,32 @@
 		</div>
       </nav>
    </div>
-   <div class="comm-all">
-    <div class="comm-title">
-    <center>
-      <p class="p1">커뮤니케이션</p>
-      <p class="p2">공지게시판</p>  
-      <p class="p3">문의&요청</p>
-     </center>
-   
-   </div>
-   
-   
-   <div class="comm-content">
-   <table>
-    	<tr>
-   		
-   
-   		</tr>
-   		<tr>
-   			<th style=text-align:center;>공지제목이 출력됩니다.</th>
-   			
-   			
-   		</tr>
-   
-   		<tr>
-   			
-   			<td><textarea rows="15" cols="60" name="content"></textarea></td>
-   		</tr>
-   		
-   		
-   </table>
-   <br>
-   <input type="submit" value="목록">
-   </div>
-  
+   <div class="content">   
+    <h2 class="tit">공지사항</h2>
+    <div class="desc_board">
+      <h4 class="tit_board">제목 :</h4>
+      <div class="info" >
+          <span>게시글 번호 : ${data.comm.qstn_no}</span>
+          <span>등록일 :${data.comm.qstn_reg_date} </span>
+          <span>작성자 :${data.comm.user_nm}</span>
+      </div>
+      <div class="info">
+      	<c:forEach var="file" items="${data.fileList}">
+      		<button type="button" class="btn_down-file"
+      			onclick="downloadFile('${file.originFileName}'
+      								,'${file.renameFileName}'
+      								,'${file.savePath}')"
+      		>${file.originFileName}</button><br>
+      	</c:forEach>
+      </div>
+      <div class="text">
+          ${data.comm.content}
+      </div>
+      <div class="btn_section btn_list">
+          <button style="color:white" onclick="submitData('list')"><span>목록</span></button>
+      </div>
+      </div>
+      
  </div>
    
    

@@ -1,4 +1,4 @@
-package com.kh.simdo.index;
+package com.kh.simdo.aboutus;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class indexController
+ * Servlet implementation class aboutuscontroller
  */
-@WebServlet("/index.do")
-public class indexController extends HttpServlet {
+@WebServlet("/aboutus.do")
+public class aboutuscontroller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
-     * @author kwan 
+     * @see HttpServlet#HttpServlet()
      */
-    public indexController() {
+    public aboutuscontroller() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -25,7 +26,7 @@ public class indexController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/view/index/index.jsp")
+		request.getRequestDispatcher("/WEB-INF/view/aboutus/aboutus.jsp")
 		.forward(request, response);
 	}
 

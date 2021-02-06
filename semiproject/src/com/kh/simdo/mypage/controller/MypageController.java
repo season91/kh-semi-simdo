@@ -3,6 +3,7 @@ package com.kh.simdo.mypage.controller;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -87,6 +88,18 @@ public class MypageController extends HttpServlet {
 			break;
 		case "myqnadetail.do" : // 조아영
 			myQnaDetail(request,response); 
+			break;
+		case "myreviewupdate.do" : //조민희
+			myReviewUpdate(request, response);
+			break;
+		case "myreviewupdateimpl.do" : //조민희
+			myReviewUpdateImpl(request, response);
+			break;
+		case "mylineupdate.do" : //조민희
+			myLineUpdate(request, response);
+			break;
+		case "mylineupdateimpl.do" : //조민희
+			myLineUpdateImpl(request, response);
 			break;
 		}
 	}
@@ -245,6 +258,128 @@ public class MypageController extends HttpServlet {
 	
 	private void writeLine(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.getRequestDispatcher("/WEB-INF/view/mypage/writeline.jsp")
+		.forward(request, response);
+	}
+	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	private void myReviewUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int reviewNo = (int) Double.parseDouble(request.getParameter("reviewNo"));
+		Map<String, Object> reviewContent = userReviewService.selectReviewByReviewNo(reviewNo);
+		UserReview userReview = (UserReview) reviewContent.get("userReview");
+		String poster = (String) reviewContent.get("poster");
+		
+		request.setAttribute("userReview", userReview);
+		request.setAttribute("poster", poster);
+		request.getSession().setAttribute("reviewNo", userReview.getReviewNo());
+		
+		request.getRequestDispatcher("/WEB-INF/view/mypage/myreviewupdate.jsp")
+		.forward(request, response);
+	}
+	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	private void myReviewUpdateImpl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		double score = Double.parseDouble(request.getParameter("score"));
+		String wtchDt = request.getParameter("watchDate");
+		String rvContent = request.getParameter("rvContent");
+		int reviewNo = (int) request.getSession().getAttribute("reviewNo");
+		
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.YEAR, Integer.parseInt(wtchDt.substring(0, 4)));
+		c.set(Calendar.MONTH, Integer.parseInt(wtchDt.substring(5, 7))-1);
+		c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(wtchDt.substring(8, 10)));
+		long date = c.getTimeInMillis();
+		
+		java.sql.Date watchDate = new java.sql.Date(date);
+		
+		UserReview userReview = new UserReview();
+		userReview.setScore(score);
+		userReview.setWatchDate(watchDate);
+		userReview.setRvContent(rvContent);
+		userReview.setReviewNo(reviewNo);
+		
+		int res = userReviewService.updateReview(userReview);
+		if(res > 0) {
+			request.getSession().removeAttribute("reviewNo");
+			request.setAttribute("alertMsg", "영화 후기 수정이 완료되었습니다.");
+			request.setAttribute("url", "/mypage/mywritelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		} else {
+			request.setAttribute("alertMsg", "영화 후기 수정 중 에러가 발생했습니다.");
+			request.setAttribute("url", "/mypage/mywritelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		}
+	}
+	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	private void myLineUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int fmslineNo = (int) Double.parseDouble(request.getParameter("fmslineNo"));
+		Map<String, Object> fmslineContent = userReviewService.selectFmslineByFmslineNo(fmslineNo);
+		UserFmsline userFmsline = (UserFmsline) fmslineContent.get("userFmsline");
+		String poster = (String) fmslineContent.get("poster");
+		
+		request.setAttribute("userFmsline", userFmsline);
+		request.setAttribute("poster", poster);
+		request.getSession().setAttribute("fmslineNo", userFmsline.getFmslineNo());
+		
+		
+		request.getRequestDispatcher("/WEB-INF/view/mypage/mylineupdate.jsp")
+		.forward(request, response);
+	}
+	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	private void myLineUpdateImpl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String fmlContent = request.getParameter("fmlContent");
+		int fmslineNo = (int) request.getSession().getAttribute("fmslineNo");
+		
+		UserFmsline userFmsline = new UserFmsline();
+		userFmsline.setFmlContent(fmlContent);
+		userFmsline.setFmslineNo(fmslineNo);
+		
+		int res = userReviewService.updateFmsline(userFmsline);
+		if(res > 0) {
+			request.getSession().removeAttribute("fmslineNo");
+			request.setAttribute("alertMsg", "나만의 명대사 수정이 완료되었습니다.");
+			request.setAttribute("url", "/mypage/mywritelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		} else {
+			request.setAttribute("alertMsg", "나만의 명대사 수정 중 에러가 발생했습니다.");
+			request.setAttribute("url", "/mypage/mywritelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		}
+		
+		request.getRequestDispatcher("/WEB-INF/view/mypage/mylineupdate.jsp")
 		.forward(request, response);
 	}
 
