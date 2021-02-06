@@ -21,7 +21,10 @@ public class UserReviewService {
 	UserReviewDao userReviewDao = new UserReviewDao();
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 
-	
+	/**
+	 * 
+	 * @Author : MinHee
+	 */
 	public List<UserReview> selectReviewByUserNo(int UserNo) {
 		
 		Connection conn = jdt.getConnection();
@@ -35,6 +38,29 @@ public class UserReviewService {
 		
 	}
 	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	public Map<String, Object> selectReviewByReviewNo(int reviewNo) {
+		
+		Connection conn = jdt.getConnection();
+		Map<String, Object> reviewContent = null;
+		try {
+			reviewContent = userReviewDao.selectReviewByReviewNo(conn, reviewNo);
+		}finally {
+			jdt.close(conn);
+		}
+		return reviewContent;
+		
+	}
+	
+	/**
+	 * 
+	 * @Author : MinHee
+	 */
 	public List<UserFmsline> selectFmslineByUserNo(int UserNo) {
 		
 		Connection conn = jdt.getConnection();
@@ -48,6 +74,29 @@ public class UserReviewService {
 		
 	}
 	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	public Map<String, Object> selectFmslineByFmslineNo(int fmslineNo) {
+		
+		Connection conn = jdt.getConnection();
+		Map<String, Object> fmslineContent = null;
+		try {
+			fmslineContent = userReviewDao.selectFmslineByFmslineNo(conn, fmslineNo);
+		}finally {
+			jdt.close(conn);
+		}
+		return fmslineContent;
+		
+	}
+	
+	/**
+	 * 
+	 * @Author : MinHee
+	 */
 	public int deleteReview(int reviewNo) {
 		
 		Connection conn = jdt.getConnection();
@@ -67,6 +116,10 @@ public class UserReviewService {
 		
 	}
 	
+	/**
+	 * 
+	 * @Author : MinHee
+	 */
 	public int deleteFmsline(int fmslineNo) {
 		
 		Connection conn = jdt.getConnection();
@@ -87,6 +140,61 @@ public class UserReviewService {
 		
 	}
 	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	public int updateReview(UserReview userReview) {
+		
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = userReviewDao.updateReview(conn, userReview);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+		
+	}
+	
+	/**
+	 * 
+	 * @Author : MinHee
+	 * @Date : 2021. 2. 6.
+	 * @work :
+	 */
+	public int updateFmsline(UserFmsline userFmsline) {
+		
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = userReviewDao.updateFmsline(conn, userFmsline);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			jdt.rollback(conn);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+		
+	}
+	
+	/**
+	 * 
+	 * @Author : 아영
+	 */
 	public String papagoAPI(String paramText, String paramLan) {
 		Gson gson = new Gson();
 		HttpUtils util = new HttpUtils();
