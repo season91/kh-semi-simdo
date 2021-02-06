@@ -1,4 +1,4 @@
-package com.kh.simdo.index;
+package com.kh.simdo.comm.controller;
 
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -8,16 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class indexController
+ * Servlet implementation class CommController
  */
-@WebServlet("/index.do")
-public class indexController extends HttpServlet {
+@WebServlet("/CommController")
+public class CommController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
-     * @author kwan 
+     * @see HttpServlet#HttpServlet()
      */
-    public indexController() {
+    public CommController() {
+        super();
         // TODO Auto-generated constructor stub
     }
 
@@ -25,8 +26,8 @@ public class indexController extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/view/index/index.jsp")
-		.forward(request, response);
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
