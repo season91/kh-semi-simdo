@@ -78,6 +78,25 @@ public class MovieService {
 		return res;
 	}
 	
+	/**
+	 * 
+	 * @Author :
+	   @Date : 2021. 2. 6.
+	   @param count
+	   @return
+	   @work :
+	 */
+	public List<Movie> selectMovieByScore(int count){
+		Connection conn = jdt.getConnection();
+		List<Movie> res = new ArrayList();
+		try {
+			res = movieDao.selectMovieBySocre(conn, count);
+		} finally {
+			jdt.close(conn);
+		}
+		return res;
+	}
+	
 	
 	//영화 상세정보 조회
 	public Movie selectDetail(String mvNo){

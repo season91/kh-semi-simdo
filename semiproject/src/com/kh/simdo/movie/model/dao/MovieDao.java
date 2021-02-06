@@ -162,7 +162,7 @@ public class MovieDao {
 		return movie;
 	}
 	
-	// 후기순 조회, 후기 2개이상인 것들만 
+	// 후기순 조회, 후기 2개이상인 것들만, 탈퇴유저후기 제외
 	public List<Movie> selectMovieByReviewCount(Connection conn){
 		Movie movie = null;
 		List<Movie> res = new ArrayList<Movie>();
@@ -170,7 +170,7 @@ public class MovieDao {
 		ResultSet rset = null;
 		
 		try {
-			String sql = "select * from mv_basic_info where mv_no in (select mv_no from (select mv_no, count(*)  from user_review group by mv_no having count(*)>=2))";
+			String sql = "select * from mv_basic_info where mv_no in (select mv_no from (select r.mv_no, count(*) as cnt from user_review r inner join \"USER\" u using (user_no) where u.is_leave = 0 group by mv_no having count(*)>=2 order by cnt desc))";
 			
 			pstm = conn.prepareStatement(sql);
 			rset = pstm.executeQuery();
@@ -187,7 +187,6 @@ public class MovieDao {
 				movie.setPlot(rset.getString("plot"));
 				movie.setRating(rset.getString("rating"));
 				movie.setPoster(rset.getString("poster"));
-				System.out.println(movie);
 				res.add(movie);
 
 			}
@@ -199,8 +198,48 @@ public class MovieDao {
 		return res;
 				
 	}
-	
-	
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 6.
+	   @param conn
+	   @param count
+	   @return
+	   @work :
+	 */
+	public List<Movie> selectMovieBySocre(Connection conn, int count){
+		List<Movie> res = new ArrayList<Movie>();
+		Movie movie = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		try {
+			String sql = "select * from mv_basic_info where mv_no in (select  mv_no from (select  mv_no, AVG(score) AS POINT from user_review  group by mv_no having AVG(score) > 4 order by 2 desc) where rownum <= ?)";
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, count);
+			rset = pstm.executeQuery();
+			while(rset.next()) {
+				movie = new Movie();
+				movie.setMvNo(rset.getString("mv_no"));
+				movie.setMvTitle(rset.getString("mv_title"));
+				movie.setScore(rset.getInt("score"));
+				movie.setDirector(rset.getString("director"));
+				movie.setGenre(rset.getString("genre"));
+				movie.setReleaseDate(rset.getDate("release_date"));
+				movie.setNation(rset.getString("nation"));
+				movie.setRuntime(rset.getInt("runtime"));
+				movie.setPlot(rset.getString("plot"));
+				movie.setRating(rset.getString("rating"));
+				movie.setPoster(rset.getString("poster"));
+				res.add(movie);
+			}
+			
+		} catch (SQLException e) {
+			throw new DataAccessException(ErrorCode.SM01, e);
+		} finally {
+			jdt.close(rset, pstm);
+		}
+		return res;
+	}
 
 	//장르별 조회
 	public List<Movie> selectGenre(Connection conn, String genre){
