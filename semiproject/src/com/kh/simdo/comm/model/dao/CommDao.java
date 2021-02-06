@@ -24,7 +24,7 @@ public class CommDao {
 	//게시판 테이블에 게시글 저장
 	public int insertComm(Connection conn, Comm comm) {
 		int res = 0;
-		//b수
+		
 		String sql = "insert into \"COMM\"(user_nm, qstn_title, qstn_content) values(sc_qstn_no.nextval, ?, ?, ?)";
 		
 		PreparedStatement pstm = null;
@@ -73,20 +73,20 @@ public class CommDao {
 	
 		public int insertFile(Connection conn, FileVO fileData) {
 			int res = 0;
-			String bdIdx = "";
+			String qstn_no = "";
 			//1. 새로 등록되는 게시글의 파일 정보 저장
 			//	typeIdx값이 시퀀스 currval
 			if(fileData.getTypeIdx() == null) {
-				bdIdx = "'b'||sc_board_idx.currval";
+				qstn_no = "'b'||sc_qstn_no.currval";
 			//2. 수정할 때 사용자가 파일을 추가 등록해서 파일 정보 저장
 			//	수정할 게시글의 bdIdx값
 			}else {
-				bdIdx = "'" + fileData.getTypeIdx() + "'" ;
+				qstn_no = "'" + fileData.getTypeIdx() + "'" ;
 			}
 			
 			String sql = "insert into tb_file "
 					+ "(f_idx,type_idx,origin_file_name,rename_file_name,save_path) "
-					+ "values(sc_file_idx.nextval,"+bdIdx+",?,?,?)";
+					+ "values(sc_file_idx.nextval,"+qstn_no+",?,?,?)";
 			
 			PreparedStatement pstm = null;
 			try {

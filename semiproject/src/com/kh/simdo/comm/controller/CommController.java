@@ -76,8 +76,8 @@ public class CommController extends HttpServlet {
 	}
 
 	private void commview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String bdIdx = request.getParameter("bdIdx");
-		Map<String,Object> commandMap = commService.selectBoardDetail(bdIdx);
+		String qstn_no = request.getParameter("qstn_no");
+		Map<String,Object> commandMap = commService.selectBoardDetail(qstn_no);
 		request.setAttribute("data", commandMap);
 		request.getRequestDispatcher("/WEB-INF/view/comm/commview.jsp")
 	.forward(request, response);
@@ -87,7 +87,7 @@ public class CommController extends HttpServlet {
 				//파일테이블 : 원본파일명, 리네임파일명, 게시글번호, 저장경로 
 				
 				HttpSession session = request.getSession();
-				User user = (User)session.getAttribute("user");
+				User user = (User)session.getAttribute("user_nm");
 
 				commService.insertComm(user.getUserNm(), request);
 				
