@@ -51,6 +51,7 @@ public class CommController extends HttpServlet {
 		case "upload.do" :  //파일업로드
 			uploadComm(request,response);
 			break;
+		case "download.do" : download(request,response);
 		default:
 			break;
 		}
@@ -87,7 +88,7 @@ public class CommController extends HttpServlet {
 				//파일테이블 : 원본파일명, 리네임파일명, 게시글번호, 저장경로 
 				
 				HttpSession session = request.getSession();
-				User user = (User)session.getAttribute("user_nm");
+				User user = (User)session.getAttribute("user");
 
 				commService.insertComm(user.getUserNm(), request);
 				
@@ -96,5 +97,15 @@ public class CommController extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/view/comm/commview.jsp")
 		.forward(request, response);
 	}
+
+	private void download(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	String originFileName = request.getParameter("ofname");
+	String renameFileName = request.getParameter("rfname");
+	String savePath = request.getParameter("savePath");
+	response.setHeader("content-disposition", "attachment; filename="+originFileName);
+	request.getRequestDispatcher("/file"+savePath+renameFileName)
+	.forward(request, response);
 }
+}
+
 
