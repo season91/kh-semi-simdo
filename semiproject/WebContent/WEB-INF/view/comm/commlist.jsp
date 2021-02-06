@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
 	<link rel="stylesheet" href="/resources/css/comm/comm.css">
-	<link rel="stylesheet" href="/resources/css/index/index.css">
+	
 
 
 </head>
@@ -49,49 +49,32 @@
 		</div>
       </nav>
    </div>
-   <div class="comm-all">
-    <div class="comm-title">
-    <center>
-      <p class="p1">커뮤니케이션</p>
-      <p class="p2">공지게시판</p>  
-      <p class="p3">문의&요청</p>
-     </center>
    
-   </div>
+   <div class="content">
+    
    <!--  게시물리스트 코드 --> 
    <table class="table">
-   <thead>
+   
    <tr>
    	<th>No</th>
    	<th>제목</th>
    	<th>작성자</th>
    	<th>작성일</th>
    	</tr>
-   	</thead>
-   	<tbody>
+   	
+   	
+   	<c:forEach var="comm" items="${res}" varStatus="status">
    	<tr>
-   		<td>1</td>
-   		<td>dsddd</td>
-   		<td>adb</td>
-   		<td>2016.12.02</td>
+   		<td>${comm.qstn_no}</td>
+		<td>${comm.qstn_title}</td>
+		<td>${comm.user_nm}<td>
+		<td>${comm.qstn_reg_date}</td>
    		
    	</tr>
-   	<tr>
-   		<td>1</td>
-   		<td>dsddd</td>
-   		<td>adb</td>
-   		<td>2016.12.02</td>
-   		
-   	</tr>
-   	<tr>
-   		<td>1</td>
-   		<td>dsddd</td>
-   		<td>adb</td>
-   		<td>2016.12.02</td>
-   
-   	</tr>
-   	</tbody>
+   	</c:forEach>
+   	
    </table>
+   </div>
    
    
    

@@ -4,22 +4,28 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.kh.simdo.comm.model.vo.Comm;
 import com.kh.simdo.common.code.ErrorCode;
 import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.common.util.file.FileVO;
-
+import com.kh.simdo.movie.model.vo.Movie;
+/**
+ * 
+ * @author 김백관
+ *
+ */
 public class CommDao {
 	
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 	//게시판 테이블에 게시글 저장
-	public int insertBoard(Connection conn, Comm comm) {
+	public int insertComm(Connection conn, Comm comm) {
 		int res = 0;
-		String sql = "insert into Comm "
-				+ "(bd_idx,user_id,title,content) "
-				+ "values('b' || sc_board_idx.nextval, ? , ?, ?)";
+		//b수
+		String sql = "insert into \"COMM\"(user_nm, qstn_title, qstn_content) values(sc_qstn_no.nextval, ?, ?, ?)";
 		
 		PreparedStatement pstm = null;
 		try {
@@ -35,9 +41,36 @@ public class CommDao {
 		}
 		
 		return res;
+	}
+	//게시글 상세
+	public Comm selectCommView(Connection conn, String bdIdx) {
+		Comm comm = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		String sql = "select "
+				+ "qstn_no, user_nm, qstn_reg_date, qstn_title, qstn_content "
+				+ "from comm "
+				+ "where qstn_no = ?";
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setString(1, bdIdx);
+			rset = pstm.executeQuery();
+			if(rset.next()) {
+				comm = new Comm();
+				comm.setQstn_no(rset.getInt(1));
+				comm.setUser_nm(rset.getString(2));
+				comm.setQstn_reg_date(rset.getDate(3));
+				comm.setQstn_title(rset.getString(4));
+				comm.setQstn_content(rset.getString(5));
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(ErrorCode.SB01, e);
+		}finally {
+			jdt.close(rset, pstm);
+		}
+		return comm;
+	}
 	
-}
-	//파일테이블에 파일 정보 저장
 		public int insertFile(Connection conn, FileVO fileData) {
 			int res = 0;
 			String bdIdx = "";
@@ -70,38 +103,8 @@ public class CommDao {
 			
 			return res;
 		}
-	
-		//게시글 상세
-		public Comm selectBoardDetail(Connection conn, String bdIdx) {
-			Comm comm = null;
-			PreparedStatement pstm = null;
-			ResultSet rset = null;
-			String sql = "select "
-					+ "bd_idx, user_nm, qstn_reg_date, qstn_title, qstn_content "
-					+ "from tb_board "
-					+ "where bd_idx = ?";
-			try {
-				pstm = conn.prepareStatement(sql);
-				pstm.setString(1, bdIdx);
-				rset = pstm.executeQuery();
-				if(rset.next()) {
-					comm = new Comm();
-					comm.setBdIdx(rset.getString(1));
-					comm.setUserId(rset.getString(2));
-					comm.setRegDate(rset.getDate(3));
-					comm.setTitle(rset.getString(4));
-					comm.setContent(rset.getString(5));
-				}
-			} catch (SQLException e) {
-				throw new DataAccessException(ErrorCode.SB01, e);
-			}finally {
-				jdt.close(rset, pstm);
-			}
-			return board;
-		}
-		
-		public List<FileVO> selectFileWithBoard(Connection conn, String bdIdx){
-			 List<FileVO> res = null;
+		public List<FileVO> selectFileWithBoard(Connection conn, String bdIdx) {
+			List<FileVO> res = null;
 			 PreparedStatement pstm = null;
 			 ResultSet rset = null;
 			 String sql = "select f_idx,type_idx,origin_file_name,rename_file_name,"
@@ -132,20 +135,7 @@ public class CommDao {
 			 return res;
 		}
 		
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
+		
+
+

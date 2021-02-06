@@ -8,11 +8,12 @@ public class Comm {
 	private int user_no;
 	private String qstn_type;
 	private String qstn_content;
-	private Timestamp qstn_reg_date;
+	private Date qstn_reg_date;
 	private String attachdfile;
 	private String qstn_title;
 	private String user_nm;
-	private String qstn_pass;
+	private String qstn_coment;
+	
 	public int getQstn_no() {
 		return qstn_no;
 	}
@@ -37,10 +38,10 @@ public class Comm {
 	public void setQstn_content(String qstn_content) {
 		this.qstn_content = qstn_content;
 	}
-	public Timestamp getQstn_reg_date() {
+	public Date getQstn_reg_date() {
 		return qstn_reg_date;
 	}
-	public void setQstn_reg_date(Timestamp qstn_reg_date) {
+	public void setQstn_reg_date(Date qstn_reg_date) {
 		this.qstn_reg_date = qstn_reg_date;
 	}
 	public String getAttachdfile() {
@@ -61,22 +62,21 @@ public class Comm {
 	public void setUser_nm(String user_nm) {
 		this.user_nm = user_nm;
 	}
-	public String getQstn_pass() {
-		return qstn_pass;
+	public String getQstn_coment() {
+		return qstn_coment;
 	}
-	public void setQstn_pass(String qstn_pass) {
-		this.qstn_pass = qstn_pass;
+	public void setQstn_coment(String qstn_coment) {
+		this.qstn_coment = qstn_coment;
 	}
 	@Override
 	public String toString() {
 		return "Comm [qstn_no=" + qstn_no + ", user_no=" + user_no + ", qstn_type=" + qstn_type + ", qstn_content="
 				+ qstn_content + ", qstn_reg_date=" + qstn_reg_date + ", attachdfile=" + attachdfile + ", qstn_title="
-				+ qstn_title + ", user_nm=" + user_nm + ", qstn_pass=" + qstn_pass + "]";
+				+ qstn_title + ", user_nm=" + user_nm + ", qstn_coment=" + qstn_coment + "]";
 	}
-
-
-
-
+	
+	
 
 }
+
 	

@@ -7,7 +7,7 @@
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
 	<link rel="stylesheet" href="/resources/css/comm/comm.css">
-	<link rel="stylesheet" href="/resources/css/index/index.css">
+	
 
 
 </head>

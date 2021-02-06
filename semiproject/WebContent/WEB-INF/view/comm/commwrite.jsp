@@ -6,8 +6,8 @@
 <head>
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
-	<link rel="stylesheet" href="/resources/css/comm/comm.css">
-	<link rel="stylesheet" href="/resources/css/index/index.css">
+	<link rel="stylesheet" href="/resources/css/comm/commwrite.css">
+	
 
 
 </head>
@@ -49,56 +49,36 @@
 		</div>
       </nav>
    </div>
-   <div class="comm-all">
-    <div class="comm-title">
-    <center>
-      <p class="p1">커뮤니케이션</p>
-      <p class="p2">공지게시판</p>  
-      <p class="p3">문의&요청</p>
-     </center>
-   
-   </div>
-   
-   
-   <div class="comm-content">
-   <table>
-    	<tr>
-   		<th>문의유형</th>
-   
-  <td>
-  	<select name="select">
-    	<option value="none">=== 유형선택 ===</option>
-    	<option value="korean">영화관련</option>
-    	<option value="english">서비스관련</option>
+
+	<div class="content">
+	<h2 class="tit">QA작성</h2>
+	<div class="desc_board">
+		<form action="${context}/comm/upload.do" method="post" enctype="multipart/form-data">
+			<div>
+			<select name="select">
+    		<option value="none">=== 유형선택 ===</option>
+    		<option value="korean">영화관련</option>
+    		<option value="english">서비스관련</option>
     	
-  	</select>
-	</td>
-   		</tr>
-   		<tr>
-   			<th>이메일</th>
-   			<td><input type="email" name="email" placeholder="email을 입력하세요" style="width:200px"></td>
-   			
-   		</tr>
-   		
-   		<tr>
-   			<th>내용</th>
-   			<td><textarea rows="15" cols="60" name="content" placeholder="문의내용을 상세히 적어주시면 감사하겠습니다."></textarea></td>
-   		</tr>
-   		<tr>
-   			<th>첨부파일</th>
-   			<td><input type="file" name="uploadfile"></td> 
-   			
-   		
-   			
-   		</tr>
-   		
-   </table>
-   <br>
-   <input type="submit" value="확인">
-   </div>
-  
- </div>
-   
+  			</select>
+				<div class="tit_board">
+					제목 : <input type="text" name="qstn_title" required="required"/> <br>
+					작성자 : <input type="text" name="user_nm" required="required"/> <br>
+					<!-- multiple : 여러개 파일 선택을 허용하는 속성 -->
+					파일 : <input type="file" name="files" id="contract_file" multiple/>
+				</div>
+				<div class="text">
+					<textarea id="board-content" class="board-content" name="qstn_content" 
+					style="width:99%; height:300px;" required="required"></textarea>
+				</div>
+				<div class="btn_section" style="background-color:gray color=white">
+					<button>확인</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>
+
    
    
    
