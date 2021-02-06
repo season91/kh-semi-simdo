@@ -69,7 +69,7 @@
 								${review.rvContent}
 							</div>
 							<div class="reviewBox-bottom-wrapper">
-								<a><i class="fas fa-plus revise-content"></i></a>
+								<a><i class="fas fa-edit revise-content"></i></a>
 								<a onclick="reviewDel(${review.reviewNo})"><i class="far fa-trash-alt"></i></a>
 							</div>
 						</div>
@@ -104,7 +104,7 @@
 								${fmsline.fmlContent}
 							</div>
 							<div class="fvlineBox-bottom-wrapper">
-								<a><i class="fas fa-plus revise-content"></i></a>
+								<a><i class="fas fa-edit revise-content"></i></a>
 								<a onclick="fmslineDel(${fmsline.fmslineNo})"><i class="far fa-trash-alt"></i></a>
 								<select name="lan" size=1 class="choose-lan" id="${status.count}">
 									<option value="en">영어</option>
