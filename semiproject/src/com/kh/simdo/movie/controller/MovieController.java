@@ -18,6 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.kh.simdo.movie.model.service.MovieService;
 import com.kh.simdo.movie.model.vo.Movie;
+import com.kh.simdo.mypage.model.service.UserReviewService;
+import com.kh.simdo.mypage.model.vo.UserReview;
 /**
  * @author 조아영
  */
@@ -50,14 +52,8 @@ public class MovieController extends HttpServlet {
 		switch (uriArr[uriArr.length - 1]) {
 		case "db.do": setDB(); break;
 		case "naviview.do": searchNavi(request, response); break;
-		case "scoreview.do":
-			// 더미데이터 들어오면 테스트예정.
-			request.getRequestDispatcher("/WEB-INF/view/movie/scoreview.jsp").forward(request, response);
-			break;
-		case "reviewview.do":
-			// 더미데이터 들어오면 테스트 예정.
-			request.getRequestDispatcher("/WEB-INF/view/movie/reviewview.jsp").forward(request, response);
-			break;
+		case "scoreview.do": selectMovieByScore(request, response); break;
+		case "reviewview.do": selectMovieByReviewCount(request,response); break;
 		case "detailview.do": readMore(request, response); break;
 		case "searchview.do": searchTitle(request, response); break;
 		}
@@ -73,20 +69,66 @@ public class MovieController extends HttpServlet {
 		doGet(request, response);
 	}
 	
+	
+	
+	//평점구하는 메서드
+	protected String scoreAvg(List reviewList) {
+		double parseScore = 0.0;
+		for (int i = 0; i < reviewList.size(); i++) {
+			String json = new Gson().toJson(reviewList.get(i));
+			Map<String, Object> commandMap =  new Gson().fromJson(json, Map.class);
+			Map<String, String>  res = (Map<String, String>) commandMap.get("review");
+			//String ia = String.valueOf(res.get("score"));
+			String score = String.valueOf(res.get("score"));
+			parseScore += Double.parseDouble(score);
+		}
+		double scoreAvg = parseScore / reviewList.size();
+		String avg = String.format("%.1f", scoreAvg);
+		return avg;
+	}
+	
+	// 영화 명대사 출력 메서드 기준: 젤 첫번째꺼
+	protected String headFms(List fmsList) {
+		String json = new Gson().toJson(fmsList.get(0));
+		Map<String, Object> commandMap =  new Gson().fromJson(json, Map.class);
+		Map<String, String>  res = (Map<String, String>) commandMap.get("fmsline");
+		String headfms  = res.get("fmlContent");
+		return headfms;
+	}
 	// 더보기 메서드
 	protected void readMore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String mvNo = request.getParameter("mvno");
-		System.out.println(mvNo);
-		// 영화 제목으로 영화정보 받아오기
+		// 영화 제목으로 영화정보와 고객리뷰, 명대사
 		// 제목검색이랑 같이쓰려고했는데, 제목검색부분은 너프한기준이고 여기는 딱맞게 1개여애해서 따로 dao 생성하기로 결심
 		Movie detailRes = movieService.selectDetail(mvNo);
-		System.out.println(detailRes);
 		request.setAttribute("res", detailRes);
+		
+		List reviewList = movieService.selectReviewByMvNo(mvNo);
+		List fmsList = movieService.selectFmslineByMvNo(mvNo);
+		
+		
+		List parseJsonrev = parseJson(reviewList);
+		request.setAttribute("reviewList", parseJsonrev);
+		// 평점 출력
+		String scoreAvg = scoreAvg(parseJsonrev);
+		request.setAttribute("score", scoreAvg);
+		
+		List parseJsonfms = parseJson(fmsList);
+		request.setAttribute("fmsList", parseJsonfms);
+		
+		String headfms = null;
+		if(parseJsonfms.size() > 0) {
+			headfms = headFms(parseJsonfms);
+		} 
+		// 상세화면 상단에 넣어줄 명대사 출력.
+		request.setAttribute("headfms", headfms);
+		
 		request.getRequestDispatcher("/WEB-INF/view/movie/detailview.jsp").forward(request, response);
 	}
 	
-	// 영화정보를 jsp로 보내려면 gson을 이용해 map obj로 변환해주어야함. 자주사용해서 기능분리.
-	protected List parseJson(List<Movie> res) {
+	
+	// 영화용 파싱 메서드 영화정보를 jsp로 보내려면 gson을 이용해 map obj로 변환해주어야함. 자주사용해서 기능분리.
+	protected List parseJson(List res) {
 		List list = new ArrayList();
 		Map<String, Object> commandMap = new HashMap<String, Object>();
 		for (int i = 0; i < res.size(); i++) {
@@ -120,6 +162,53 @@ public class MovieController extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/view/movie/naviview.jsp").forward(request, response);
 	}
 
+	protected void selectMovieByReviewCount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		List<Movie> res = movieService.selectMovieByReviewCount();
+		// 영화 번호 추출해서 후기 가져온다.
+		
+		//영화 정보 담긴 리스트
+		List movieList = parseJson(res);
+		
+		
+		Gson gson = new Gson();
+		
+		// 영화 검섹 개수 만큼
+		// 영화vo와 영화vo에맞는 후기들 List에 넣어주고 jsp에 넘겨주기
+		List resList= new ArrayList();
+		for (int i = 0; i < movieList.size(); i++) {
+			// 영화 vo의 영화 번호 출력
+			String resStr = gson.toJson(movieList.get(i));
+			Map<String,Movie> resmap = gson.fromJson(resStr, Map.class);
+		
+			// 영화 번호기준으로 리뷰리스트 가져오기
+			List reviewRes = movieService.selectReviewByMvNo(String.valueOf(resmap.get("mvNo")));
+			List parseRes = parseJson(reviewRes);
+			
+			//해당영화vo와 그영화의 리뷰 map에 담아주기
+			Map commadMap = new HashMap();
+			commadMap.put("movie", movieList.get(i));
+			commadMap.put("reviews", parseRes);
+			// jsp로 보낼최종 리스트에 담아주기
+			resList.add(commadMap);
+		}
+		System.out.println(resList);
+		request.setAttribute("res", resList);
+		request.getRequestDispatcher("/WEB-INF/view/movie/reviewview.jsp").forward(request, response);
+			
+	
+	}
+	
+
+	// 상위 10개만 조회해주는 거로
+	protected void selectMovieByScore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int count = 7;
+		List<Movie> scoreRes = movieService.selectMovieByScore(count);
+		List movieList = parseJson(scoreRes);
+		request.setAttribute("navi", "평점순(상위 7개)");
+		request.setAttribute("res", movieList);
+		request.getRequestDispatcher("/WEB-INF/view/movie/scoreview.jsp").forward(request, response);
+	}
+	
 	// 영화제목 검색 메서드
 	protected void searchTitle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 

@@ -85,7 +85,7 @@ public class MypageController extends HttpServlet {
 		case "myqnalist.do" :  // 조아영
 			myQnaList(request,response);
 			break;
-		case "myqnadetail.do" :
+		case "myqnadetail.do" : // 조아영
 			myQnaDetail(request,response); 
 			break;
 		}
