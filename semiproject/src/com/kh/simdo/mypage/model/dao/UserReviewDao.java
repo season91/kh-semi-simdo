@@ -5,13 +5,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.kh.simdo.common.code.ErrorCode;
 import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
+import com.kh.simdo.user.model.vo.User;
 
 public class UserReviewDao {
 	
@@ -23,7 +26,6 @@ public class UserReviewDao {
 	
 	//달력눌렸을때 DB 인설트메서드
 	//달력눌렀을때 DB 업데이트
-	//달
 	
 	/**
 	 * 

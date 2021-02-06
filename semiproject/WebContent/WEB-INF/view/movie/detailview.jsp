@@ -54,7 +54,16 @@
 			<div class="mv_info_top-wrap">
 				<p class="mv_info_detail">영화 상세 정보</p>
 				<div class="mv_info_title">
-					<p>명대사 디비 넣고 명대사 넣어야함.</p>
+					<c:choose>
+						<c:when test="${empty headfms}">
+						<p>${res.mvTitle}</p>
+						</c:when>
+						<c:otherwise>
+						<p>${headfms}</p>
+						</c:otherwise>
+					</c:choose>
+						
+						
 				</div>
 			</div>
 			<div class="mv_info_middle-wrap">
@@ -95,7 +104,7 @@
 
 					</div>
 					<div class="mv_info_score">
-						<p>심도 평점 : 4.5</p>
+						<p>심도 평점 : ${score}</p>
 					</div>
 					<div class="mv_info_write">
 						<span><a>후기작성</a></span> <span><a>나만의 명대사 작성</a></span> <span><a>번역</a></span>
@@ -108,49 +117,45 @@
 				<div class="mv_info_bottom_left">
 					<div class="mv_info_simdo-review-wrapper">
 						<span class="mv_info_simdo-review">심도 후기</span>
-						<div class="mv_review_wrap">
-							<div class="mv_review">
-								<div class="name">코끼리님</div>
-								<div class="review">김민희랑 김태리랑 너무 잘어울리는 영화였어요!</div>
-							</div>
-						</div>
-						<div class="mv_review_wrap">
-							<div class="mv_review">
-								<div class="name">토끼님</div>
-								<div class="review">이런 반전이 있을 줄 전혀 몰랐습니다. 재밌어요!</div>
-							</div>
-						</div>
-						<div class="mv_review_wrap">
-							<div class="mv_review">
-								<div class="name">추천교수님</div>
-								<div class="review">안본눈 삽니다.... 다시 처음부터 또 보고 싶어요ㅠㅠ 비슷한 영화도
-									있을지 궁금하네요~</div>
-							</div>
-						</div>
+						<%-- 여기서부터 포문 반복, 없다면 첫등록 안내--%>
+						<c:choose>
+							<c:when test="${empty reviewList}">
+								<div class="review"> 첫 후기를 등록해보세요!</div>
+							</c:when>
+							<c:otherwise>
+								<c:forEach var="review" items="${reviewList}">
+								<div class="mv_review_wrap">
+									<div class="mv_review">
+										<div class="name">${review.nick}</div>
+										<div class="review">${review.review.rvContent}</div>
+									</div>
+								</div>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
+						
 					</div>
 				</div>
 				<div class="mv_info_bottom_right">
 					<div class="mv_info_simdo-fmsline-wrapper">
 						<div class="mv_info_simdo-fmsline">심도 명대사</div>
 						<div class="mv_fmsline">
-							<div class="mv_review_wrap">
-								<div class="mv_review">
-									<div class="name">코끼리</div>
-									<div class="review">김민희랑 김태리랑 너무 잘어울리는 영화였어요!</div>
+						<%-- 여기서부터 포문 반복 명대사,없다면 첫등록 안내 --%>
+						<c:choose>
+							<c:when test="${empty fmsList}">
+								<div class="review"> 첫 명대사를 등록해보세요!</div>
+							</c:when>
+							<c:otherwise>
+								<c:forEach var="fmsline" items="${fmsList}">
+								<div class="mv_review_wrap">
+									<div class="mv_review">
+										<div class="name">${fmsline.nick}</div>
+										<div class="review">${fmsline.fmsline.fmlContent}</div>
+									</div>
 								</div>
-							</div>
-							<div class="mv_review_wrap">
-								<div class="mv_review">
-									<div class="name">토끼</div>
-									<div class="review">이런 반전이 있을 줄 전혀 몰랐습니다. 재밌어요!</div>
-								</div>
-							</div>
-							<div class="mv_review_wrap">
-								<div class="mv_review">
-									<div class="name">추천교수</div>
-									<div class="review">안본눈 삽니다. 다시 처음부터 또 보고 싶어요ㅠㅠ</div>
-								</div>
-							</div>
+								</c:forEach>
+							</c:otherwise>
+						</c:choose>
 						</div>
 					</div>
 				</div>

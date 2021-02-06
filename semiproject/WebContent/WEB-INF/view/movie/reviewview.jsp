@@ -52,6 +52,10 @@
 		<div class="mv_view_title">심도 후기별 조회 결과입니다.</div>
 		<div class="mv_wrapper">
 			<%-- 여기서부터검색결과가 출력되는 것 --%>
+			<c:forEach var="movie" items="${res}">
+			
+			
+			</c:forEach>
 			<div class="mv_list_wrap">
 				<div class="mv_list_left-wrap">
 					<div class="mv_list_top-wrap">
