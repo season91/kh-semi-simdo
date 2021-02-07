@@ -25,14 +25,14 @@ public class CommDao {
 	public int insertComm(Connection conn, Comm comm) {
 		int res = 0;
 		
-		String sql = "insert into \"COMM\"(user_nm, qstn_title, qstn_content) values(sc_qstn_no.nextval, ?, ?, ?)";
+		String sql = "insert into \"COMM\"(userNm, qstnTitle, qstnContent) values(sc_qstnNo.nextval, ?, ?, ?)";
 		
 		PreparedStatement pstm = null;
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, comm.getUser_Nm());
-			pstm.setString(2, comm.getQstn_Title());
-			pstm.setString(3, comm.getQstn_Content());
+			pstm.setString(1, comm.getUserNm());
+			pstm.setString(2, comm.getQstnTitle());
+			pstm.setString(3, comm.getQstnContent());
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(ErrorCode.IB01, e);
@@ -48,20 +48,20 @@ public class CommDao {
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
 		String sql = "select "
-				+ "qstn_no, user_nm, qstn_reg_date, qstn_title, qstn_content "
+				+ "qstnNo, userNm, qstnRegDate, qstnTitle, qstnContent "
 				+ "from comm "
-				+ "where qstn_no = ?";
+				+ "where qstnNo = ?";
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, bdIdx);
 			rset = pstm.executeQuery();
 			if(rset.next()) {
 				comm = new Comm();
-				comm.setQstn_No(rset.getInt(1));
-				comm.setUser_Nm(rset.getString(2));
-				comm.setQstn_Reg_Date(rset.getDate(3));
-				comm.setQstn_Title(rset.getString(4));
-				comm.setQstn_Content(rset.getString(5));
+				comm.setQstnNo(rset.getInt(1));
+				comm.setUserNm(rset.getString(2));
+				comm.setQstnRegDate(rset.getDate(3));
+				comm.setQstnTitle(rset.getString(4));
+				comm.setQstnContent(rset.getString(5));
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException(ErrorCode.SB01, e);
