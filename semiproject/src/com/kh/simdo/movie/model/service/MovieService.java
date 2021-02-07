@@ -28,45 +28,7 @@ public class MovieService {
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 	MovieDao movieDao = new MovieDao();
 	
-	/**
-	 * 
-	 * @Author : 조아영
-	   @Date : 2021. 2. 5.
-	   @param mvNo
-	   @return 제네릭 미설정이유는 객체 타입이 2개이기 떄문임. (UserReview, string)
-	   @work :
-	 */
-	public List selectFmslineByMvNo(String mvNo) {
-		Connection conn = jdt.getConnection();
-		List<UserReview> reviewList = null;
-		try {
-			reviewList = movieDao.selectFmslineByMvNo(conn, mvNo);
-		}finally {
-			jdt.close(conn);
-		}
-		return reviewList;
-	}
-	/**
-	 * 
-	 * @Author : 조아영
-	   @Date : 2021. 2. 5.
-	   @param mvNo
-	   @return 제네릭 미설정이유는 객체 타입이 2개이기 떄문임. (UserReview, User)
-	   @work : 영화 상세정보에 나올 유저 리뷰
-	 */
-	
-	
-	public List selectReviewByMvNo(String mvNo) {
-		Connection conn = jdt.getConnection();
-		List<UserReview> reviewList = null;
-		try {
-			reviewList = movieDao.selectReviewByMvNo(conn, mvNo);
-		}finally {
-			jdt.close(conn);
-		}
-		return reviewList;
-	}
-	
+	// [3] 영화 상세정보 관련 메서드
 	public List<Movie> selectMovieByReviewCount(){
 		Connection conn = jdt.getConnection();
 		List<Movie> res = new ArrayList();
@@ -97,14 +59,14 @@ public class MovieService {
 		return res;
 	}
 	
-	
+	// [2] 영화 조회 메서드
 	//영화 상세정보 조회
-	public Movie selectDetail(String mvNo){
+	public Movie selectMovieByMvNo(String mvNo){
 		System.out.println("selectDetail"+mvNo);
 		Movie res = new Movie();
 		Connection conn = jdt.getConnection();
 		try {
-			res = movieDao.selectDetail(conn, mvNo);
+			res = movieDao.selectMovieByMvNo(conn, mvNo);
 		} finally {
 			jdt.close(conn);
 		}
@@ -112,12 +74,12 @@ public class MovieService {
 	}
 	
 	// 영화 장르별 조회
-	public List<Movie> selectGenre(String genre){
+	public List<Movie> selectMovieByGenre(String genre){
 		List<Movie> res = new ArrayList<Movie>();
 		Connection conn = jdt.getConnection();
 		System.out.println("selectGenre서비스"+genre);
 		try {
-			res = movieDao.selectGenre(conn, genre);
+			res = movieDao.selectMovieByGenre(conn, genre);
 		} finally {
 			jdt.close(conn);
 		}
@@ -125,12 +87,12 @@ public class MovieService {
 	}
 	
 	// 영화 나라별 조회
-	public List<Movie> selectNation(String nation){
+	public List<Movie> selectMovieByNation(String nation){
 		List<Movie> res = new ArrayList<Movie>();
 		Connection conn = jdt.getConnection();
 		System.out.println("selectNation"+nation);
 		try {
-			res = movieDao.selectNation(conn, nation);
+			res = movieDao.selectMovieByNation(conn, nation);
 		} finally {
 			jdt.close(conn);
 		}
@@ -138,12 +100,12 @@ public class MovieService {
 	}
 	
 	// 영화 정보 검색으로 영화정보 조회해서 가져오기.
-	public List<Movie> selectSearchTitle(String searchTitle) {
+	public List<Movie> selectMovieByTitle(String searchTitle) {
 		System.out.println("selectSearchTitle"+searchTitle);
 		List<Movie> res = new ArrayList<Movie>();
 		Connection conn = jdt.getConnection();
 		try {
-			res = movieDao.selectSearchMovie(conn, searchTitle);
+			res = movieDao.selectMovieByTitle(conn, searchTitle);
 		} finally {
 			jdt.close(conn);
 		}
@@ -151,7 +113,7 @@ public class MovieService {
 		return res;
 	}
 	
-	
+	// [1] DB 넣는 메서드부분
 	// KMDB와 통신하는 메서드
 	public Map<String, Object> parseDb() {
 		HttpUtils utils = new HttpUtils();
@@ -209,6 +171,7 @@ public class MovieService {
 		return thumb;
 	}
 	
+	// DB에 넣는 메서드
 	public int insertMovieInfo(Movie movie) {
 		Connection conn =jdt.getConnection();
 		int res = 0;

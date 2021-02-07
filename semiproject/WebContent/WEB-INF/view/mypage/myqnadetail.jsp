@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
+<%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt"%>
 <link rel="stylesheet" href="${context}/resources/css/common/reset.css">
 <link rel="stylesheet" href="${context}/resources/css/mypage/myqnadetail.css">
 <link rel="stylesheet" href="${context}/resources/css/all.css">
 <body>
 	<div class="header-wrapper">
 		<header class="header-section">
-			<a class="top-logo-text"><img class="top-logo-img"
-				style="width: 20vh; margin-left: 5%" alt="logo"
-				src="/resources/image/logo.png"></a>
+			 <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
+         		  OnClick="location.href ='/index.do'"></a>
 			<c:choose>
 				<c:when test="${empty sessionScope.user}">
 					<%-- 비로그인 상태 --%>
@@ -43,16 +43,24 @@
 		<div class="qna_wrap"> 
 			<div class="qna-info">
 				<div class="qna_head">나의 문의 & 요청</div>
-				<div class="qna_title">영화 아가씨 상세정보문의드립니다.</div>
-				<div class="qna_info">글번호 1000. 작성시간 : 2021-02-04 14:05</div>
+				<div class="qna_title">${res.qstnTitle}</div>
+				<div class="qna_info">글번호${res.qstnNo} / 작성일 : ${res.qstnRegDate}</div>
 			</div>
 			<div class="qna_write_wrap">
 				<div class="qna_write_head">문의 내용</div>
-				<div class="qna_write_content">아가씨의 시대연도는 어떻게 되는건지 궁금합니다.</div>
+				<div class="qna_write_content">${res.qstnContent}</div>
 			</div>
 			<div class="admin_answer_wrap">
 				<div class="admin_answer_head">관리자 답변</div>
-				<div class="admin_answer_write">관리자의 문의를 확인 중 입니다.</div>
+				<c:choose>
+					<c:when test="${empty res.qstnComent}">
+						<div class="admin_answer_write">관리자가 문의를 확인 중 입니다.</div>
+					</c:when>
+					<c:otherwise>
+						<div class="admin_answer_write">${res.qstnComent}</div>
+					</c:otherwise>
+				</c:choose>
+				
 			</div>		
 		</div>
 	</div>

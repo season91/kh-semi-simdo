@@ -16,16 +16,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.kh.simdo.comm.model.service.CommService;
+import com.kh.simdo.comm.model.vo.Comm;
 import com.kh.simdo.common.util.encoding.EncodingUtil;
 import com.kh.simdo.movie.model.vo.Movie;
-import com.kh.simdo.mypage.model.service.QnaListService;
 import com.kh.simdo.mypage.model.service.UserReviewService;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
 import com.kh.simdo.user.model.vo.User;
 
 /**
- * @author 김종환, 조민희(후기,명대사리스트), 조아영(QnA),김백관(메인)
+ * @author 김종환(달력), 조민희(후기,명대사리스트), 조아영(QnA),김백관(메인, 찜목록, 공지사항)
  */
 /**
  * Servlet implementation class MypageController
@@ -34,7 +35,7 @@ import com.kh.simdo.user.model.vo.User;
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserReviewService userReviewService = new UserReviewService();
-    QnaListService qnalistService = new QnaListService();
+    CommService commService = new CommService();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -110,12 +111,14 @@ public class MypageController extends HttpServlet {
 	 */
 	
 	//여기 movie는 아직 문의요청 더미가 없어서 테스트용으로 사용한 vo입니다. 더미 들어오면 수정예정.
-	 protected List parseJson(List<Movie> res) {
+	 protected List parseJson(List res) {
 			List list = new ArrayList();
 			Map<String, Object> commandMap = new HashMap<String, Object>();
 			for (int i = 0; i < res.size(); i++) {
 				String json = new Gson().toJson(res.get(i));
+				//System.out.println("전"+json);
 				commandMap = new Gson().fromJson(json, Map.class);
+				//System.out.println("후"+commandMap.get("qstnNo"));
 				list.add(commandMap);
 			}
 			return list;
@@ -127,7 +130,8 @@ public class MypageController extends HttpServlet {
 	protected void myQnaList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 페이징표현해주는 메서드
 		String text = request.getParameter("page");
-		List movieList = new ArrayList();
+		User user = (User) request.getSession().getAttribute("user");
+		List qnaList = new ArrayList();
 		int page = 0;
 		if(text == null) {
 			page++;
@@ -135,15 +139,15 @@ public class MypageController extends HttpServlet {
 			page = Integer.parseInt(text);
 		}
 		
-		int[] res = qnalistService.selectPagingList(page);
+		int[] res = commService.selectPagingList(page);
 		request.setAttribute("start", res[0]);
 		request.setAttribute("end", res[1]);
 
-		System.out.println(page);
-		List<Movie> pageRes = qnalistService.selectQnaList(page);
-		movieList = parseJson(pageRes);
 		
-		request.setAttribute("res", movieList);
+		List<Map<String, Object>> pageRes = commService.selectQnaList(page, user.getUserNo());
+		
+		qnaList = parseJson(pageRes);
+		request.setAttribute("res", qnaList);
 		request.setAttribute("page", page);
 		
 		//score 글번호 releaseDate 작성일자 mvTitle 글제목
@@ -156,7 +160,12 @@ public class MypageController extends HttpServlet {
 	 * 
 	 */
 	protected void myQnaDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String title = request.getParameter("title");
+		String qnaNo = String.valueOf(request.getParameter("qstnno"));
+		int qstnNo = Integer.parseInt(qnaNo);
+		
+		Comm comm = commService.selectCommByQstnNo(qstnNo);
+		System.out.println(comm);
+		request.setAttribute("res", comm);
 		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnadetail.jsp").forward(request, response);
 	}
 

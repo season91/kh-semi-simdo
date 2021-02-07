@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
+
 <head>
 <link rel="stylesheet" href="${context}/resources/css/common/reset.css">
 <link rel="stylesheet" href="${context}/resources/css/mypage/myqnalist.css">
@@ -11,9 +12,8 @@
 	
 	<div class="header-wrapper">
 		<header class="header-section">
-			<a class="top-logo-text"><img class="top-logo-img"
-				style="width: 20vh; margin-left: 5%" alt="logo"
-				src="/resources/image/logo.png"></a>
+			 <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
+         		  OnClick="location.href ='/index.do'"></a>
 			<c:choose>
 				<c:when test="${empty sessionScope.user}">
 					<%-- 비로그인 상태 --%>
@@ -35,11 +35,11 @@
 
 		<nav class="navi">
 			<div class="navi-wrapper">
-				<div class="my-mv-calendar navi-menu" onclick="location.href='/mypage/calendar.do'">영화 달력</div>
-				<div class="my-mv-review navi-menu" onclick="location.href='/mypage/mywritelist.do'">영화 후기</div>
-				<div class="my-mv navi-menu" onclick="location.href='/mypage/mywish.do'">찜목록</div>
-				<div class="my-info navi-menu" onclick="location.href='/user/infochange.do'">회원 정보 변경</div>
-				<div class="my-qna navi-menu" onclick="location.href='/mypage/myqnalist.do'">나의 문의 & 요청</div>
+				<div class="my-mv-calendar navi-menu" style="cursor:pointer;" onclick="location.href='/mypage/calendar.do'">영화 달력</div>
+				<div class="my-mv-review navi-menu" style="cursor:pointer;" onclick="location.href='/mypage/mywritelist.do'">영화 후기</div>
+				<div class="my-mv navi-menu" style="cursor:pointer;" onclick="location.href='/mypage/mywish.do'">찜목록</div>
+				<div class="my-info navi-menu" style="cursor:pointer;" onclick="location.href='/user/infochange.do'">회원 정보 변경</div>
+				<div class="my-qna navi-menu" style="cursor:pointer;" onclick="location.href='/mypage/myqnalist.do'">나의 문의 & 요청</div>
 			</div>
 		</nav>
 	</div>
@@ -53,12 +53,12 @@
 				<th>제목</th>
 				<th>작성일</th>
 			</tr>
-			<c:forEach var="movie" items="${res}" varStatus="status">
+			<c:forEach var="qna" items="${res}" varStatus="status">
 				<%-- score 글번호 releaseDate 작성일자 mvTitle 글제목 --%>
 				<tr>
-					<td>${movie.score}</td>
-					<td>${movie.mvTitle}</td>
-					<td>${movie.releaseDate}</td>
+					<td>${qna.qnaNo}</td>
+					<td style="cursor:pointer;" onclick="location.href='/mypage/myqnadetail.do?qstnno=${qna.qnaNo}'" >${qna.comm.qstnTitle}</td>
+					<td>${qna.comm.qstnRegDate}</td>
 				</tr>
 			</c:forEach>
 			
