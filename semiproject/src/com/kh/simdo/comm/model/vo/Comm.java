@@ -4,79 +4,78 @@ import java.sql.Date;
 import java.sql.Timestamp;
 
 public class Comm {
-	private int qstn_no;
-	private int user_no;
-	private String qstn_type;
-	private String qstn_content;
-	private Date qstn_reg_date;
-	private String attachdfile;
-	private String qstn_title;
-	private String user_nm;
-	private String qstn_coment;
-	
-	public int getQstn_no() {
-		return qstn_no;
+	private int qstn_No;
+	private int user_No;
+	private String qstn_Type;
+	private String qstn_Content;
+	private Date qstn_Reg_Date;
+	private String attachdFile;
+	private String qstn_Title;
+	private String user_Nm;
+	private String qstn_Coment;
+	public int getQstn_No() {
+		return qstn_No;
 	}
-	public void setQstn_no(int qstn_no) {
-		this.qstn_no = qstn_no;
+	public void setQstn_No(int qstn_No) {
+		this.qstn_No = qstn_No;
 	}
-	public int getUser_no() {
-		return user_no;
+	public int getUser_No() {
+		return user_No;
 	}
-	public void setUser_no(int user_no) {
-		this.user_no = user_no;
+	public void setUser_No(int user_No) {
+		this.user_No = user_No;
 	}
-	public String getQstn_type() {
-		return qstn_type;
+	public String getQstn_Type() {
+		return qstn_Type;
 	}
-	public void setQstn_type(String qstn_type) {
-		this.qstn_type = qstn_type;
+	public void setQstn_Type(String qstn_Type) {
+		this.qstn_Type = qstn_Type;
 	}
-	public String getQstn_content() {
-		return qstn_content;
+	public String getQstn_Content() {
+		return qstn_Content;
 	}
-	public void setQstn_content(String qstn_content) {
-		this.qstn_content = qstn_content;
+	public void setQstn_Content(String qstn_Content) {
+		this.qstn_Content = qstn_Content;
 	}
-	public Date getQstn_reg_date() {
-		return qstn_reg_date;
+	public Date getQstn_Reg_Date() {
+		return qstn_Reg_Date;
 	}
-	public void setQstn_reg_date(Date qstn_reg_date) {
-		this.qstn_reg_date = qstn_reg_date;
+	public void setQstn_Reg_Date(Date qstn_Reg_Date) {
+		this.qstn_Reg_Date = qstn_Reg_Date;
 	}
-	public String getAttachdfile() {
-		return attachdfile;
+	public String getAttachdFile() {
+		return attachdFile;
 	}
-	public void setAttachdfile(String attachdfile) {
-		this.attachdfile = attachdfile;
+	public void setAttachdFile(String attachdFile) {
+		this.attachdFile = attachdFile;
 	}
-	public String getQstn_title() {
-		return qstn_title;
+	public String getQstn_Title() {
+		return qstn_Title;
 	}
-	public void setQstn_title(String qstn_title) {
-		this.qstn_title = qstn_title;
+	public void setQstn_Title(String qstn_Title) {
+		this.qstn_Title = qstn_Title;
 	}
-	public String getUser_nm() {
-		return user_nm;
+	public String getUser_Nm() {
+		return user_Nm;
 	}
-	public void setUser_nm(String user_nm) {
-		this.user_nm = user_nm;
+	public void setUser_Nm(String user_Nm) {
+		this.user_Nm = user_Nm;
 	}
-	public String getQstn_coment() {
-		return qstn_coment;
+	public String getQstn_Coment() {
+		return qstn_Coment;
 	}
-	public void setQstn_coment(String qstn_coment) {
-		this.qstn_coment = qstn_coment;
+	public void setQstn_Coment(String qstn_Coment) {
+		this.qstn_Coment = qstn_Coment;
 	}
 	@Override
 	public String toString() {
-		return "Comm [qstn_no=" + qstn_no + ", user_no=" + user_no + ", qstn_type=" + qstn_type + ", qstn_content="
-				+ qstn_content + ", qstn_reg_date=" + qstn_reg_date + ", attachdfile=" + attachdfile + ", qstn_title="
-				+ qstn_title + ", user_nm=" + user_nm + ", qstn_coment=" + qstn_coment + "]";
+		return "Comm [qstn_No=" + qstn_No + ", user_No=" + user_No + ", qstn_Type=" + qstn_Type + ", qstn_Content="
+				+ qstn_Content + ", qstn_Reg_Date=" + qstn_Reg_Date + ", attachdFile=" + attachdFile + ", qstn_Title="
+				+ qstn_Title + ", user_Nm=" + user_Nm + ", qstn_Coment=" + qstn_Coment + "]";
 	}
-	
+   
 	
 
 }
-
+	
 	
