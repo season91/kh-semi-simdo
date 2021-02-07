@@ -37,10 +37,10 @@
 
       <nav class="navi">
 	      <div class="navi-wrapper">
-	      	<div class="nation-view">나라별</div>
-	        <div class="year-view">장르별</div>
-	        <div class="rank-view"><a>심도순</a></div>
-	        <div class="new-view"><a>평점순</a></div>
+	      	<div class="nation-view" style="cursor:pointer;">나라별</div>
+	        <div class="genre-view" style="cursor:pointer;">장르별</div>
+	        <div class="score-view" OnClick="location.href ='/movie/naviview.do'" style="cursor:pointer;">평점순</div>
+	        <div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
 	        <div class="search-view">
 					<input type="search" class="input_navi-search" name="search">
 	        		<button class="btn_navi-search"><i class="fas fa-search"></i></button>
@@ -49,34 +49,48 @@
 		</div>
       </nav>
    </div>
-   <div class="content">   
-    <h2 class="tit">공지사항</h2>
-    <div class="desc_board">
-      <h4 class="tit_board">제목 :</h4>
-      <div class="info" >
-          <span>게시글 번호 : ${data.comm.qstn_no}</span>
-          <span>등록일 :${data.comm.qstn_reg_date} </span>
-          <span>작성자 :${data.comm.user_nm}</span>
-      </div>
-      <div class="info">
-      	<c:forEach var="file" items="${data.fileList}">
-      		<button type="button" class="btn_down-file"
-      			onclick="downloadFile('${file.originFileName}'
-      								,'${file.renameFileName}'
-      								,'${file.savePath}')"
-      		>${file.originFileName}</button><br>
-      	</c:forEach>
-      </div>
-      <div class="text">
-          ${data.comm.content}
-      </div>
-      <div class="btn_section btn_list">
-          <button style="color:white" onclick="submitData('list')"><span>목록</span></button>
-      </div>
-      </div>
-      
- </div>
    
+   <div class="content">
+    
+   <!--  게시물리스트 코드 --> 
+   <table class="table">
+   
+   <tr>
+   	<th>No</th>
+   	<th>제목</th>
+   	<th>작성자</th>
+   	<th>작성일</th>
+   	
+   	
+   	
+   	<c:forEach var="notice" items="${res}" varStatus="status">
+   	<tr>
+   		<td>${notice.noticeNo}</td>
+		<td style="cursor:pointer;" onclick="location.href='/notice/noticedetail.do?noticeno=${notice.noticeNo}'">${notice.notice.ntTitle}</td>
+		<td>${notice.writer}<td>
+		<td>${notice.regDate}</td>
+		
+   		
+   	</tr>
+   	</c:forEach>
+   	
+   </table>
+   <div>페이지번호 
+		<c:forEach var="i" begin="1" end="${requestScope.end}" step="1" varStatus="status">
+		<c:choose>
+			
+			<c:when test="${page!=status.count}">
+			<a href="/mypage/myqnalist.do?page=${i}"><c:out value="${i}"/></a>
+			</c:when>
+			<c:otherwise>
+			<a href="/mypage/myqnalist.do?page=${i}"><span style="color:rgb(000,153,255);"><c:out value="${i}"/></span></a>
+			</c:otherwise>
+			
+		</c:choose>
+		
+		</c:forEach>
+		</div>
+   </div>
    
    
    
@@ -92,7 +106,7 @@
 				<address>TEL:031)111-1212</address>
 			</div>
 			<div class="bottom_right">
-				<a href="/aboutus/">ABOUT US</a><br>
+				<a href="/aboutus/aboutus.do">ABOUT US</a><br>
 				<a href="/고객페이지/"> 고객페이지</a><br>
 				<a href="/마이페이지/"> 마이페이지</a><br>
 				<a href="/내정보관리/"> 내정보관리</a><br>

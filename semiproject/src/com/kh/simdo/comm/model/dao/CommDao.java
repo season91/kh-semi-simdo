@@ -27,7 +27,7 @@ public class CommDao {
 	public int insertComm(Connection conn, Comm comm) {
 		int res = 0;
 		
-		String sql = "insert into \"COMM\"(userNm, qstnTitle, qstnContent) values(sc_qstnNo.nextval, ?, ?, ?)";
+		String sql = "insert into COMM (QSTN_NO, USER_NM,QSTN_TITLE, QSTN_Content,QSTN_TYPE) values(sc_qstn_No.nextval, ?,?, ?,?)";
 		
 		PreparedStatement pstm = null;
 		try {
@@ -35,6 +35,7 @@ public class CommDao {
 			pstm.setString(1, comm.getUserNm());
 			pstm.setString(2, comm.getQstnTitle());
 			pstm.setString(3, comm.getQstnContent());
+			pstm.setString(4, comm.getQstnType());
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(ErrorCode.IB01, e);
@@ -44,34 +45,7 @@ public class CommDao {
 		
 		return res;
 	}
-	//게시글 상세
-	public Comm selectCommView(Connection conn, String bdIdx) {
-		Comm comm = null;
-		PreparedStatement pstm = null;
-		ResultSet rset = null;
-		String sql = "select "
-				+ "qstnNo, userNm, qstnRegDate, qstnTitle, qstnContent "
-				+ "from comm "
-				+ "where qstnNo = ?";
-		try {
-			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, bdIdx);
-			rset = pstm.executeQuery();
-			if(rset.next()) {
-				comm = new Comm();
-				comm.setQstnNo(rset.getInt(1));
-				comm.setUserNm(rset.getString(2));
-				comm.setQstnRegDate(rset.getDate(3));
-				comm.setQstnTitle(rset.getString(4));
-				comm.setQstnContent(rset.getString(5));
-			}
-		} catch (SQLException e) {
-			throw new DataAccessException(ErrorCode.SB01, e);
-		}finally {
-			jdt.close(rset, pstm);
-		}
-		return comm;
-	}
+	
 	
 		public int insertFile(Connection conn, FileVO fileData) {
 			int res = 0;

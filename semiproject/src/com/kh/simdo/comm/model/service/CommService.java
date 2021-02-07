@@ -22,47 +22,23 @@ public class CommService {
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 	CommDao commDao = new CommDao();
 
-	public void insertComm(String userId,HttpServletRequest request) {
+	public int insertComm(Comm comm) {
+		int req = 0;
 		Connection conn = jdt.getConnection();
 		//게시글 저장
-		Map<String,List> commData = new FileUtil().fileUpload(request);
-		
-		Comm comm = new Comm();
-		comm.setUserNm(userId);
-		comm.setQstnTitle(commData.get("qstn_Title").get(0).toString());
-		comm.setQstnContent(commData.get("qstn_Content").get(0).toString());
-		
 		try {
-			commDao.insertComm(conn, comm);
-			for(FileVO fileData : (List<FileVO>)commData.get("fileData")) {
-				commDao.insertFile(conn, fileData);
-			}
+			req=commDao.insertComm(conn, comm);
 			jdt.commit(conn);
+			
 		}catch(DataAccessException e) {
 			jdt.rollback(conn);
 			throw new ToAlertException(e.error,e);
 		}finally {
 			jdt.close(conn);
 		}
+		return req;
 	}
 	
-	public Map<String,Object> selectBoardDetail(String bdIdx){
-		
-		Map<String,Object> commandMap = new HashMap<String, Object>();
-		Connection conn = jdt.getConnection();
-		
-		try {
-			//게시글 정보 가져오기
-			Comm comm = commDao.selectCommView(conn, bdIdx);
-			List<FileVO> fileList = commDao.selectFileWithBoard(conn, bdIdx);
-			commandMap.put("comm", comm);
-			commandMap.put("fileList", fileList);
-		}finally {
-			jdt.close(conn);
-		}
-		
-		return commandMap;
-	}
 
 	/**
 	 * @author 조아영

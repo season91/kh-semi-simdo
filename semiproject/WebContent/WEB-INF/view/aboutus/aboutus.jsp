@@ -39,10 +39,10 @@
 
       <nav class="navi">
 	      <div class="navi-wrapper">
-	      	<div class="nation-view">나라별</div>
-	        <div class="year-view">장르별</div>
-	        <div class="rank-view"><a>심도순</a></div>
-	        <div class="new-view"><a>평점순</a></div>
+	      	<div class="nation-view" style="cursor:pointer;">나라별</div>
+	        <div class="genre-view" style="cursor:pointer;">장르별</div>
+	        <div class="score-view" OnClick="location.href ='/movie/naviview.do'" style="cursor:pointer;">평점순</div>
+	        <div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
 	        <div class="search-view">
 					<input type="search" class="input_navi-search" name="search">
 	        		<button class="btn_navi-search"><i class="fas fa-search"></i></button>

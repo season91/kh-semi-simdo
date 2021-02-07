@@ -13,11 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.kh.simdo.comm.model.service.CommService;
+import com.kh.simdo.comm.model.vo.Comm;
 import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.user.model.vo.User;
 
 /**
- * Servlet implementation class CommController
+ * @author 김백관
  */
 @WebServlet("/comm/*")
 public class CommController extends HttpServlet {
@@ -42,12 +43,7 @@ public class CommController extends HttpServlet {
 		case "write.do" :   //q&a쓰기 
 			commWrite(request, response);
 			break;
-		case "list.do" :  // 공지사항 리스트
-			commList(request,response);
-			break;
-		case "view.do" : // 공지사항 상세보기
-			commview(request,response); 
-			break;
+		
 		case "upload.do" :  //파일업로드
 			uploadComm(request,response);
 			break;
@@ -64,11 +60,6 @@ public class CommController extends HttpServlet {
 		doGet(request, response);
 	}
 
-	protected void commList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		request.getRequestDispatcher("/WEB-INF/view/comm/commlist.jsp")
-		.forward(request, response);
-	}
 	
 	private void commWrite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	request.getRequestDispatcher("/WEB-INF/view/comm/commwrite.jsp")
@@ -76,26 +67,30 @@ public class CommController extends HttpServlet {
 
 	}
 
-	private void commview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String qstn_no = request.getParameter("qstn_no");
-		Map<String,Object> commandMap = commService.selectBoardDetail(qstn_no);
-		request.setAttribute("data", commandMap);
-		request.getRequestDispatcher("/WEB-INF/view/comm/commview.jsp")
-	.forward(request, response);
-}
+	
 	private void uploadComm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//제목, 본문, 작성자(session), 첨부파일
-				//파일테이블 : 원본파일명, 리네임파일명, 게시글번호, 저장경로 
-				
-				HttpSession session = request.getSession();
-				User user = (User)session.getAttribute("user");
-
-				commService.insertComm(user.getUserNm(), request);
-				
-				request.setAttribute("alertMsg", "게시글 등록이 완료되었습니다.");
-				request.setAttribute("url", "/index.do");
-		request.getRequestDispatcher("/WEB-INF/view/comm/commview.jsp")
-		.forward(request, response);
+		
+		User user= (User)request.getSession().getAttribute("user");
+		
+		String qstntitle = request.getParameter("qstntitle");
+		String qstncontent = request.getParameter("qstncontent");
+		String qstntype = request.getParameter("qstntype");
+		
+		Comm comm = new Comm();
+		comm.setQstnTitle(qstntitle);
+		comm.setUserNm(user.getUserNm());
+		
+		comm.setQstnContent(qstncontent);
+		comm.setQstnType(qstntype);
+		
+		int res = commService.insertComm(comm);
+		if(res > 0) {
+			request
+			.getRequestDispatcher("/WEB-INF/view/comm/commlist.jsp")
+			.forward(request, response);
+		}else {
+			System.out.println("확인");
+		}
 	}
 
 	private void download(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
