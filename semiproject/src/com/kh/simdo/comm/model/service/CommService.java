@@ -28,9 +28,9 @@ public class CommService {
 		Map<String,List> commData = new FileUtil().fileUpload(request);
 		
 		Comm comm = new Comm();
-		comm.setUser_nm(userId);
-		comm.setQstn_title(commData.get("qstn_title").get(0).toString());
-		comm.setQstn_content(commData.get("qstn_content").get(0).toString());
+		comm.setUser_Nm(userId);
+		comm.setQstn_Title(commData.get("qstn_Title").get(0).toString());
+		comm.setQstn_Content(commData.get("qstn_Content").get(0).toString());
 		
 		try {
 			commDao.insertComm(conn, comm);

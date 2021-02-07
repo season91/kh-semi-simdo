@@ -30,9 +30,9 @@ public class CommDao {
 		PreparedStatement pstm = null;
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, comm.getUser_nm());
-			pstm.setString(2, comm.getQstn_title());
-			pstm.setString(3, comm.getQstn_content());
+			pstm.setString(1, comm.getUser_Nm());
+			pstm.setString(2, comm.getQstn_Title());
+			pstm.setString(3, comm.getQstn_Content());
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(ErrorCode.IB01, e);
@@ -57,11 +57,11 @@ public class CommDao {
 			rset = pstm.executeQuery();
 			if(rset.next()) {
 				comm = new Comm();
-				comm.setQstn_no(rset.getInt(1));
-				comm.setUser_nm(rset.getString(2));
-				comm.setQstn_reg_date(rset.getDate(3));
-				comm.setQstn_title(rset.getString(4));
-				comm.setQstn_content(rset.getString(5));
+				comm.setQstn_No(rset.getInt(1));
+				comm.setUser_Nm(rset.getString(2));
+				comm.setQstn_Reg_Date(rset.getDate(3));
+				comm.setQstn_Title(rset.getString(4));
+				comm.setQstn_Content(rset.getString(5));
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException(ErrorCode.SB01, e);
