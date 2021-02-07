@@ -28,9 +28,9 @@ public class CommService {
 		Map<String,List> commData = new FileUtil().fileUpload(request);
 		
 		Comm comm = new Comm();
-		comm.setUser_nm(userId);
-		comm.setQstn_title(commData.get("qstn_title").get(0).toString());
-		comm.setQstn_content(commData.get("qstn_content").get(0).toString());
+		comm.setUserNm(userId);
+		comm.setQstnTitle(commData.get("qstn_Title").get(0).toString());
+		comm.setQstnContent(commData.get("qstn_Content").get(0).toString());
 		
 		try {
 			commDao.insertComm(conn, comm);
@@ -64,4 +64,60 @@ public class CommService {
 		return commandMap;
 	}
 
+	/**
+	 * @author 조아영
+	 */
+	
+	// 처음에 출력해줄 페이징 개수 불러오기
+		public int[] selectPagingList(int page) {
+			Connection conn = jdt.getConnection();
+			int[] res = new int[2];
+			try {
+				res = commDao.selectPaging(conn, page);
+			} finally {
+				jdt.close(conn);
+			}
+			
+			return res;
+		}
+		
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 7.
+	   @param page
+	   @param userNo
+	   @return
+	   @work :
+	 */
+		
+	// 주어진 페이지의 게시글 불러오기
+	public List<Map<String, Object>> selectQnaList(int page, int userNo){
+		Connection conn = jdt.getConnection();
+		List<Map<String, Object>> res = new ArrayList<Map<String, Object>>();
+		try {
+			res = commDao.selectQnaList(conn, page, userNo);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+		
+	}
+		
+	/**
+	 * @author 조아영
+	 */
+		
+		public Comm selectCommByQstnNo(int qstnNo) {
+			Connection conn = jdt.getConnection();
+			Comm res = null;
+			try {
+				res = commDao.selectCommByQstnNo(conn, qstnNo);
+			} finally {
+				jdt.close(conn);
+			}
+			
+			return res;
+		}
 }

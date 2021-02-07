@@ -25,113 +25,8 @@ public class MovieDao {
 	
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 
-	
-	/**
-	 * 
-	 * @Author :
-	   @Date : 2021. 2. 5.
-	   @param conn
-	   @param mvNo
-	   @return 유저닉네임과 명대사객체, 제네릭 미설정이유는 객체 타입이 2개이기 떄문임. (UserFmsline, String)
-	   @work :영화상세내용에 보여줄 명대사 리스트
-	 */
-	
-	public List selectFmslineByMvNo(Connection conn, String mvNo){
-		UserFmsline userFmsline = null;
-		List reviewList = new ArrayList();
-		
-		PreparedStatement pstm = null;
-		ResultSet rset = null;
-		
-		try {
-			
-			String sql = "select u.fmsline_no, u.user_no, u.fml_content, u.mv_no, u.mv_title, u.thumbnail, us.user_nm from user_fmsline u "
-					+"inner join \"USER\" us on(u.user_no = us.user_no) where u.mv_no = ? and us.is_leave = 0";
-			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, mvNo);
-			rset = pstm.executeQuery();
-			
-			while(rset.next()) {
-
-				userFmsline = new UserFmsline();
-				userFmsline.setFmslineNo(rset.getInt("fmsline_no"));
-				userFmsline.setUserNo(rset.getInt("user_no"));
-				userFmsline.setFmlContent(rset.getString("fml_content"));
-				userFmsline.setMvNo(rset.getString("mv_no"));
-				userFmsline.setMvTitle(rset.getString("mv_title"));
-				userFmsline.setThumbnail(rset.getString("thumbnail"));
-				Map<String, Object> commandMap = new HashMap<String, Object>();
-				commandMap.put("fmsline", userFmsline);
-				commandMap.put("nick", rset.getString("user_nm"));
-				
-				reviewList.add(commandMap);
-				
-			}
-		} catch (SQLException e) {
-			throw new DataAccessException(ErrorCode.SU01, e);
-		} finally {
-			jdt.close(rset, pstm);
-		}
-		System.out.println(reviewList);
-		return reviewList;
-	}
-	
-	
-	/**
-	 * 
-	 * @Author : 조아영
-	   @Date : 2021. 2. 5.
-	   @param conn
-	   @param mvNo
-	   @return 유저닉네임과 리뷰객체, 제네릭 미설정이유는 객체 타입이 2개이기 떄문임. (UserReview, String)
-	   @work :영화상세내용에 보여줄 리뷰 리스트
-	 */
-	public List selectReviewByMvNo(Connection conn, String mvNo){
-		UserReview userReview = null;
-		List reviewList = new ArrayList();
-		
-		PreparedStatement pstm = null;
-		ResultSet rset = null;
-		
-		try {
-			
-			String sql = "select u.review_no, u.user_no, u.score, u.rv_reg_date, u.rv_content, u.watch_date, u.mv_no, u.mv_title, u.thumbnail, us.user_nm from user_review u "
-					+"inner join \"USER\" us on(u.user_no = us.user_no) where u.mv_no = ? and us.is_leave = 0 order by u.rv_reg_date desc";
-			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, mvNo);
-			rset = pstm.executeQuery();
-			
-			while(rset.next()) {
-				userReview = new UserReview();
-				Map<String, Object> commandMap = new HashMap<String, Object>();
-				
-				userReview.setReviewNo(rset.getInt("review_no"));
-				userReview.setUserNo(rset.getInt("user_no"));
-				userReview.setScore(rset.getDouble("score"));
-				userReview.setRvRegDate(rset.getDate("rv_reg_date"));
-				userReview.setRvContent(rset.getString("rv_content"));
-				userReview.setWatchDate(rset.getDate("watch_date"));
-				userReview.setMvNo(rset.getString("mv_no"));
-				userReview.setMvTitle(rset.getString("mv_title"));
-				userReview.setThumbnail(rset.getString("thumbnail"));
-				commandMap.put("review", userReview);
-				commandMap.put("nick", rset.getString("user_nm"));
-				
-				reviewList.add(commandMap);
-				
-			}
-		} catch (SQLException e) {
-			throw new DataAccessException(ErrorCode.SU01, e);
-		} finally {
-			jdt.close(rset, pstm);
-		}
-
-		return reviewList;
-	}
-	
-	
-	//영화 상세조회
-	public Movie selectDetail(Connection conn, String mvNo){
+	//영화번호기준  상세조회
+	public Movie selectMovieByMvNo(Connection conn, String mvNo){
 		Movie movie = null;
 		PreparedStatement pstm = null;
 		ResultSet rset = null;
@@ -198,6 +93,8 @@ public class MovieDao {
 		return res;
 				
 	}
+	
+	
 	/**
 	 * 
 	 * @Author : 조아영
@@ -207,6 +104,7 @@ public class MovieDao {
 	   @return
 	   @work :
 	 */
+	// 영화 평점순 조회
 	public List<Movie> selectMovieBySocre(Connection conn, int count){
 		List<Movie> res = new ArrayList<Movie>();
 		Movie movie = null;
@@ -242,7 +140,7 @@ public class MovieDao {
 	}
 
 	//장르별 조회
-	public List<Movie> selectGenre(Connection conn, String genre){
+	public List<Movie> selectMovieByGenre(Connection conn, String genre){
 		System.out.println("장르다오");
 		List<Movie> res = new ArrayList<Movie>();
 		Movie movie = null;
@@ -279,7 +177,7 @@ public class MovieDao {
 		return res;
 	}
 	//나라별 조회
-	public List<Movie> selectNation(Connection conn, String nation){
+	public List<Movie> selectMovieByNation(Connection conn, String nation){
 		System.out.println("나라다오");
 		List<Movie> res = new ArrayList<Movie>();
 		Movie movie = null;
@@ -313,8 +211,9 @@ public class MovieDao {
 		}
 		return res;
 	}
-	//검색 조회
-	public List<Movie> selectSearchMovie(Connection conn, String searchTitle) {
+	
+	// 영화제목 검색 조회
+	public List<Movie> selectMovieByTitle(Connection conn, String searchTitle) {
 		
 		List<Movie> res = new ArrayList<Movie>();
 		Movie movie = null;
@@ -352,7 +251,7 @@ public class MovieDao {
 	}
 
 	
-		
+	// 영화 DB 넣는 메서드
 	public int insertMovieInfo(Connection conn, Movie movie) {
 		//commit rollback 해야하는 기능
 		

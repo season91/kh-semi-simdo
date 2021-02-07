@@ -88,6 +88,22 @@ public class AuthFilter implements Filter {
 				default : break;
 				}
 				break;
+			
+			case "mypage":
+				switch (uriArr[2]) {
+				case "myqnalist.do":
+					if (session.getAttribute("user") == null) {
+						throw new ToAlertException(ErrorCode.AUTH03);
+					}
+					
+				case "myqdetail.do":
+					if (session.getAttribute("user") == null) {
+						throw new ToAlertException(ErrorCode.AUTH03);
+					}
+					
+				default : break;
+				}
+				break;
 			}
 		}
 
