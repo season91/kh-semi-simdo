@@ -3,6 +3,7 @@ package com.kh.simdo.mypage.model.service;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.exception.ToAlertException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.common.util.http.HttpUtils;
+import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.mypage.model.dao.UserReviewDao;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
@@ -228,5 +230,46 @@ public class UserReviewService {
 		String res = (String) mapRes2.get("translatedText");
 		return res;
 	}
+	
+	
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 5.
+	   @param mvNo
+	   @return 제네릭 미설정이유는 객체 타입이 2개이기 떄문임. (UserReview, string)
+	   @work :
+	 */
+	public List selectFmslineByMvNo(String mvNo) {
+		Connection conn = jdt.getConnection();
+		List<UserReview> reviewList = null;
+		try {
+			reviewList = userReviewDao.selectFmslineByMvNo(conn, mvNo);
+		}finally {
+			jdt.close(conn);
+		}
+		return reviewList;
+	}
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 5.
+	   @param mvNo
+	   @return 제네릭 미설정이유는 객체 타입이 2개이기 떄문임. (UserReview, User)
+	   @work : 영화 상세정보에 나올 유저 리뷰
+	 */
+	
+	
+	public List selectReviewByMvNo(String mvNo) {
+		Connection conn = jdt.getConnection();
+		List<UserReview> reviewList = null;
+		try {
+			reviewList = userReviewDao.selectReviewByMvNo(conn, mvNo);
+		}finally {
+			jdt.close(conn);
+		}
+		return reviewList;
+	}
+	
 	
 }

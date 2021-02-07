@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.kh.simdo.comm.model.vo.Comm;
 import com.kh.simdo.common.code.ErrorCode;
@@ -135,6 +137,138 @@ public class CommDao {
 			 return res;
 		}
 		
+		
+	/**
+	 * @author 조아영
+	 */
+		// 페이징 범위 구하기
+		public int[] selectPaging(Connection conn, int page) {
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			String sql = "select count(*) from comm";
+			int[] startEnd = new int[2];
+			try {
+				pstm = conn.prepareStatement(sql);
+				rset = pstm.executeQuery();
+				System.out.println("첫실행 다오");
+				int totalContent = 0;
+				int totalPage = 0;
+				
+				if(rset.next()) {
+					totalContent += rset.getInt(1);
+				}
+				
+				if(totalContent == 0) {
+					return null;
+				}
+				
+				// 최종 전체 페이지 개수
+				totalPage =  totalContent / 10;
+				if(totalContent % 10 > 0) {
+					//나머지가 있다면 1더해준다.
+					totalPage++;
+				}
+				
+				// 페이징 범위 계산
+				// 시작 끝 페이지
+				int startPage, endPage;
+				startPage = ((page -1)/10)*10+1;
+				endPage = startPage + 10 -1;
+				if(endPage > totalPage) {
+					endPage = totalPage;
+				}
+				
+				// 시작과 끝 결과(숫자) 전달해줄 배열
+				startEnd[0]=startPage;
+				startEnd[1]=endPage;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return startEnd;
+		}
+		
+		/**
+		 * @author 조아영
+		 */
+		
+		// 주어진조건에 맞는 리스트 보기
+		public List<Map<String, Object>>  selectQnaList(Connection conn, int page, int userNo) {
+			Comm comm = null;
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			List<Map<String, Object>> res = new ArrayList();
+			String sql = "select * from (select rownum as num, QSTN_NO, QSTN_TITLE, QSTN_REG_DATE from"
+					+ "(select * from comm c join \"USER\" u using(user_no) where user_no = ? order by  QSTN_REG_DATE desc))  "
+					+ "where num >= ? and num <= ?";
+			System.out.println("조건찾는 다오");
+			int pagePerList = 10;
+			int startPage = (page - 1) * pagePerList + 1 ; // 시작
+			int endPage =  startPage + pagePerList - 1 ; // 끝
+			
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, userNo);
+				pstm.setInt(2, startPage);
+				pstm.setInt(3, endPage);
+				rset = pstm.executeQuery();
+				
+				while(rset.next()) {
+					Map<String, Object> commandMap = new HashMap<String, Object>();
+					comm = new Comm();
+					String qnaNo = String.valueOf(rset.getInt("QSTN_NO"));
+					
+					comm.setQstnTitle(rset.getString("QSTN_TITLE"));
+					comm.setQstnRegDate(rset.getDate("QSTN_REG_DATE"));
+					
+					commandMap.put("qnaNo", qnaNo);
+					commandMap.put("comm", comm);
+					res.add(commandMap);
+					
+				}
+				
+				
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.AUTH01, e);
+			} finally {
+				
+			}
+			
+			return res;
+			
+		}
+		
+		/**
+		 * @author 조아영
+		 */
+		
+		public Comm selectCommByQstnNo(Connection conn, int qstnNo) {
+			Comm comm = null;
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			String sql = "select * "
+					+ "from comm where qstn_no = ?";
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, qstnNo);
+				rset = pstm.executeQuery();
+				if(rset.next()) {
+					comm = new Comm();
+					comm.setQstnNo(rset.getInt("qstn_no"));
+					comm.setUserNm(rset.getString("user_nm"));
+					comm.setQstnRegDate(rset.getDate("qstn_reg_date"));
+					comm.setQstnTitle(rset.getString("qstn_title"));
+					comm.setQstnContent(rset.getString("qstn_content"));
+					comm.setQstnComent(rset.getString("qstn_coment"));
+				}
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.SB01, e);
+			}finally {
+				jdt.close(rset, pstm);
+			}
+			return comm;
+		}
 }
 		
 
