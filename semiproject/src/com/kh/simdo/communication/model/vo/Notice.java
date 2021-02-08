@@ -1,4 +1,4 @@
-package com.kh.simdo.notice.model.vo;
+package com.kh.simdo.communication.model.vo;
 
 import java.sql.Date;
 
