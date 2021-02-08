@@ -2,20 +2,17 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 
-<html>
 <head>
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
 	<link rel="stylesheet" href="/resources/css/comm/comm.css">
-	
-
-
 </head>
 <body style="margin:0">
 
 	  <div class="header-wrapper">
      <header class="header-section">
-         <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%" alt="logo" src="/resources/image/logo.png"></a>
+       <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
+         		  OnClick="location.href ='/index.do'"></a>
          <c:choose>
             <c:when test="${empty sessionScope.user}">
                <%-- 비로그인 상태 --%>
@@ -35,48 +32,57 @@
          </c:choose>
       </header>
 
-      <nav class="navi">
-	      <div class="navi-wrapper">
-	      <div class="nation-view" style="cursor:pointer;">나라별</div>
-	        <div class="genre-view" style="cursor:pointer;">장르별</div>
-	        <div class="score-view" OnClick="location.href ='/movie/naviview.do'" style="cursor:pointer;">평점순</div>
-	        <div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
-	        <div class="search-view">
+    	<nav class="navi">
+			<div class="navi-wrapper">
+				<div class="nation-view" style="cursor:pointer;">나라별</div>
+				<div class="genre-view" style="cursor:pointer;">장르별</div>
+				<div class="score-view" OnClick="location.href ='/movie/socreview.do'" style="cursor:pointer;">평점순</div>
+				<div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
+				<form class="search-view" action="/movie/searchview.do">
 					<input type="search" class="input_navi-search" name="search">
-	        		<button class="btn_navi-search"><i class="fas fa-search"></i></button>
-	        
-		</div>
-		</div>
-      </nav>
+					<button class="btn_navi-search">
+						<i class="fas fa-search"></i>
+					</button>
+				</form>
+			</div>
+		</nav>
    </div>
-   <div class="content">   
-    <h2 class="tit">공지사항</h2>
-    <div class="desc_board">
-      <h4 class="tit_board">제목 :</h4>
-      <div class="info" >
-          <span>게시글 번호 : ${data.comm.qstn_no}</span>
-          <span>등록일 :${data.comm.qstn_reg_date} </span>
-          <span>작성자 :${data.comm.user_nm}</span>
-      </div>
-      <div class="info">
-      	<c:forEach var="file" items="${data.fileList}">
-      		<button type="button" class="btn_down-file"
-      			onclick="downloadFile('${file.originFileName}'
-      								,'${file.renameFileName}'
-      								,'${file.savePath}')"
-      		>${file.originFileName}</button><br>
-      	</c:forEach>
-      </div>
-      <div class="text">
-          ${data.comm.content}
-      </div>
-      <div class="btn_section btn_list">
-          <button style="color:white" onclick="submitData('list')"><span>목록</span></button>
-      </div>
-      </div>
-      
- </div>
    
+   <div class="content">
+    
+	   <table>
+			<tr>
+				<th>글번호</th>
+				<th>제목</th>
+				<th>작성일</th>
+			</tr>
+			<c:forEach var="notice" items="${res}" varStatus="status">
+				<%-- score 글번호 releaseDate 작성일자 mvTitle 글제목 --%>
+				<tr>
+					<td>${notice.noticeNo}</td>
+					<td style="cursor:pointer;" onclick="location.href='/comm/noticedetail.do?noticeno=${notice.noticeNo}'" >${notice.notice.ntTitle}</td>
+					<td>${notice.notice.regDate}</td>
+				</tr>
+			</c:forEach>
+			
+		</table>
+		<div>페이지번호 
+		<c:forEach var="i" begin="1" end="${requestScope.end}" step="1" varStatus="status">
+		<c:choose>
+			
+			<c:when test="${page !=status.count}">
+			<a href="/comm/noticelist.do?page=${i}"><c:out value="${i}"/></a>
+			</c:when>
+			<c:otherwise>
+			<a href="/comm/noticelist.do?page=${i}"><span style="color:rgb(000,153,255);"><c:out value="${i}"/></span></a>
+			</c:otherwise>
+			
+		</c:choose>
+		
+		</c:forEach>
+		</div>
+		
+   </div>
    
    
    
@@ -101,6 +107,7 @@
 	</footer>
 	
 	
+	<script type="text/javascript" src="${context}/resources/js/movie/movie.js"></script>
 </body>
 </html>
    

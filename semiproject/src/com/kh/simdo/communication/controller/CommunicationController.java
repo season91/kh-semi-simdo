@@ -2,6 +2,7 @@ package com.kh.simdo.communication.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,8 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.kh.simdo.communication.model.service.CommunicationService;
 import com.kh.simdo.communication.model.vo.Communication;
+import com.kh.simdo.communication.model.vo.Notice;
 import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.user.model.vo.User;
 
@@ -40,14 +43,16 @@ public class CommunicationController extends HttpServlet {
 		String[] uriArr = request.getRequestURI().split("/");
 		switch(uriArr[uriArr.length - 1]) {
 		
-		case "write.do" :   //q&a쓰기 
+		case "write.do" :   //q&a쓰기  김백관
 			commWrite(request, response);
 			break;
 		
-		case "upload.do" :  //파일업로드
+		case "upload.do" :  //파일업로드 김백관 
 			uploadComm(request,response);
 			break;
-		case "download.do" : download(request,response);
+		case "download.do" : download(request,response); break; //김백관
+		case "noticelist.do": noticeList(request,response); break; //조아영
+		case "noticedetail.do" : noticeDetail(request,response); break; //조아영
 		default:
 			break;
 		}
@@ -58,6 +63,86 @@ public class CommunicationController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+
+	
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 8.
+	   @param res
+	   @return
+	   @work : jsp로 보내기 위해 list->json 파싱
+	 */
+	 protected List parseJson(List res) {
+			List list = new ArrayList();
+			Map<String, Object> commandMap = new HashMap<String, Object>();
+			for (int i = 0; i < res.size(); i++) {
+				String json = new Gson().toJson(res.get(i));
+				//System.out.println("전"+json);
+			commandMap = new Gson().fromJson(json, Map.class);
+			//System.out.println("후"+commandMap.get("qstnNo"));
+				list.add(commandMap);
+			}
+			return list;
+	}
+	 
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 8.
+	   @param request
+	   @param response
+	   @throws ServletException
+	   @throws IOException
+	   @work : 공지사항 페이징처리 및 리스트 불러오기
+	 */
+	protected void noticeList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 공지사항 목록 리스트
+		
+		// 페이징 표현 해주는 메서드
+		String text = request.getParameter("page");
+		List noticeList = new ArrayList();
+		int page = 0;
+		if(text == null) {
+			page++;
+		} else {
+			page = Integer.parseInt(text);
+		}
+		
+
+		int[] res = communicationService.selectPagingByNotice(page);
+		request.setAttribute("start", res[0]);
+		request.setAttribute("end", res[1]);
+		
+		List<Map<String, Object>> pageRes = communicationService.selectNoticeList(page);
+		
+		noticeList = parseJson(pageRes);
+		request.setAttribute("res", noticeList);
+		request.setAttribute("page", page);
+		//score 글번호 releaseDate 작성일자 mvTitle 글제목
+		request.getRequestDispatcher("/WEB-INF/view/communication/noticelist.jsp").forward(request, response);
+	}
+
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 8.
+	   @param request
+	   @param response
+	   @throws ServletException
+	   @throws IOException
+	   @work : 페이징된 공지사항 제목 눌렀을때 상세내용 가져오는 메서드. 
+	 */
+	protected void noticeDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 아영, 게시글 번호 기준으로 notice테이블 정보 가져온다.
+		String strNoticeNo = String.valueOf(request.getParameter("noticeno"));
+		int noticeNo = Integer.parseInt(strNoticeNo);
+		Notice notice = communicationService.selectNoticeByNoticeNo(noticeNo);
+		
+		// 아영, notice 객체 jsp로 전달
+		request.setAttribute("res", notice);
+		request.getRequestDispatcher("/WEB-INF/view/comm/noticedetail.jsp").forward(request, response);
 	}
 
 	

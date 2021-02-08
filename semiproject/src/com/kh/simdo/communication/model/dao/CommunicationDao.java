@@ -14,6 +14,7 @@ import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.common.util.file.FileVO;
 import com.kh.simdo.communication.model.vo.Communication;
+import com.kh.simdo.communication.model.vo.Notice;
 import com.kh.simdo.movie.model.vo.Movie;
 /**
  * 
@@ -79,6 +80,8 @@ public class CommunicationDao {
 			
 			return res;
 		}
+		
+		
 		public List<FileVO> selectFileWithBoard(Connection conn, String bdIdx) {
 			List<FileVO> res = null;
 			 PreparedStatement pstm = null;
@@ -115,8 +118,8 @@ public class CommunicationDao {
 	/**
 	 * @author 조아영
 	 */
-		// 페이징 범위 구하기
-		public int[] selectPaging(Connection conn, int page) {
+		// 문의사항 페이징 범위 구하기
+		public int[] selectPagingByQna(Connection conn, int page) {
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
 			String sql = "select count(*) from comm";
@@ -163,12 +166,14 @@ public class CommunicationDao {
 			return startEnd;
 		}
 		
+		
+		
 		/**
 		 * @author 조아영
 		 */
 		
-		// 주어진조건에 맞는 리스트 보기
-		public List<Map<String, Object>>  selectQnaList(Connection conn, int page, int userNo) {
+		// 문의사항 주어진조건에 맞는 리스트 보기
+		public List<Map<String, Object>> selectQnaList(Connection conn, int page, int userNo) {
 			Communication communication = null;
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
@@ -215,10 +220,11 @@ public class CommunicationDao {
 		
 		/**
 		 * @author 조아영
+		 * 문의 상세보기
 		 */
 		
-		public Communication selectCommByQstnNo(Connection conn, int qstnNo) {
-			Communication communication = null;
+		public Communication selectQnaByQstnNo(Connection conn, int qstnNo) {
+			Communication comm = null;
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
 			String sql = "select * "
@@ -228,21 +234,153 @@ public class CommunicationDao {
 				pstm.setInt(1, qstnNo);
 				rset = pstm.executeQuery();
 				if(rset.next()) {
-					communication = new Communication();
-					communication.setQstnNo(rset.getInt("qstn_no"));
-					communication.setUserNm(rset.getString("user_nm"));
-					communication.setQstnRegDate(rset.getDate("qstn_reg_date"));
-					communication.setQstnTitle(rset.getString("qstn_title"));
-					communication.setQstnContent(rset.getString("qstn_content"));
-					communication.setQstnComent(rset.getString("qstn_coment"));
+					comm = new Communication();
+					comm.setQstnNo(rset.getInt("qstn_no"));
+					comm.setUserNm(rset.getString("user_nm"));
+					comm.setQstnRegDate(rset.getDate("qstn_reg_date"));
+					comm.setQstnTitle(rset.getString("qstn_title"));
+					comm.setQstnContent(rset.getString("qstn_content"));
+					comm.setQstnComent(rset.getString("qstn_coment"));
 				}
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.SB01, e);
 			}finally {
 				jdt.close(rset, pstm);
 			}
-			return communication;
+			return comm;
 		}
+	
+		
+		// 	공자사항 페이징 범위 구하기
+		public int[] selectPagingByNotice(Connection conn, int page) {
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			String sql = "select count(*) from notice";
+			int[] startEnd = new int[2];
+			try {
+				pstm = conn.prepareStatement(sql);
+				rset = pstm.executeQuery();
+
+				// 검색된 count개수가 총 검색된 목록
+				int totalContent = 0;
+				// 검색된 목록을 10으로 나누어서 페이지 개수 계산
+				int totalPage = 0;
+				
+				if(rset.next()) {
+					totalContent += rset.getInt(1);
+				}
+				
+				// 검색목록이없다면
+				if(totalContent == 0) {
+					return null;
+				}
+				
+				// 최종 전체 페이지 개수
+				totalPage =  totalContent / 10;
+				if(totalContent % 10 > 0) {
+					//나머지가 있다면 1더해준다.
+					totalPage++;
+				}
+				
+				// 페이징 범위 계산
+				// 시작 끝 페이지
+				int startPage, endPage;
+				startPage = ((page -1)/10)*10+1;
+				endPage = startPage + 10 -1;
+				if(endPage > totalPage) {
+					endPage = totalPage;
+				}
+				
+				// 시작과 끝 결과(숫자) 전달해줄 배열
+				startEnd[0]=startPage;
+				startEnd[1]=endPage;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return startEnd;
+		}
+		
+
+		
+		/**
+		 * @author 조아영
+		 */
+		
+		// 공지사항 주어진조건에 맞는 리스트 보기
+		public List<Map<String, Object>> selectNoticeList(Connection conn, int page) {
+			Notice notice = null;
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			List<Map<String, Object>> res = new ArrayList<>();
+			String sql = "select * from (select rownum as num, notice_no, nt_title, reg_date from notice order by  reg_date desc) where num >= ? and num <= ?";
+			System.out.println("조건찾는 다오");
+			int pagePerList = 10;
+			int startPage = (page - 1) * pagePerList + 1 ; // 시작
+			int endPage =  startPage + pagePerList - 1 ; // 끝
+			
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, startPage);
+				pstm.setInt(2, endPage);
+				rset = pstm.executeQuery();
+				
+				while(rset.next()) {
+					Map<String, Object> commandMap = new HashMap<String, Object>();
+					notice = new Notice();
+					String noticeNo = String.valueOf(rset.getInt("notice_no"));
+					notice.setNtTitle(rset.getString("nt_title"));
+					notice.setRegDate(rset.getDate("reg_date"));
+					
+					commandMap.put("noticeNo", noticeNo);
+					commandMap.put("notice", notice);
+					res.add(commandMap);
+					
+				}
+
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.AUTH01, e);
+			} finally {
+				
+			}
+			
+			return res;
+			
+		}
+		
+		
+		
+		/**
+		 * @author 조아영
+		 * 공지사항 상세보기
+		 */
+		
+		public Notice selectNoticeByNoticeNo(Connection conn, int noticeNo) {
+			Notice notice = null;
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			String sql = "select * from notice where notice_no = ?";
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, noticeNo);
+				rset = pstm.executeQuery();
+				if(rset.next()) {
+					notice = new Notice();
+					notice.setNoticeNo(rset.getInt("notice_no"));
+					notice.setNtContent(rset.getString("nt_content"));
+					notice.setNtTitle(rset.getString("nt_title"));
+					notice.setRegDate(rset.getDate("reg_date"));
+					notice.setWriter(rset.getString("writer"));
+				}
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.SB01, e);
+			}finally {
+				jdt.close(rset, pstm);
+			}
+			return notice;
+		}
+	
 }
 		
 

@@ -1,11 +1,9 @@
 package com.kh.simdo.mypage.controller;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.kh.simdo.common.util.encoding.EncodingUtil;
 import com.kh.simdo.communication.model.service.CommunicationService;
 import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.movie.model.vo.Movie;
@@ -150,7 +147,6 @@ public class MypageController extends HttpServlet {
 	 * 
 	 */
 	
-	//여기 movie는 아직 문의요청 더미가 없어서 테스트용으로 사용한 vo입니다. 더미 들어오면 수정예정.
 	 protected List parseJson(List res) {
 			List list = new ArrayList();
 			Map<String, Object> commandMap = new HashMap<String, Object>();
@@ -179,7 +175,7 @@ public class MypageController extends HttpServlet {
 			page = Integer.parseInt(text);
 		}
 		
-		int[] res = communicationService.selectPagingList(page);
+		int[] res = communicationService.selectPagingByQna(page);
 		request.setAttribute("start", res[0]);
 		request.setAttribute("end", res[1]);
 
@@ -203,7 +199,7 @@ public class MypageController extends HttpServlet {
 		String qnaNo = String.valueOf(request.getParameter("qstnno"));
 		int qstnNo = Integer.parseInt(qnaNo);
 		
-		Communication communication = communicationService.selectCommByQstnNo(qstnNo);
+		Communication communication = communicationService.selectQnaByQstnNo(qstnNo);
 		System.out.println(communication);
 		request.setAttribute("res", communication);
 		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnadetail.jsp").forward(request, response);
