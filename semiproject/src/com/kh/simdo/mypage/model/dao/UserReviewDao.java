@@ -14,7 +14,6 @@ import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
-import com.kh.simdo.user.model.vo.User;
 
 public class UserReviewDao {
 	

@@ -57,6 +57,12 @@ public class MypageController extends HttpServlet {
 		case "mywish.do" : // 김백관 추가작업예정 찜목록
 			request.getRequestDispatcher("/WEB-INF/view/mypage/mywish.jsp").forward(request, response);
 			break;
+		case "mywishadd.do" : // 조아영 찜목록 DB에 넣기
+			myWishAdd(request,response);
+			break;
+		case "mywishdel.do" : // 조아영 찜목록 DB에 삭제
+			myWishDel(request,response);
+			break;
 		case "mywritelist.do" : //조민희
 			myWriteList(request, response);
 			break;
@@ -103,6 +109,20 @@ public class MypageController extends HttpServlet {
 			myLineUpdateImpl(request, response);
 			break;
 		}
+	}
+	
+	/**
+	 * @author 조아영
+	 */
+	private void myWishAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("추가 넘어온다");
+	}
+	
+	/**
+	 * @author 조아영
+	 */
+	private void myWishDel(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("삭제 넘어온다");
 	}
 	
 	/**

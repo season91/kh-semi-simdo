@@ -76,16 +76,28 @@
 					<div class="mv_info-title_wrap">
 						<div class="mv_info_basic">기본 정보</div>
 						<%-- 이부분 해당 영화에 글을썻거나, 찜했으면 색깔 넣어서 표현해주어야 한다.--%>
+						
+						
 						<div class="mv_info_btn">
-							<button name="like">
+							<button name="like" class="like">
 								<i class="fas fa-thumbs-up" id="btn_like"></i>
 							</button>
-							<button name="wish">
+							
+							<button name="wish" class="wish">
 								<i class="fas fa-heart" id="btn_wish"></i>
 							</button>
-							<button name="write-is">
-								<i class="fas fa-journal-whills" id="btn_write-is"></i>
-							</button>
+							<c:choose>
+								<c:when test="${empty fmsList}">
+									<button name="write-is">
+									<i class="fas fa-journal-whills" id="btn_write-is"></i>
+									</button>
+								</c:when>
+								<c:otherwise>
+									<button name="write-is">
+									<i class="fas fa-journal-whills" id="btn_write-is" style="color:pink"></i>
+									</button>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 					<div class="mv_info_basic_content">
@@ -184,7 +196,7 @@
 		</div>
 	</footer>
 
-	<script type="text/javascript"
-		src="${context}/resources/js/movie/movie.js"></script>
+	<script type="text/javascript" src="${context}/resources/js/movie/movie.js"></script>
+	<script type="text/javascript" src="${context}/resources/js/movie/detail.js"></script>
 </body>
 </html>
