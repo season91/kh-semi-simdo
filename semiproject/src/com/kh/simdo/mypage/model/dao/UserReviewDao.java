@@ -12,9 +12,10 @@ import java.util.Map;
 import com.kh.simdo.common.code.ErrorCode;
 import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
+import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
-import com.kh.simdo.user.model.vo.User;
+import com.kh.simdo.mypage.model.vo.Wish;
 
 public class UserReviewDao {
 	
@@ -286,6 +287,8 @@ public class UserReviewDao {
 		
 	}
 	
+	
+	
 	/**
 	 * 
 	 * @Author : MinHee
@@ -396,7 +399,7 @@ public class UserReviewDao {
 				
 			}
 		} catch (SQLException e) {
-			throw new DataAccessException(ErrorCode.SU01, e);
+			throw new DataAccessException(ErrorCode.SFL02, e);
 		} finally {
 			jdt.close(rset, pstm);
 		}
@@ -455,6 +458,90 @@ public class UserReviewDao {
 		}
 
 		return reviewList;
+	}
+	
+	
+	/**
+	 * @author 조아영
+	 * 상세화면 내에서 찜목록 추가
+	 */
+	
+	public int insertWish(Connection conn, int userNo, Movie movie) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		String sql = "insert into user_whishmv (wish_no, user_no, mv_no, poster) values(sc_wish_no.nextval,?,?,?)";
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, userNo);
+			pstm.setString(2, movie.getMvNo());
+			pstm.setString(3, movie.getPoster());
+			
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(ErrorCode.IW01,e);
+		} finally {
+			jdt.close( pstm);
+		}
+	
+		return res;
+	}
+	
+
+	/**
+	 * @author 조아영
+	 * 영화 상세에서 찜 해지시 db삭제
+	 */
+	public int deleteWish(Connection conn, int userNo, String mvNo) {
+		int res = 0;
+		PreparedStatement pstm = null;
+		
+		try {
+			String sql = "delete from user_whishmv where user_no = ? and mv_no = ? ";
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, userNo);
+			pstm.setString(2, mvNo);
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new DataAccessException(ErrorCode.DW01, e);
+		} finally {
+			jdt.close(pstm);
+		}
+		
+		return res;
+	}
+	
+	
+	/**
+	 * @author 조아영
+	 * 영화상세 내에서 찜목록 여부 확인해야 색칠가능
+	 */
+	
+	public Wish selectWish(Connection conn, int userNo, String mvNo){
+		Wish wish = null;
+		
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		
+		try {
+			String sql = "select * from user_whishmv where user_no = ? and mv_no = ?";
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, userNo);
+			pstm.setString(2, mvNo);
+			rset = pstm.executeQuery();
+			
+			if(rset.next()) {
+				wish = new Wish();
+				wish.setMvNo(rset.getString("mv_no"));
+				
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(ErrorCode.SW01,e);
+		} finally {
+			jdt.close(rset, pstm);
+		}
+		return wish;
 	}
 	
 	

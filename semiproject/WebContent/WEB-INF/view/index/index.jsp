@@ -159,7 +159,7 @@
 				<address>TEL:031)111-1212</address>
 			</div>
 			<div class="bottom_right">
-				<a href="/aboutus/">ABOUT US</a><br>
+				<a href="/aboutus/aboutus.do">ABOUT US</a><br>
 				<a href="/고객페이지/"> 고객페이지</a><br>
 				<a href="/마이페이지/"> 마이페이지</a><br>
 				<a href="/내정보관리/"> 내정보관리</a><br>

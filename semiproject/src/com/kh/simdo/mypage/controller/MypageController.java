@@ -1,11 +1,9 @@
 package com.kh.simdo.mypage.controller;
 
 import java.io.IOException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.kh.simdo.comm.model.service.CommService;
-import com.kh.simdo.comm.model.vo.Comm;
-import com.kh.simdo.common.util.encoding.EncodingUtil;
+import com.kh.simdo.communication.model.service.CommunicationService;
+import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.mypage.model.service.UserReviewService;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
@@ -35,7 +32,7 @@ import com.kh.simdo.user.model.vo.User;
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserReviewService userReviewService = new UserReviewService();
-    CommService commService = new CommService();
+    CommunicationService communicationService = new CommunicationService();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -56,6 +53,12 @@ public class MypageController extends HttpServlet {
 			break;
 		case "mywish.do" : // 김백관 추가작업예정 찜목록
 			request.getRequestDispatcher("/WEB-INF/view/mypage/mywish.jsp").forward(request, response);
+			break;
+		case "mywishadd.do" : // 조아영 찜목록 DB에 넣기
+			myWishAdd(request,response);
+			break;
+		case "mywishdel.do" : // 조아영 찜목록 DB에 삭제
+			myWishDel(request,response);
 			break;
 		case "mywritelist.do" : //조민희
 			myWriteList(request, response);
@@ -107,10 +110,43 @@ public class MypageController extends HttpServlet {
 	
 	/**
 	 * @author 조아영
+	 */
+	private void myWishAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = (User) request.getSession().getAttribute("user");
+		Movie movie = new Movie();
+		movie.setMvNo(request.getParameter("mvno"));
+		movie.setPoster(request.getParameter("poster"));
+		
+		int res = userReviewService.insertWish(user.getUserNo(), movie);
+		if(res > 0) {
+			System.out.println("성공");
+			
+		} else {
+			System.out.println("실패");
+		}
+		
+	}
+	
+	/**
+	 * @author 조아영
+	 */
+	private void myWishDel(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = (User) request.getSession().getAttribute("user");
+		String mvNo = request.getParameter("mvno");
+		int res = userReviewService.deleteWish(user.getUserNo(), mvNo);
+		
+		if(res > 0) {
+			System.out.println("삭제성공");
+		} else {
+			System.out.println("삭제실패");
+		}
+	}
+	
+	/**
+	 * @author 조아영
 	 * 
 	 */
 	
-	//여기 movie는 아직 문의요청 더미가 없어서 테스트용으로 사용한 vo입니다. 더미 들어오면 수정예정.
 	 protected List parseJson(List res) {
 			List list = new ArrayList();
 			Map<String, Object> commandMap = new HashMap<String, Object>();
@@ -139,12 +175,12 @@ public class MypageController extends HttpServlet {
 			page = Integer.parseInt(text);
 		}
 		
-		int[] res = commService.selectPagingList(page);
+		int[] res = communicationService.selectPagingByQna(page);
 		request.setAttribute("start", res[0]);
 		request.setAttribute("end", res[1]);
 
 		
-		List<Map<String, Object>> pageRes = commService.selectQnaList(page, user.getUserNo());
+		List<Map<String, Object>> pageRes = communicationService.selectQnaList(page, user.getUserNo());
 		
 		qnaList = parseJson(pageRes);
 		request.setAttribute("res", qnaList);
@@ -163,9 +199,9 @@ public class MypageController extends HttpServlet {
 		String qnaNo = String.valueOf(request.getParameter("qstnno"));
 		int qstnNo = Integer.parseInt(qnaNo);
 		
-		Comm comm = commService.selectCommByQstnNo(qstnNo);
-		System.out.println(comm);
-		request.setAttribute("res", comm);
+		Communication communication = communicationService.selectQnaByQstnNo(qstnNo);
+		System.out.println(communication);
+		request.setAttribute("res", communication);
 		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnadetail.jsp").forward(request, response);
 	}
 

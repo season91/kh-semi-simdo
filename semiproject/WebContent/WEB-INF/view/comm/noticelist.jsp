@@ -2,20 +2,17 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/head.jsp" %>
 
-<html>
 <head>
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
 	<link rel="stylesheet" href="/resources/css/comm/comm.css">
-	
-
-
 </head>
 <body style="margin:0">
 
 	  <div class="header-wrapper">
      <header class="header-section">
-         <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%" alt="logo" src="/resources/image/logo.png"></a>
+       <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
+         		  OnClick="location.href ='/index.do'"></a>
          <c:choose>
             <c:when test="${empty sessionScope.user}">
                <%-- 비로그인 상태 --%>
@@ -35,45 +32,56 @@
          </c:choose>
       </header>
 
-      <nav class="navi">
-	      <div class="navi-wrapper">
-	      	<div class="nation-view">나라별</div>
-	        <div class="year-view">장르별</div>
-	        <div class="rank-view"><a>심도순</a></div>
-	        <div class="new-view"><a>평점순</a></div>
-	        <div class="search-view">
+    	<nav class="navi">
+			<div class="navi-wrapper">
+				<div class="nation-view" style="cursor:pointer;">나라별</div>
+				<div class="genre-view" style="cursor:pointer;">장르별</div>
+				<div class="score-view" OnClick="location.href ='/movie/socreview.do'" style="cursor:pointer;">평점순</div>
+				<div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
+				<form class="search-view" action="/movie/searchview.do">
 					<input type="search" class="input_navi-search" name="search">
-	        		<button class="btn_navi-search"><i class="fas fa-search"></i></button>
-	        
-		</div>
-		</div>
-      </nav>
+					<button class="btn_navi-search">
+						<i class="fas fa-search"></i>
+					</button>
+				</form>
+			</div>
+		</nav>
    </div>
    
    <div class="content">
     
-   <!--  게시물리스트 코드 --> 
-   <table class="table">
-   
-   <tr>
-   	<th>No</th>
-   	<th>제목</th>
-   	<th>작성자</th>
-   	<th>작성일</th>
-   	</tr>
-   	
-   	
-   	<c:forEach var="comm" items="${res}" varStatus="status">
-   	<tr>
-   		<td>${comm.qstn_no}</td>
-		<td>${comm.qstn_title}</td>
-		<td>${comm.user_nm}<td>
-		<td>${comm.qstn_reg_date}</td>
-   		
-   	</tr>
-   	</c:forEach>
-   	
-   </table>
+	   <table>
+			<tr>
+				<th>글번호</th>
+				<th>제목</th>
+				<th>작성일</th>
+			</tr>
+			<c:forEach var="notice" items="${res}" varStatus="status">
+				<%-- score 글번호 releaseDate 작성일자 mvTitle 글제목 --%>
+				<tr>
+					<td>${notice.noticeNo}</td>
+					<td style="cursor:pointer;" onclick="location.href='/comm/noticedetail.do?noticeno=${notice.noticeNo}'" >${notice.notice.ntTitle}</td>
+					<td>${notice.notice.regDate}</td>
+				</tr>
+			</c:forEach>
+			
+		</table>
+		<div>페이지번호 
+		<c:forEach var="i" begin="1" end="${requestScope.end}" step="1" varStatus="status">
+		<c:choose>
+			
+			<c:when test="${page !=status.count}">
+			<a href="/comm/noticelist.do?page=${i}"><c:out value="${i}"/></a>
+			</c:when>
+			<c:otherwise>
+			<a href="/comm/noticelist.do?page=${i}"><span style="color:rgb(000,153,255);"><c:out value="${i}"/></span></a>
+			</c:otherwise>
+			
+		</c:choose>
+		
+		</c:forEach>
+		</div>
+		
    </div>
    
    
@@ -90,7 +98,7 @@
 				<address>TEL:031)111-1212</address>
 			</div>
 			<div class="bottom_right">
-				<a href="/aboutus/">ABOUT US</a><br>
+				<a href="/aboutus/aboutus.do">ABOUT US</a><br>
 				<a href="/고객페이지/"> 고객페이지</a><br>
 				<a href="/마이페이지/"> 마이페이지</a><br>
 				<a href="/내정보관리/"> 내정보관리</a><br>
@@ -99,6 +107,7 @@
 	</footer>
 	
 	
+	<script type="text/javascript" src="${context}/resources/js/movie/movie.js"></script>
 </body>
 </html>
    
