@@ -20,6 +20,8 @@ import com.kh.simdo.movie.model.service.MovieService;
 import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.mypage.model.service.UserReviewService;
 import com.kh.simdo.mypage.model.vo.UserReview;
+import com.kh.simdo.mypage.model.vo.Wish;
+import com.kh.simdo.user.model.vo.User;
 /**
  * @author 조아영
  */
@@ -87,9 +89,13 @@ public class MovieController extends HttpServlet {
 		// 평점 출력
 		String scoreAvg = scoreAvg(parseJsonrev);
 		request.setAttribute("score", scoreAvg);
-		
 		List parseJsonfms = parseJson(fmsList);
 		request.setAttribute("fmsList", parseJsonfms);
+		
+		// 찜했다면 찜하트 색칠해주어야함
+		User user = (User) request.getSession().getAttribute("user");
+		Wish wish = userReviewService.selectWish(user.getUserNo(), mvNo);
+		request.setAttribute("wish", wish);
 		
 		String headfms = null;
 		if(parseJsonfms.size() > 0) {

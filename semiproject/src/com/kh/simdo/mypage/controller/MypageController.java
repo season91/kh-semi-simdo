@@ -115,14 +115,34 @@ public class MypageController extends HttpServlet {
 	 * @author 조아영
 	 */
 	private void myWishAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("추가 넘어온다");
+		User user = (User) request.getSession().getAttribute("user");
+		Movie movie = new Movie();
+		movie.setMvNo(request.getParameter("mvno"));
+		movie.setPoster(request.getParameter("poster"));
+		
+		int res = userReviewService.insertWish(user.getUserNo(), movie);
+		if(res > 0) {
+			System.out.println("성공");
+			
+		} else {
+			System.out.println("실패");
+		}
+		
 	}
 	
 	/**
 	 * @author 조아영
 	 */
 	private void myWishDel(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("삭제 넘어온다");
+		User user = (User) request.getSession().getAttribute("user");
+		String mvNo = request.getParameter("mvno");
+		int res = userReviewService.deleteWish(user.getUserNo(), mvNo);
+		
+		if(res > 0) {
+			System.out.println("삭제성공");
+		} else {
+			System.out.println("삭제실패");
+		}
 	}
 	
 	/**
