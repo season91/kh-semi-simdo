@@ -17,6 +17,7 @@ import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.mypage.model.dao.UserReviewDao;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
+import com.kh.simdo.mypage.model.vo.Wish;
 
 public class UserReviewService {
 	
@@ -271,5 +272,73 @@ public class UserReviewService {
 		return reviewList;
 	}
 	
+	/**
+	 * 
+	 * @Author :조아영
+	   @Date : 2021. 2. 8.
+	   @return
+	   @work : 영화상세내 찜누를시 찜목록추가
+	 */
+	public int insertWish(int userNo, Movie movie) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = userReviewDao.insertWish(conn, userNo, movie);
+			jdt.commit(conn);
+		}catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * 
+	 * @Author :조아영
+	   @Date : 2021. 2. 8.
+	   @return
+	   @work : 영화상세내 찜 다시 누를시 해제
+	 */
+	public int deleteWish(int userNo, String mvNo) {
+		
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = userReviewDao.deleteWish(conn, userNo, mvNo);
+			jdt.commit(conn);
+		}catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 8.
+	   @return
+	   @work :
+	 */
+	public Wish selectWish(int userNo, String mvNo) {
+		Wish wish = null;
+		Connection conn = jdt.getConnection();
+		try {
+			wish = userReviewDao.selectWish(conn, userNo, mvNo);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		
+		return wish;
+	}
 	
 }

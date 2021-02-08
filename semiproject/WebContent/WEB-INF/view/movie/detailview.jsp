@@ -77,15 +77,24 @@
 						<div class="mv_info_basic">기본 정보</div>
 						<%-- 이부분 해당 영화에 글을썻거나, 찜했으면 색깔 넣어서 표현해주어야 한다.--%>
 						
-						
 						<div class="mv_info_btn">
 							<button name="like" class="like">
-								<i class="fas fa-thumbs-up" id="btn_like"></i>
+								<i class="fas fa-thumbs-up" id="btn_like" style="color:black"></i>
 							</button>
+						<c:choose>
+							<c:when test="${empty wish}">
+								<button name="wish" class="wish">
+									<i class="fas fa-heart" id="btn_wish" style="color:black"></i>
+								</button>
+							</c:when>
+							<c:otherwise>
+								<button name="wish" class="wish">
+								<i class="fas fa-heart" id="btn_wish" style="color:red"></i>
+								</button>
+							</c:otherwise>
+						</c:choose>
 							
-							<button name="wish" class="wish">
-								<i class="fas fa-heart" id="btn_wish"></i>
-							</button>
+							
 							<c:choose>
 								<c:when test="${empty fmsList}">
 									<button name="write-is">
@@ -100,7 +109,9 @@
 							</c:choose>
 						</div>
 					</div>
+					
 					<div class="mv_info_basic_content">
+					<input type="hidden" name="mvno" value="${res.mvNo}" class="mvno">
 						<p>${res.mvTitle}</p>
 						<p>감독 : ${res.director}</p>
 						<p>장르 : ${res.genre}</p>
