@@ -1,4 +1,4 @@
-package com.kh.simdo.wishmv.model.vo;
+package com.kh.simdo.mypage.model.vo;
 
 import java.sql.Date;
 

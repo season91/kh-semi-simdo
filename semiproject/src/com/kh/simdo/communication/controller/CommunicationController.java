@@ -1,4 +1,4 @@
-package com.kh.simdo.comm.controller;
+package com.kh.simdo.communication.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.kh.simdo.comm.model.service.CommService;
-import com.kh.simdo.comm.model.vo.Comm;
+import com.kh.simdo.communication.model.service.CommunicationService;
+import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.user.model.vo.User;
 
@@ -21,14 +21,14 @@ import com.kh.simdo.user.model.vo.User;
  * @author 김백관
  */
 @WebServlet("/comm/*")
-public class CommController extends HttpServlet {
+public class CommunicationController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	CommService commService = new CommService();
+	CommunicationService communicationService = new CommunicationService();
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public CommController() {
+    public CommunicationController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -76,14 +76,14 @@ public class CommController extends HttpServlet {
 		String qstncontent = request.getParameter("qstncontent");
 		String qstntype = request.getParameter("qstntype");
 		
-		Comm comm = new Comm();
-		comm.setQstnTitle(qstntitle);
-		comm.setUserNm(user.getUserNm());
+		Communication communication = new Communication();
+		communication.setQstnTitle(qstntitle);
+		communication.setUserNm(user.getUserNm());
 		
-		comm.setQstnContent(qstncontent);
-		comm.setQstnType(qstntype);
+		communication.setQstnContent(qstncontent);
+		communication.setQstnType(qstntype);
 		
-		int res = commService.insertComm(comm);
+		int res = communicationService.insertComm(communication);
 		if(res > 0) {
 			request
 			.getRequestDispatcher("/WEB-INF/view/comm/commlist.jsp")

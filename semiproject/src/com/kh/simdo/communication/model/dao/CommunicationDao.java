@@ -1,4 +1,4 @@
-package com.kh.simdo.comm.model.dao;
+package com.kh.simdo.communication.model.dao;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,22 +9,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.kh.simdo.comm.model.vo.Comm;
 import com.kh.simdo.common.code.ErrorCode;
 import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.common.util.file.FileVO;
+import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.movie.model.vo.Movie;
 /**
  * 
  * @author 김백관
  *
  */
-public class CommDao {
+public class CommunicationDao {
 	
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 	//게시판 테이블에 게시글 저장
-	public int insertComm(Connection conn, Comm comm) {
+	public int insertComm(Connection conn, Communication communication) {
 		int res = 0;
 		
 		String sql = "insert into COMM (QSTN_NO, USER_NM,QSTN_TITLE, QSTN_Content,QSTN_TYPE) values(sc_qstn_No.nextval, ?,?, ?,?)";
@@ -32,10 +32,10 @@ public class CommDao {
 		PreparedStatement pstm = null;
 		try {
 			pstm = conn.prepareStatement(sql);
-			pstm.setString(1, comm.getUserNm());
-			pstm.setString(2, comm.getQstnTitle());
-			pstm.setString(3, comm.getQstnContent());
-			pstm.setString(4, comm.getQstnType());
+			pstm.setString(1, communication.getUserNm());
+			pstm.setString(2, communication.getQstnTitle());
+			pstm.setString(3, communication.getQstnContent());
+			pstm.setString(4, communication.getQstnType());
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(ErrorCode.IB01, e);
@@ -169,7 +169,7 @@ public class CommDao {
 		
 		// 주어진조건에 맞는 리스트 보기
 		public List<Map<String, Object>>  selectQnaList(Connection conn, int page, int userNo) {
-			Comm comm = null;
+			Communication communication = null;
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
 			List<Map<String, Object>> res = new ArrayList();
@@ -190,14 +190,14 @@ public class CommDao {
 				
 				while(rset.next()) {
 					Map<String, Object> commandMap = new HashMap<String, Object>();
-					comm = new Comm();
+					communication = new Communication();
 					String qnaNo = String.valueOf(rset.getInt("QSTN_NO"));
 					
-					comm.setQstnTitle(rset.getString("QSTN_TITLE"));
-					comm.setQstnRegDate(rset.getDate("QSTN_REG_DATE"));
+					communication.setQstnTitle(rset.getString("QSTN_TITLE"));
+					communication.setQstnRegDate(rset.getDate("QSTN_REG_DATE"));
 					
 					commandMap.put("qnaNo", qnaNo);
-					commandMap.put("comm", comm);
+					commandMap.put("comm", communication);
 					res.add(commandMap);
 					
 				}
@@ -217,8 +217,8 @@ public class CommDao {
 		 * @author 조아영
 		 */
 		
-		public Comm selectCommByQstnNo(Connection conn, int qstnNo) {
-			Comm comm = null;
+		public Communication selectCommByQstnNo(Connection conn, int qstnNo) {
+			Communication communication = null;
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
 			String sql = "select * "
@@ -228,20 +228,20 @@ public class CommDao {
 				pstm.setInt(1, qstnNo);
 				rset = pstm.executeQuery();
 				if(rset.next()) {
-					comm = new Comm();
-					comm.setQstnNo(rset.getInt("qstn_no"));
-					comm.setUserNm(rset.getString("user_nm"));
-					comm.setQstnRegDate(rset.getDate("qstn_reg_date"));
-					comm.setQstnTitle(rset.getString("qstn_title"));
-					comm.setQstnContent(rset.getString("qstn_content"));
-					comm.setQstnComent(rset.getString("qstn_coment"));
+					communication = new Communication();
+					communication.setQstnNo(rset.getInt("qstn_no"));
+					communication.setUserNm(rset.getString("user_nm"));
+					communication.setQstnRegDate(rset.getDate("qstn_reg_date"));
+					communication.setQstnTitle(rset.getString("qstn_title"));
+					communication.setQstnContent(rset.getString("qstn_content"));
+					communication.setQstnComent(rset.getString("qstn_coment"));
 				}
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.SB01, e);
 			}finally {
 				jdt.close(rset, pstm);
 			}
-			return comm;
+			return communication;
 		}
 }
 		

@@ -16,9 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.kh.simdo.comm.model.service.CommService;
-import com.kh.simdo.comm.model.vo.Comm;
 import com.kh.simdo.common.util.encoding.EncodingUtil;
+import com.kh.simdo.communication.model.service.CommunicationService;
+import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.mypage.model.service.UserReviewService;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
@@ -35,7 +35,7 @@ import com.kh.simdo.user.model.vo.User;
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserReviewService userReviewService = new UserReviewService();
-    CommService commService = new CommService();
+    CommunicationService communicationService = new CommunicationService();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -159,12 +159,12 @@ public class MypageController extends HttpServlet {
 			page = Integer.parseInt(text);
 		}
 		
-		int[] res = commService.selectPagingList(page);
+		int[] res = communicationService.selectPagingList(page);
 		request.setAttribute("start", res[0]);
 		request.setAttribute("end", res[1]);
 
 		
-		List<Map<String, Object>> pageRes = commService.selectQnaList(page, user.getUserNo());
+		List<Map<String, Object>> pageRes = communicationService.selectQnaList(page, user.getUserNo());
 		
 		qnaList = parseJson(pageRes);
 		request.setAttribute("res", qnaList);
@@ -183,9 +183,9 @@ public class MypageController extends HttpServlet {
 		String qnaNo = String.valueOf(request.getParameter("qstnno"));
 		int qstnNo = Integer.parseInt(qnaNo);
 		
-		Comm comm = commService.selectCommByQstnNo(qstnNo);
-		System.out.println(comm);
-		request.setAttribute("res", comm);
+		Communication communication = communicationService.selectCommByQstnNo(qstnNo);
+		System.out.println(communication);
+		request.setAttribute("res", communication);
 		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnadetail.jsp").forward(request, response);
 	}
 

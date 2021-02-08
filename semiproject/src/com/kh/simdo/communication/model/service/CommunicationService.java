@@ -1,4 +1,4 @@
-package com.kh.simdo.comm.model.service;
+package com.kh.simdo.communication.model.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -8,26 +8,26 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.kh.simdo.comm.model.dao.CommDao;
-import com.kh.simdo.comm.model.vo.Comm;
 import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.exception.ToAlertException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.common.util.file.FileUtil;
 import com.kh.simdo.common.util.file.FileVO;
+import com.kh.simdo.communication.model.dao.CommunicationDao;
+import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.movie.model.vo.Movie;
 
-public class CommService {
+public class CommunicationService {
 
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
-	CommDao commDao = new CommDao();
+	CommunicationDao communicationDao = new CommunicationDao();
 
-	public int insertComm(Comm comm) {
+	public int insertComm(Communication communication) {
 		int req = 0;
 		Connection conn = jdt.getConnection();
 		//게시글 저장
 		try {
-			req=commDao.insertComm(conn, comm);
+			req=communicationDao.insertComm(conn, communication);
 			jdt.commit(conn);
 			
 		}catch(DataAccessException e) {
@@ -49,7 +49,7 @@ public class CommService {
 			Connection conn = jdt.getConnection();
 			int[] res = new int[2];
 			try {
-				res = commDao.selectPaging(conn, page);
+				res = communicationDao.selectPaging(conn, page);
 			} finally {
 				jdt.close(conn);
 			}
@@ -72,7 +72,7 @@ public class CommService {
 		Connection conn = jdt.getConnection();
 		List<Map<String, Object>> res = new ArrayList<Map<String, Object>>();
 		try {
-			res = commDao.selectQnaList(conn, page, userNo);
+			res = communicationDao.selectQnaList(conn, page, userNo);
 		} finally {
 			jdt.close(conn);
 		}
@@ -85,11 +85,11 @@ public class CommService {
 	 * @author 조아영
 	 */
 		
-		public Comm selectCommByQstnNo(int qstnNo) {
+		public Communication selectCommByQstnNo(int qstnNo) {
 			Connection conn = jdt.getConnection();
-			Comm res = null;
+			Communication res = null;
 			try {
-				res = commDao.selectCommByQstnNo(conn, qstnNo);
+				res = communicationDao.selectCommByQstnNo(conn, qstnNo);
 			} finally {
 				jdt.close(conn);
 			}

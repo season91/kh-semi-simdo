@@ -9,10 +9,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.kh.simdo.comm.model.vo.Comm;
 import com.kh.simdo.common.code.ErrorCode;
 import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
+import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.notice.model.vo.Notice;
 
 public class NoticeDao {

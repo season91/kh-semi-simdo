@@ -6,10 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-import com.kh.simdo.comm.model.vo.Comm;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.common.util.file.FileVO;
+import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.notice.model.dao.NoticeDao;
 import com.kh.simdo.notice.model.vo.Notice;
