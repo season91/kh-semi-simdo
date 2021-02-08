@@ -51,8 +51,15 @@
    </div>
 
 	<div class="content">
-	<h2 class="tit">QA작성</h2>
-	<div class="desc_board">
+	<div class="menu">
+   	<br>
+   	<a style="font-weight: bold; font-size:big">커뮤니케이션</a><br>
+   	<a href="/comm/noticelist.do">공지게시판</a><br>
+   	<a href="/comm/write.do">QnA</a>
+   	</div>
+   	<div class="content2">
+	<p class="tit">QA작성</p>
+	
 		
 			<form action="${context}/comm/upload.do" method="post">
 			<select name="qstntype">

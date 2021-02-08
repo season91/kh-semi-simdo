@@ -5,7 +5,7 @@
 <head>
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
-	<link rel="stylesheet" href="/resources/css/comm/comm.css">
+	<link rel="stylesheet" href="/resources/css/comm/noticelist.css">
 </head>
 <body style="margin:0">
 
@@ -49,7 +49,14 @@
    </div>
    
    <div class="content">
-    
+   	<div class="menu">
+   	<br>
+   	<a style="font-weight: bold; font-size:big">커뮤니케이션</a><br>
+   	<a href="/comm/noticelist.do">공지게시판</a><br>
+   	<a href="/comm/write.do">QnA</a>
+   	</div>
+   	
+    <div class="content2">
 	   <table>
 			<tr>
 				<th>글번호</th>
@@ -83,7 +90,7 @@
 		</div>
 		
    </div>
-   
+   </div>
    
    
 	<footer class="bottom">
