@@ -5,7 +5,7 @@
 <head>
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
-	<link rel="stylesheet" href="/resources/css/comm/comm.css">
+	<link rel="stylesheet" href="/resources/css/comm/noticedetail.css">
 	
 
 
@@ -50,12 +50,22 @@
 			</div>
 		</nav>
    </div>
-   <div class="content">   
+   <div class="content">  
+   <div class="menu">
+   	<br>
+   	<a style="font-weight: bold; font-size:big">커뮤니케이션</a><br>
+   	<a href="/comm/noticelist.do">공지게시판</a><br>
+   	<a href="/comm/write.do">QnA</a>
+   	</div>
+   	
+   	<div class="content2"> 
     <h2 class="tit">공지사항</h2>
+    <hr class="a">
     <div class="desc_board">
       <h4 class="tit_board">제목 : ${res.ntTitle }</h4>
+      <hr class="b">
       <div class="info" >
-          <span>게시글 번호 : ${res.noticeNo}</span>
+          <span>게시글 번호 : ${res.noticeNo} </span>
           <span>등록일 :${res.regDate} </span>
       </div>
      <%--  <div class="info">
@@ -67,8 +77,10 @@
       		>${file.originFileName}</button><br>
       	</c:forEach>
       </div> --%>
+      <hr class="c">
       <div class="text">
-          ${res.ntContent}
+      <br>
+          ${res.ntContent} 
       </div>
       <div class="btn_section btn_list">
           <button style="color:white" onclick="submitData('list')"><span>목록</span></button>

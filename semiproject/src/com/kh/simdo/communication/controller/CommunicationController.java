@@ -47,7 +47,7 @@ public class CommunicationController extends HttpServlet {
 			commWrite(request, response);
 			break;
 		
-		case "upload.do" :  //파일업로드 김백관 
+		case "upload.do" :  //QnA 게시글업로드 김백관 
 			uploadComm(request,response);
 			break;
 		case "download.do" : download(request,response); break; //김백관

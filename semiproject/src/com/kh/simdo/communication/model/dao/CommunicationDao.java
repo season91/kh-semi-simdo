@@ -28,7 +28,7 @@ public class CommunicationDao {
 	public int insertComm(Connection conn, Communication communication) {
 		int res = 0;
 		
-		String sql = "insert into COMM (QSTN_NO, USER_NM,QSTN_TITLE, QSTN_Content,QSTN_TYPE) values(sc_qstn_No.nextval, ?,?, ?,?)";
+		String sql = "insert into COMM (QSTN_NO, USER_NM, QSTN_TITLE, QSTN_CONTENT,QSTN_TYPE) values(sc_qstn_No.nextval, ?,?, ?,?)";
 		
 		PreparedStatement pstm = null;
 		try {

@@ -240,7 +240,7 @@ th, td {
 	margin-top:15vh;
 	background-color:#969696;
 	height:70vh;
-	width:110px;
+	width:100px;
 	float:left;
 } 
 .content2{
@@ -256,4 +256,7 @@ th, td {
 .content{
 	display:flex;
 	background-color:#DADAD9;
+}
+.text {
+	background-color:#969696;
 }
