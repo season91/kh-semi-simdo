@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.exception.ToAlertException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
+import com.kh.simdo.common.util.file.FileUtil;
+import com.kh.simdo.common.util.file.FileVO;
 import com.kh.simdo.communication.model.dao.CommunicationDao;
 import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.communication.model.vo.Notice;
@@ -17,12 +21,33 @@ public class CommunicationService {
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 	CommunicationDao communicationDao = new CommunicationDao();
 
-	public int insertComm(Communication communication) {
-		int req = 0;
+	
+	/**
+	 * @author 김백관
+	 * 게시글 정보/파일 업로드
+	 */
+	
+	public void insertComm(String userNm, HttpServletRequest request) {
 		Connection conn = jdt.getConnection();
 		//게시글 저장
+		Map<String,List> commData = new FileUtil().fileUpload(request);
+		
+		Communication communication = new Communication();
+		
+		communication.setUserNm(userNm);
+		
+		communication.setQstnTitle(commData.get("qstntitle").get(0).toString());
+		communication.setQstnContent(commData.get("qstncontent").get(0).toString());
+		communication.setQstnType(commData.get("qstntype").get(0).toString());
+		System.out.println("서비스까지 온다.");
+
+		
 		try {
-			req=communicationDao.insertComm(conn, communication);
+			communicationDao.insertComm(conn, communication);
+			for(FileVO fileData : (List<FileVO>)commData.get("fileData")) {
+				communicationDao.insertFile(conn, fileData);
+			}
+
 			jdt.commit(conn);
 			
 		}catch(DataAccessException e) {
@@ -31,7 +56,7 @@ public class CommunicationService {
 		}finally {
 			jdt.close(conn);
 		}
-		return req;
+		
 	}
 	
 

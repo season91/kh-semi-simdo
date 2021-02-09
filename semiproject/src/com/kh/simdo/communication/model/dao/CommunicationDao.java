@@ -19,7 +19,7 @@ import com.kh.simdo.movie.model.vo.Movie;
 /**
  * 
  * @author 김백관
- *
+ * 게시글 저장
  */
 public class CommunicationDao {
 	
@@ -47,37 +47,35 @@ public class CommunicationDao {
 		return res;
 	}
 	
+
+	/**
+	 * @author 김백관
+	 * 게시글저장/파일업로드
+	 */
 	
+	//파일테이블에 파일 정보 저장
 		public int insertFile(Connection conn, FileVO fileData) {
 			int res = 0;
-			String qstn_no = "";
-			//1. 새로 등록되는 게시글의 파일 정보 저장
-			//	typeIdx값이 시퀀스 currval
-			if(fileData.getTypeIdx() == null) {
-				qstn_no = "'b'||sc_qstn_no.currval";
-			//2. 수정할 때 사용자가 파일을 추가 등록해서 파일 정보 저장
-			//	수정할 게시글의 bdIdx값
-			}else {
-				qstn_no = "'" + fileData.getTypeIdx() + "'" ;
-			}
-			
+			System.out.println("이놈아");
 			String sql = "insert into tb_file "
-					+ "(f_idx,type_idx,origin_file_name,rename_file_name,save_path) "
-					+ "values(sc_file_idx.nextval,"+qstn_no+",?,?,?)";
+					+ "(f_idx,origin_file_name,rename_file_name,save_path) "
+					+ "values(sc_file_idx.nextval,?,?,?)";
 			
 			PreparedStatement pstm = null;
 			try {
 				pstm = conn.prepareStatement(sql);
+				
 				pstm.setString(1, fileData.getOriginFileName());
 				pstm.setString(2, fileData.getRenameFileName());
 				pstm.setString(3, fileData.getSavePath());
 				res = pstm.executeUpdate();
+				System.out.println("트라이안"+res);
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.IF01, e);
 			}finally {
 				jdt.close(pstm);
 			}
-			
+			System.out.println(res);
 			return res;
 		}
 		
