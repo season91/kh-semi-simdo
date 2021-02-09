@@ -93,9 +93,8 @@
 							</c:otherwise>
 						</c:choose>
 							
-							
-							<c:choose>
-								<c:when test="${empty fmsList}">
+						<c:choose>
+								<c:when test="${empty reviewList}">
 									<button name="write-is">
 									<i class="fas fa-journal-whills" id="btn_write-is"></i>
 									</button>

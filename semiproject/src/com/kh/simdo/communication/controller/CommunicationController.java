@@ -156,15 +156,13 @@ public class CommunicationController extends HttpServlet {
 	private void uploadComm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("여기로 오니?");
 		HttpSession session=request.getSession();
-		User user= (User)session.getAttribute("user");
+		User user= (User) session.getAttribute("user");
 		
 		
 		communicationService.insertComm(user.getUserNm(),request);
 		
 		
-		request.setAttribute("alertMsg", "QnA작성이 완료되었습니다..");
-		request.getRequestDispatcher("/WEB-INF/view/index/index.jsp")
-		.forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/index/index.jsp").forward(request, response);
 		}
 	
 

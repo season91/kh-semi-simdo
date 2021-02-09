@@ -19,7 +19,7 @@ import com.kh.simdo.communication.model.service.CommunicationService;
 import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.movie.model.service.MovieService;
 import com.kh.simdo.movie.model.vo.Movie;
-import com.kh.simdo.mypage.model.service.UserReviewService;
+import com.kh.simdo.mypage.model.service.MypageService;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
 import com.kh.simdo.user.model.vo.User;
@@ -33,7 +33,7 @@ import com.kh.simdo.user.model.vo.User;
 @WebServlet("/mypage/*")
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	UserReviewService userReviewService = new UserReviewService();
+	MypageService mypageService = new MypageService();
     CommunicationService communicationService = new CommunicationService();
     MovieService movieService = new MovieService();
     /**
@@ -129,7 +129,7 @@ public class MypageController extends HttpServlet {
 		movie.setMvNo(request.getParameter("mvno"));
 		movie.setPoster(request.getParameter("poster"));
 		
-		int res = userReviewService.insertWish(user.getUserNo(), movie);
+		int res = mypageService.insertWish(user.getUserNo(), movie);
 		if(res > 0) {
 			System.out.println("성공");
 			
@@ -145,7 +145,7 @@ public class MypageController extends HttpServlet {
 	private void myWishDel(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
 		String mvNo = request.getParameter("mvno");
-		int res = userReviewService.deleteWish(user.getUserNo(), mvNo);
+		int res = mypageService.deleteWish(user.getUserNo(), mvNo);
 		
 		if(res > 0) {
 			System.out.println("삭제성공");
@@ -186,7 +186,7 @@ public class MypageController extends HttpServlet {
 		} else {
 			page = Integer.parseInt(text);
 		}
-		
+		// dao 쿼리기준 페이징번호 가져오는거 올말고 유저기준으로 수정하기.
 		int[] res = communicationService.selectPagingByQna(page);
 		request.setAttribute("start", res[0]);
 		request.setAttribute("end", res[1]);
@@ -227,8 +227,8 @@ public class MypageController extends HttpServlet {
 	
 	private void myWriteList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
-		List<UserReview> reviewRes = userReviewService.selectReviewByUserNo(user.getUserNo());
-		List<UserFmsline> fmslineRes = userReviewService.selectFmslineByUserNo(user.getUserNo());
+		List<UserReview> reviewRes = mypageService.selectReviewByUserNo(user.getUserNo());
+		List<UserFmsline> fmslineRes = mypageService.selectFmslineByUserNo(user.getUserNo());
 		
 		Map<String, Object> reviewCommandMap = new HashMap<>();
 		Map<String, Object> fmslineCommandMap = new HashMap<>();
@@ -257,7 +257,7 @@ public class MypageController extends HttpServlet {
 	private void reviewDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int reviewNo = Integer.parseInt(request.getParameter("reviewNo"));
 		
-		int res = userReviewService.deleteReview(reviewNo);
+		int res = mypageService.deleteReview(reviewNo);
 		if(res > 0) {
 			response.getWriter().print("success");
 		}else {
@@ -268,7 +268,7 @@ public class MypageController extends HttpServlet {
 	private void fmslineDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int fmslineNo = Integer.parseInt(request.getParameter("fmslineNo"));
 		
-		int res = userReviewService.deleteFmsline(fmslineNo);
+		int res = mypageService.deleteFmsline(fmslineNo);
 		if(res > 0) {
 			response.getWriter().print("success");
 		}else {
@@ -289,7 +289,7 @@ public class MypageController extends HttpServlet {
 		String text = (String) parsedData.get("text");
 		String lan = (String) parsedData.get("lan");
 		
-		String res = userReviewService.papagoAPI(text, lan);
+		String res = mypageService.papagoAPI(text, lan);
 		
 		if(res != null) {
 			response.getWriter().print(res);
@@ -311,7 +311,7 @@ public class MypageController extends HttpServlet {
 		System.out.println("year" + year);
 		System.out.println("month" + month);
 		
-		List<UserReview> reviewRes = userReviewService.takeMonthlyReview(user.getUserNo(), date);
+		List<UserReview> reviewRes = mypageService.takeMonthlyReview(user.getUserNo(), date);
 		
 		
 		
@@ -340,7 +340,7 @@ public class MypageController extends HttpServlet {
 		String day = request.getParameter("day");
 		
 		String watchDate = year + "/" + month + "/" + day;
-		List<UserReview> reviewRes = userReviewService.dailyReviewByUserNo(user.getUserNo(), watchDate);
+		List<UserReview> reviewRes = mypageService.dailyReviewByUserNo(user.getUserNo(), watchDate);
 		
 		
 		Map<String, Object> reviewCommandMap = new HashMap<>();
@@ -399,7 +399,7 @@ public class MypageController extends HttpServlet {
 		
 		
 		System.out.println(userReview.toString());
-		int res = userReviewService.insertReview(userReview);
+		int res = mypageService.insertReview(userReview);
 		if(res > 0) {
 			request.setAttribute("alertMsg", "영화 후기가 등록되었습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
@@ -443,7 +443,7 @@ public class MypageController extends HttpServlet {
 		
 		
 		
-		int res = userReviewService.insertLine(userFmsline);
+		int res = mypageService.insertLine(userFmsline);
 		if(res > 0) {
 			request.getSession().removeAttribute("reviewNo");
 			request.setAttribute("alertMsg", "영화 후기 등록이 완료되었습니다.");
@@ -470,7 +470,7 @@ public class MypageController extends HttpServlet {
 	 */
 	private void myReviewUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int reviewNo = (int) Double.parseDouble(request.getParameter("reviewNo"));
-		Map<String, Object> reviewContent = userReviewService.selectReviewByReviewNo(reviewNo);
+		Map<String, Object> reviewContent = mypageService.selectReviewByReviewNo(reviewNo);
 		UserReview userReview = (UserReview) reviewContent.get("userReview");
 		String poster = (String) reviewContent.get("poster");
 		
@@ -508,7 +508,7 @@ public class MypageController extends HttpServlet {
 		userReview.setRvContent(rvContent);
 		userReview.setReviewNo(reviewNo);
 		
-		int res = userReviewService.updateReview(userReview);
+		int res = mypageService.updateReview(userReview);
 		if(res > 0) {
 			request.getSession().removeAttribute("reviewNo");
 			request.setAttribute("alertMsg", "영화 후기 수정이 완료되었습니다.");
@@ -535,7 +535,7 @@ public class MypageController extends HttpServlet {
 	 */
 	private void myLineUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int fmslineNo = (int) Double.parseDouble(request.getParameter("fmslineNo"));
-		Map<String, Object> fmslineContent = userReviewService.selectFmslineByFmslineNo(fmslineNo);
+		Map<String, Object> fmslineContent = mypageService.selectFmslineByFmslineNo(fmslineNo);
 		UserFmsline userFmsline = (UserFmsline) fmslineContent.get("userFmsline");
 		String poster = (String) fmslineContent.get("poster");
 		
@@ -562,7 +562,7 @@ public class MypageController extends HttpServlet {
 		userFmsline.setFmlContent(fmlContent);
 		userFmsline.setFmslineNo(fmslineNo);
 		
-		int res = userReviewService.updateFmsline(userFmsline);
+		int res = mypageService.updateFmsline(userFmsline);
 		if(res > 0) {
 			request.getSession().removeAttribute("fmslineNo");
 			request.setAttribute("alertMsg", "나만의 명대사 수정이 완료되었습니다.");

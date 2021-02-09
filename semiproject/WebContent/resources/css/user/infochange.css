@@ -77,7 +77,9 @@ a{
 	text-align: center;
 	font-weight: bold;
 }
-
+.navi-wrapper>div:hover{
+	font-size: 2vw;
+}
 .navi-menu{
 	cursor: pointer;
 }
