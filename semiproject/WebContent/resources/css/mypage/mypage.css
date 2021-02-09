@@ -1,0 +1,157 @@
+@charset "UTF-8";
+
+/* header */
+
+.header-wrapper{
+   display: flex;
+   flex-direction: column;
+   position: fixed;
+   width: 100%;
+   background-color: #DADAD9;
+   display: block;
+   z-index:999;
+   top:0%; /**/
+}
+
+.header-section{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   top: 0%;
+   width: 100%;
+   height: 10vh;
+}
+
+
+.top-logo-text{
+   margin-left: 5%;
+   font-size: 5vh;
+   font-weight: bold;
+   color: #696765;
+}
+
+.top-right{
+   display: flex;
+   justify-content: space-around;
+   margin-right: 5%;
+   color: #696765;
+}
+
+.navi{
+	position: absolute;
+	top: 10vh;
+	background-color: #959493;
+	color: #DADAD9;
+	height: 5vh;
+	width: 100%;
+}
+
+
+/* 각메뉴들을 감싼 wrap 정렬지정 */
+.navi-wrapper{
+	height:100%;
+	display: flex;
+	justify-content: space-evenly;
+
+}
+
+/* 각메뉴의 정렬 지정*/
+.navi-wrapper>div{
+	display: flex;
+	align-items:center;
+	justify-content:center;
+	height:100%;
+	width: 200px;
+	text-align: center;
+	font-weight: bold;
+	transition-duration:0.2s;
+}
+
+.navi-wrapper>div:hover{
+	font-size: 2vw;
+}
+
+.navi-menu{
+	cursor: pointer;
+}
+
+/* section */
+
+	.calendar-wrap{
+	    top: 20vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+	}
+
+	#calendar{
+		   border: 1px solid #212529;
+		border-collapse: collapse;
+		
+	}
+
+	
+	#calendar th{
+		width: 80px;
+		border: 1px solid #212529;
+		font-family: 'Noto Sans KR', sans-serif;
+		text-align:center;
+	}
+	
+	#calendar td{
+		width: 80px;
+		height: 80px;
+		border: 1px solid #212529;
+		text-align: left;
+		vertical-align: top;
+		position: relative;
+	}
+	
+	a{
+		text-decoration : none;
+	}
+	
+	.clist>p{
+		font-size: 5px;
+		margin: 1px;
+		background-color: pink;
+	}
+
+/* footer */
+
+.bottom{
+   height:15vh;
+   background-color: #DADAD9;
+   color: #696765;
+   bottom: 0;
+   position: absolute;
+   width: 100%;
+}
+
+.bottom_main{
+   font-weight: bold;
+   height: 2vh;
+   padding-left: 1%;
+   padding-top: 1%;
+   
+}
+
+.bottom_left{
+   padding-left: 1%;
+}
+
+.bottom_content{
+   display: flex;
+   justify-content: space-between;
+}
+
+.bottom_right{
+   padding-right: 1%;
+}
+
+.content{
+	margin-top:15vh;
+	background-color:#DADAD9;
+	
+}
+	

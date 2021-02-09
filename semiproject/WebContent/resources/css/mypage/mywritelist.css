@@ -1,0 +1,245 @@
+@charset "UTF-8";
+body{
+	background-color: #DADAD9;
+	color: #696765;
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
+input{
+	border: 0 none;
+}
+
+a{
+	cursor: pointer;
+}
+
+/* header */
+
+.header-wrapper{
+   display: flex;
+   flex-direction: column;
+   position: fixed;
+   width: 100%;
+   background-color: #DADAD9;
+   display: block;
+   z-index:999;
+   top:0%; /**/
+}
+
+.header-section{
+   display: flex;
+   align-items: center;
+   justify-content: space-between;
+   top: 0%;
+   width: 100%;
+   height: 10vh;
+}
+
+
+.top-logo-text{
+   margin-left: 5%;
+   font-size: 5vh;
+   font-weight: bold;
+   color: #696765;
+}
+
+.top-right{
+   display: flex;
+   justify-content: space-around;
+   margin-right: 5%;
+   color: #696765;
+}
+
+.navi{
+	position: absolute;
+	top: 10vh;
+	background-color: #959493;
+	color: #DADAD9;
+	height: 5vh;
+	width: 100%;
+}
+
+/* 각메뉴들을 감싼 wrap 정렬지정 */
+.navi-wrapper{
+	height:100%;
+	display: flex;
+	justify-content: space-evenly;
+
+}
+
+/* 각메뉴의 정렬 지정*/
+.navi-wrapper>div{
+	display: flex;
+	align-items:center;
+	justify-content:center;
+	height:100%;
+	width: 200px;
+	text-align: center;
+	font-weight: bold;
+	transition-duration:0.2s;
+}
+
+.navi-menu{
+	cursor: pointer;
+}
+.navi-wrapper>div:hover{
+	font-size: 2vw;
+}
+/* section */
+
+.content{
+	display: flex;
+	justify-content: space-around;
+	width: 100%;
+	position: absolute;
+	top: 17vh;
+}
+
+.content-footer-wrapper{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	align-items: center;
+}
+
+.content-wrapper{
+	display: flex;
+	justify-content: space-between;
+	width: 80%;
+	min-height: 68vh;
+}
+
+.content-left-wrapper{
+	width: 40%;
+}
+
+.left-top-wrapper{
+	display: flex;
+	justify-content: space-between;
+	margin-top: 3%;
+	margin-bottom: 3%;
+}
+
+.btn_write{
+	background-color: #696765;
+	color: white;
+}
+
+.reviewBox{
+	background-color: white;
+	padding: 3%;
+	margin-bottom: 5%;
+}
+
+.reviewBox-top-wrapper{
+	display: flex;
+	justify-content: space-between;
+	padding-bottom: 1%;
+	border-bottom: 1px solid;
+}
+
+.mvPoster{
+	width: 66px;
+	height: 96px;
+}
+
+.reviewBox-mvInfo{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+	text-align: end;
+}
+
+.mvTitle{
+	font-weight: bold;
+}
+
+.reviewBox-content{
+	padding: 3%;
+}
+
+.reviewBox-bottom-wrapper{
+	text-align: end;
+}
+
+.revise-content{
+	margin-right: 2%;
+}
+
+.content-right-wrapper{
+	width: 40%;
+}
+
+.right-top-wrapper{
+	display: flex;
+	justify-content: space-between;
+	margin-top: 3%;
+	margin-bottom: 3%;
+}
+
+.fvlineBox{
+	background-color: white;
+	padding: 3%;
+	margin-bottom: 5%;
+}
+
+.fvlineBox-top-wrapper{
+	display: flex;
+	justify-content: space-between;
+	padding-bottom: 1%;
+	border-bottom: 1px solid;
+}
+
+.fvlineBox-mvInfo{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.fvlineBox-content{
+	padding: 3%;
+}
+
+.fvlineBox-bottom-wrapper{
+	text-align: end;
+}
+
+.choose-lan{
+	margin-left: 4%;
+}
+
+.btn_papago{
+	background-color: #DADAD9;
+	color: #696765;
+	margin-left: 2%;
+}
+
+/* footer */
+
+.bottom{
+   height:15vh;
+   background-color: #DADAD9;
+   color: #696765;
+   width: 100%;
+}
+
+.bottom_main{
+   font-weight: bold;
+   height: 2vh;
+   padding-left: 1%;
+   padding-top: 1%;
+   
+}
+
+.bottom_left{
+   padding-left: 1%;
+}
+
+.bottom_content{
+   display: flex;
+   justify-content: space-between;
+}
+
+.bottom_right{
+   padding-right: 1%;
+}

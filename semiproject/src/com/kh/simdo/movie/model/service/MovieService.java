@@ -17,6 +17,7 @@ import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.common.util.http.HttpUtils;
 import com.kh.simdo.movie.model.dao.MovieDao;
 import com.kh.simdo.movie.model.vo.Movie;
+import com.kh.simdo.mypage.model.vo.UserReview;
 /**
  * 
  * @author 조아영
@@ -27,13 +28,45 @@ public class MovieService {
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 	MovieDao movieDao = new MovieDao();
 	
+	// [3] 영화 상세정보 관련 메서드
+	public List<Movie> selectMovieByReviewCount(){
+		Connection conn = jdt.getConnection();
+		List<Movie> res = new ArrayList();
+		try {
+			res = movieDao.selectMovieByReviewCount(conn);
+		} finally {
+			jdt.close(conn);
+		}
+		return res;
+	}
+	
+	/**
+	 * 
+	 * @Author :
+	   @Date : 2021. 2. 6.
+	   @param count
+	   @return
+	   @work :
+	 */
+	public List<Movie> selectMovieByScore(int count){
+		Connection conn = jdt.getConnection();
+		List<Movie> res = new ArrayList();
+		try {
+			res = movieDao.selectMovieBySocre(conn, count);
+		} finally {
+			jdt.close(conn);
+		}
+		return res;
+	}
+	
+	// [2] 영화 조회 메서드
 	//영화 상세정보 조회
-	public Movie selectDetail(String mvNo){
+	public Movie selectMovieByMvNo(String mvNo){
 		System.out.println("selectDetail"+mvNo);
 		Movie res = new Movie();
 		Connection conn = jdt.getConnection();
 		try {
-			res = movieDao.selectDetail(conn, mvNo);
+			res = movieDao.selectMovieByMvNo(conn, mvNo);
 		} finally {
 			jdt.close(conn);
 		}
@@ -41,12 +74,12 @@ public class MovieService {
 	}
 	
 	// 영화 장르별 조회
-	public List<Movie> selectGenre(String genre){
+	public List<Movie> selectMovieByGenre(String genre){
 		List<Movie> res = new ArrayList<Movie>();
 		Connection conn = jdt.getConnection();
 		System.out.println("selectGenre서비스"+genre);
 		try {
-			res = movieDao.selectGenre(conn, genre);
+			res = movieDao.selectMovieByGenre(conn, genre);
 		} finally {
 			jdt.close(conn);
 		}
@@ -54,12 +87,12 @@ public class MovieService {
 	}
 	
 	// 영화 나라별 조회
-	public List<Movie> selectNation(String nation){
+	public List<Movie> selectMovieByNation(String nation){
 		List<Movie> res = new ArrayList<Movie>();
 		Connection conn = jdt.getConnection();
 		System.out.println("selectNation"+nation);
 		try {
-			res = movieDao.selectNation(conn, nation);
+			res = movieDao.selectMovieByNation(conn, nation);
 		} finally {
 			jdt.close(conn);
 		}
@@ -67,12 +100,12 @@ public class MovieService {
 	}
 	
 	// 영화 정보 검색으로 영화정보 조회해서 가져오기.
-	public List<Movie> selectSearchTitle(String searchTitle) {
+	public List<Movie> selectMovieByTitle(String searchTitle) {
 		System.out.println("selectSearchTitle"+searchTitle);
 		List<Movie> res = new ArrayList<Movie>();
 		Connection conn = jdt.getConnection();
 		try {
-			res = movieDao.selectSearchMovie(conn, searchTitle);
+			res = movieDao.selectMovieByTitle(conn, searchTitle);
 		} finally {
 			jdt.close(conn);
 		}
@@ -80,7 +113,7 @@ public class MovieService {
 		return res;
 	}
 	
-	
+	// [1] DB 넣는 메서드부분
 	// KMDB와 통신하는 메서드
 	public Map<String, Object> parseDb() {
 		HttpUtils utils = new HttpUtils();
@@ -138,6 +171,7 @@ public class MovieService {
 		return thumb;
 	}
 	
+	// DB에 넣는 메서드
 	public int insertMovieInfo(Movie movie) {
 		Connection conn =jdt.getConnection();
 		int res = 0;
