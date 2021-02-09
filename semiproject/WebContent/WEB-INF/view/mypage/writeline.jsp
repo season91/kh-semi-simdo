@@ -48,16 +48,17 @@
 						<input class="input_search" type="search" name="search"><button class="btn_navi-search"><i class="fas fa-search search-icon"></i></button>
 					</div>
 				</form>
-				<c:forEach var="movie" items="${res}">
+				
 					<form class="frm_writeline" action="/mypage/insertline.do" method="post">
 						<div class="writeBox-wrapper">
 							<div class="writeBox-left">
 								<img
-						src="${movie.poster}">
+						src="${res.poster}">
 							</div>
 							<div class="writeBox-right">
 								<div class="mvInfo-wrapper">
-									<div class="movieTitle">${movie.mvTitle}</div>
+									<div class="movieTitle">${res.mvTitle}</div>
+									<input type="hidden" name="mvno" value="${res.mvNo}">
 								</div>
 								<div class="wrtieBox-content">
 									<textarea class="line-content" name="lineContent"></textarea>
@@ -66,7 +67,7 @@
 						</div>
 						<button type="submit" class="btn_insert">등록하기</button>
 					</form>
-				</c:forEach>
+				
 			</div>
 			
 			<footer class="bottom">

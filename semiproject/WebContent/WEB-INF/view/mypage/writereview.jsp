@@ -43,23 +43,23 @@
 		<div class="content-footer-wrapper">
 			<div class="content-wrapper">
 				<div class="content-title">후기 작성</div>
-				<form class="search-view" action="/movie/searchview.do">
+				<form class="search-view" action="${context}/movie/searchview.do">
 					<div class="mv-search">
 						<input class="input_search" type="search" name="search"><button class="btn_navi-search"><i class="fas fa-search search-icon"></i></button>
 					</div>
 				</form>
-				<c:forEach var="movie" items="${res}">
-					<form class="frm_writereview" action="/mypage/insertreview.do" method="post">
+				
+					<form class="frm_writereview" action="${context}/mypage/insertreview.do" method="post">
 						<div class="writeBox-wrapper">
 							<div class="writeBox-left">
 								<img
-						src="${movie.poster}">
+						src="${res.poster}">
 							</div>
 							<div class="writeBox-right">
 								<div class="mvInfo-wrapper">
 									<div class="mvInfo-left">
-										<div class="movieTitle">${movie.mvTitle}
-										<input type="hidden" name="title" value="${movie.mvTitle}">
+										<div class="movieTitle">${res.mvTitle}
+										<input type="hidden" name="mvno" value="${res.mvNo}">
 										</div>
 										<div class="movieScore">
 											<i class="fas fa-star"></i>
@@ -78,7 +78,7 @@
 						</div>
 						<button type="submit" class="btn_insert">등록하기</button>
 					</form>
-				</c:forEach>
+				
 			</div>
 			
 			<footer class="bottom">

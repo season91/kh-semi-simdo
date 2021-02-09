@@ -49,6 +49,7 @@ public class MovieDao {
 				movie.setPlot(rset.getString("plot"));
 				movie.setRating(rset.getString("rating"));
 				movie.setPoster(rset.getString("poster"));
+				movie.setThumbnail(rset.getString("thumbnail"));
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException(ErrorCode.SM01, e);
