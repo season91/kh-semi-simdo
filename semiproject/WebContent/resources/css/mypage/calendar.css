@@ -84,48 +84,35 @@ a{
 }
 
 /* section */
+	
+	table{
+	    height: 70vh;
+	}
+	
+	td{
+        width: 50px;
+        height: 80px;
+        text-align: center;
+        font-size: 20px;
+        font-family: 굴림;
+        border:2px;
+        border-color: #3333FF;
+        border-radius: 8px;
 
-	.calendar-wrap{
-	    top: 20vh;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-	}
-
-	#calendar{
-		   border: 1px solid #212529;
-		border-collapse: collapse;
-		
-	}
-
+       	}
 	
-	#calendar th{
-		width: 80px;
-		border: 1px solid #212529;
-		font-family: 'Noto Sans KR', sans-serif;
-		text-align:center;
+	.content{
+		display: flex;
+		flex-direction: column;
+		justify-content: space-around;
+		width: 100%;
+		height: 70vh;
+		position: absolute;
+		top: 15vh;
+		left: 50%;
+		transform: translateX(-50%);
+		overflow: auto;
 	}
-	
-	#calendar td{
-		width: 80px;
-		height: 80px;
-		border: 1px solid #212529;
-		text-align: left;
-		vertical-align: top;
-		position: relative;
-	}
-	
-	a{
-		text-decoration : none;
-	}
-	
-	.clist>p{
-		font-size: 5px;
-		margin: 1px;
-		background-color: pink;
-	}
-	
-	
 /* footer */
 
 .bottom{

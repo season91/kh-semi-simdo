@@ -336,9 +336,78 @@ public class UserReviewService {
 		} finally {
 			jdt.close(conn);
 		}
-		
-		
+
 		return wish;
 	}
 	
+	/**
+	 * 
+	 * @author : 김종환
+	 * @Date : 2021 2. 9.
+	 */
+	
+	public int insertReview(UserReview userReview) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = userReviewDao.insertReview(conn, userReview);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+		
+	}
+	
+	public int insertLine(UserFmsline userFmsLine) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = userReviewDao.insertLine(conn, userFmsLine);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+		
+	}
+	
+	public List<UserReview> dailyReviewByUserNo(int UserNo, String watchDate) {
+		
+		Connection conn = jdt.getConnection();
+		List<UserReview> reviewList = null;
+		try {
+			reviewList = userReviewDao.dailyReviewByUserNo(conn, UserNo, watchDate);
+		}finally {
+			jdt.close(conn);
+		}
+		return reviewList;
+		
+	}
+
+	
+	public List<UserReview> takeMonthlyReview(int UserNo, String date) {
+		
+		Connection conn = jdt.getConnection();
+		List<UserReview> reviewList = null;
+		try {
+			reviewList = userReviewDao.takeMonthlyReview(conn, UserNo, date);
+		}finally {
+			jdt.close(conn);
+		}
+		return reviewList;
+		
+	}
 }

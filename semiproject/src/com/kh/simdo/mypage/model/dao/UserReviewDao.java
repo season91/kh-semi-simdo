@@ -359,7 +359,7 @@ public class UserReviewDao {
 	
 	/**
 	 * 
-	 * @Author :
+	 * @Author : 조아영
 	   @Date : 2021. 2. 5.
 	   @param conn
 	   @param mvNo
@@ -469,7 +469,7 @@ public class UserReviewDao {
 	public int insertWish(Connection conn, int userNo, Movie movie) {
 		int res = 0;
 		PreparedStatement pstm = null;
-		String sql = "insert into user_whishmv (wish_no, user_no, mv_no, poster) values(sc_wish_no.nextval,?,?,?)";
+		String sql = "insert into user_wishmv (wish_no, user_no, mv_no, poster) values(sc_wish_no.nextval,?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, userNo);
@@ -496,7 +496,7 @@ public class UserReviewDao {
 		PreparedStatement pstm = null;
 		
 		try {
-			String sql = "delete from user_whishmv where user_no = ? and mv_no = ? ";
+			String sql = "delete from user_wishmv where user_no = ? and mv_no = ? ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, userNo);
 			pstm.setString(2, mvNo);
@@ -525,7 +525,7 @@ public class UserReviewDao {
 		
 		
 		try {
-			String sql = "select * from user_whishmv where user_no = ? and mv_no = ?";
+			String sql = "select * from user_wishmv where user_no = ? and mv_no = ?";
 			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, userNo);
 			pstm.setString(2, mvNo);
@@ -544,5 +544,150 @@ public class UserReviewDao {
 		return wish;
 	}
 	
+	/**
+	 * 
+	 * @author : 김종환
+	 * @Date : 2021. 2. 9.
+	 * 
+	 */
+	public int insertReview(Connection conn, UserReview userReview) {
+		int res = 0;
+		String sql = "insert into user_review "
+				+ "(review_no,user_no,score,rv_reg_date,rv_content,watch_date,mv_no,mv_title,thumbnail) "
+				+ "values(sc_review_no.nextval, ? , ?, sysdate, ?, ?, ?, ?, ?)";
+		
+		PreparedStatement pstm = null;
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, userReview.getUserNo());
+			pstm.setDouble(2, userReview.getScore());
+			pstm.setString(3, userReview.getRvContent());
+			pstm.setDate(4, userReview.getWatchDate());
+			pstm.setString(5, userReview.getMvNo());
+			pstm.setString(6, userReview.getMvTitle());
+			pstm.setString(7, userReview.getThumbnail());
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(ErrorCode.IRV01, e);
+		}finally {
+			jdt.close(pstm);
+		}
+		
+		return res;
+	}
+	
+	public int insertLine(Connection conn, UserFmsline userFmsline) {
+		int res = 0;
+		String sql = "insert into user_fmsline "
+				+ "(fmsline_no,user_no,fml_content,mv_no,mv_title,thumbnail) "
+				+ "values(sc_review_no.nextval, ? , ?, ?, ?, ?)";
+		
+		PreparedStatement pstm = null;
+		try {
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, userFmsline.getUserNo());
+			pstm.setString(2, userFmsline.getFmlContent());
+			pstm.setString(3, userFmsline.getMvNo());
+			pstm.setString(4, userFmsline.getMvTitle());
+			pstm.setString(5, userFmsline.getThumbnail());
+			res = pstm.executeUpdate();
+		} catch (SQLException e) {
+			throw new DataAccessException(ErrorCode.IFL01, e);
+		}finally {
+			jdt.close(pstm);
+		}
+		
+		return res;
+	}
+	
+	public List<UserReview> dailyReviewByUserNo(Connection conn, int userNo, String watchDate){
+		List<UserReview> reviewList = new ArrayList<>();
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		try {
+			
+			String query = "select u.review_no, u.user_no, u.score, u.rv_reg_date, u.rv_content, u.watch_date, u.mv_no, u.mv_title, u.thumbnail "
+					+ "from user_review u inner join \"USER\" us on(u.user_no = us.user_no) "
+					+ "where u.user_no = ? and substr(u.watch_date,1,8) = ? and us.is_leave = 0"
+					+ "order by u.rv_reg_date desc";
+			
+			pstm = conn.prepareStatement(query);
+			pstm.setInt(1, userNo);
+			pstm.setString(2, watchDate);
+			
+			rset = pstm.executeQuery();
+			
+			while(rset.next()) {
+				
+				UserReview userReview = new UserReview();
+				userReview.setReviewNo(rset.getInt("review_no"));
+				userReview.setUserNo(rset.getInt("user_no"));
+				userReview.setScore(rset.getDouble("score"));
+				userReview.setRvRegDate(rset.getDate("rv_reg_date"));
+				userReview.setRvContent(rset.getString("rv_content"));
+				userReview.setWatchDate(rset.getDate("watch_date"));
+				userReview.setMvNo(rset.getString("mv_no"));
+				userReview.setMvTitle(rset.getString("mv_title"));
+				userReview.setThumbnail(rset.getString("thumbnail"));
+				reviewList.add(userReview);
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new DataAccessException(ErrorCode.SRV01, e);
+		} finally {
+			jdt.close(rset, pstm);
+		}
+		
+		return reviewList;
+	}
+	
+	public List<UserReview> takeMonthlyReview(Connection conn, int userNo, String date) {
+		List<UserReview> reviewList = new ArrayList<>();
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		
+		try {
+			
+			String sql = "select review_no,user_no,score,rv_reg_date,rv_content,watch_date,mv_no,mv_title,thumbnail" +
+				" from user_review"
+				+ " where user_no = ? and substr(watch_date,1,5) = ?";
+			
+			
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, userNo);
+			pstm.setString(2, date);
+			
+			rset = pstm.executeQuery();
+			
+			while(rset.next()) {
+				
+				UserReview userReview = new UserReview();
+				userReview.setReviewNo(rset.getInt("review_no"));
+				userReview.setUserNo(rset.getInt("user_no"));
+				userReview.setScore(rset.getDouble("score"));
+				userReview.setRvRegDate(rset.getDate("rv_reg_date"));
+				userReview.setRvContent(rset.getString("rv_content"));
+				userReview.setWatchDate(rset.getDate("watch_date"));
+				userReview.setMvNo(rset.getString("mv_no"));
+				userReview.setMvTitle(rset.getString("mv_title"));
+				userReview.setThumbnail(rset.getString("thumbnail"));
+				reviewList.add(userReview);
+				
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			throw new DataAccessException(ErrorCode.SRV01, e);
+		} finally {
+			jdt.close(rset, pstm);
+		}
+		
+		
+		return reviewList;
+	}
 	
 }
