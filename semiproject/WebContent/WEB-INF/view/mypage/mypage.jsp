@@ -7,7 +7,6 @@
 <head>
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
-	<link rel="stylesheet" href="/resources/css/index/index.css">
 	<link rel="stylesheet" href="/resources/css/mypage/mypage.css">
 
 
@@ -49,13 +48,10 @@
 			</div>
 	</nav>
    </div>
-   
- 
   
   
-  
-   <div>
-  	<h2>영화달력</h2>
+   <div class="content">
+  	<h2>영화달력</h2><br>
   	<p>
   	이번달에<br>
   	총 4편의 영화를 보셧어요! 
@@ -67,16 +63,13 @@
   	
   	</p>
 
-  	</div>
+  	
 	
 	<hr color="black">	
 	<div>
 		<div>
 		<h2>영화후기</h2>
-		<div class="my-img">
-		<img class="inner-item-cover" src="resources/image/결백.jpg">
-		<img class="inner-item-cover" src="resources/image/결백.jpg">
-		</div>
+		
 	
 	
 		</div>
@@ -90,14 +83,11 @@
 	<hr color="black">	
 	<div>
 		<h2>찜목록</h2>
-		<div class="zim-img">
-	 <img class="inner-item-cover" src="resources/image/결백.jpg">
-	 <img class="inner-item-cover" src="resources/image/결백.jpg">
-		</div>
+		
 	
 	
 	</div>
-	
+	</div>
 	
 	
 	<footer class="bottom">
@@ -112,7 +102,7 @@
 				<address>TEL:031)111-1212</address>
 			</div>
 			<div class="bottom_right">
-				<a href="/aboutus/">ABOUT US</a><br>
+				<a href="/aboutus/aboutus.do">ABOUT US</a><br>
 				<a href="/고객페이지/"> 고객페이지</a><br>
 				<a href="/마이페이지/"> 마이페이지</a><br>
 				<a href="/내정보관리/"> 내정보관리</a><br>

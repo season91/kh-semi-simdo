@@ -14,13 +14,14 @@ import com.kh.simdo.common.exception.ToAlertException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.common.util.http.HttpUtils;
 import com.kh.simdo.movie.model.vo.Movie;
-import com.kh.simdo.mypage.model.dao.UserReviewDao;
+import com.kh.simdo.mypage.model.dao.MypageDao;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
+import com.kh.simdo.mypage.model.vo.Wish;
 
-public class UserReviewService {
+public class MypageService {
 	
-	UserReviewDao userReviewDao = new UserReviewDao();
+	MypageDao mypageDao = new MypageDao();
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 
 	/**
@@ -32,7 +33,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		List<UserReview> reviewList = null;
 		try {
-			reviewList = userReviewDao.selectReviewByUserNo(conn, UserNo);
+			reviewList = mypageDao.selectReviewByUserNo(conn, UserNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -51,7 +52,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		Map<String, Object> reviewContent = null;
 		try {
-			reviewContent = userReviewDao.selectReviewByReviewNo(conn, reviewNo);
+			reviewContent = mypageDao.selectReviewByReviewNo(conn, reviewNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -68,7 +69,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		List<UserFmsline> fmslineList = null;
 		try {
-			fmslineList = userReviewDao.selectFmslineByUserNo(conn, UserNo);
+			fmslineList = mypageDao.selectFmslineByUserNo(conn, UserNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -87,7 +88,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		Map<String, Object> fmslineContent = null;
 		try {
-			fmslineContent = userReviewDao.selectFmslineByFmslineNo(conn, fmslineNo);
+			fmslineContent = mypageDao.selectFmslineByFmslineNo(conn, fmslineNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -105,7 +106,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.deleteReview(conn, reviewNo);
+			res = mypageDao.deleteReview(conn, reviewNo);
 			jdt.commit(conn);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -128,7 +129,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.deleteFmsline(conn, fmslineNo);
+			res = mypageDao.deleteFmsline(conn, fmslineNo);
 			jdt.commit(conn);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -154,7 +155,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.updateReview(conn, userReview);
+			res = mypageDao.updateReview(conn, userReview);
 			jdt.commit(conn);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -180,7 +181,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.updateFmsline(conn, userFmsline);
+			res = mypageDao.updateFmsline(conn, userFmsline);
 			jdt.commit(conn);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -244,7 +245,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		List<UserReview> reviewList = null;
 		try {
-			reviewList = userReviewDao.selectFmslineByMvNo(conn, mvNo);
+			reviewList = mypageDao.selectFmslineByMvNo(conn, mvNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -264,12 +265,149 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		List<UserReview> reviewList = null;
 		try {
-			reviewList = userReviewDao.selectReviewByMvNo(conn, mvNo);
+			reviewList = mypageDao.selectReviewByMvNo(conn, mvNo);
 		}finally {
 			jdt.close(conn);
 		}
 		return reviewList;
 	}
 	
+	/**
+	 * 
+	 * @Author :조아영
+	   @Date : 2021. 2. 8.
+	   @return
+	   @work : 영화상세내 찜누를시 찜목록추가
+	 */
+	public int insertWish(int userNo, Movie movie) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = mypageDao.insertWish(conn, userNo, movie);
+			jdt.commit(conn);
+		}catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
 	
+	/**
+	 * 
+	 * @Author :조아영
+	   @Date : 2021. 2. 8.
+	   @return
+	   @work : 영화상세내 찜 다시 누를시 해제
+	 */
+	public int deleteWish(int userNo, String mvNo) {
+		
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = mypageDao.deleteWish(conn, userNo, mvNo);
+			jdt.commit(conn);
+		}catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 8.
+	   @return
+	   @work :
+	 */
+	public Wish selectWish(int userNo, String mvNo) {
+		Wish wish = null;
+		Connection conn = jdt.getConnection();
+		try {
+			wish = mypageDao.selectWish(conn, userNo, mvNo);
+		} finally {
+			jdt.close(conn);
+		}
+
+		return wish;
+	}
+	
+	/**
+	 * 
+	 * @author : 김종환
+	 * @Date : 2021 2. 9.
+	 */
+	
+	public int insertReview(UserReview userReview) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = mypageDao.insertReview(conn, userReview);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+		
+	}
+	
+	public int insertLine(UserFmsline userFmsLine) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = mypageDao.insertLine(conn, userFmsLine);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			// TODO: handle exception
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+		
+	}
+	
+	public List<UserReview> dailyReviewByUserNo(int UserNo, String watchDate) {
+		
+		Connection conn = jdt.getConnection();
+		List<UserReview> reviewList = null;
+		try {
+			reviewList = mypageDao.dailyReviewByUserNo(conn, UserNo, watchDate);
+		}finally {
+			jdt.close(conn);
+		}
+		return reviewList;
+		
+	}
+
+	
+	public List<UserReview> takeMonthlyReview(int UserNo, String date) {
+		
+		Connection conn = jdt.getConnection();
+		List<UserReview> reviewList = null;
+		try {
+			reviewList = mypageDao.takeMonthlyReview(conn, UserNo, date);
+		}finally {
+			jdt.close(conn);
+		}
+		return reviewList;
+		
+	}
 }

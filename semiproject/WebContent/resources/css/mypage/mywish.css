@@ -1,19 +1,6 @@
 @charset "UTF-8";
-body{
-	background-color: #DADAD9;
-	color: #696765;
-	font-family: 'Noto Sans KR', sans-serif;
-}
 
-input{
-	border: 0 none;
-}
 
-a{
-	cursor: pointer;
-}
-
-/* header */
 
 .header-wrapper{
    display: flex;
@@ -50,21 +37,25 @@ a{
    color: #696765;
 }
 
-.navi{
-	position: absolute;
-	top: 10vh;
-	background-color: #959493;
-	color: #DADAD9;
-	height: 5vh;
-	width: 100%;
+.div_top-search{
+   background-color: white;
 }
 
+/* nav */
+/* 전체 메뉴 틀, 양식 지정 */
+.navi{
+   height: 5vh;
+   background-color: #959493;
+   color: #DADAD9;
+   width: 100%;
+
+}
 
 /* 각메뉴들을 감싼 wrap 정렬지정 */
 .navi-wrapper{
 	height:100%;
 	display: flex;
-	justify-content: space-evenly;
+	justify-content: space-between;
 
 }
 
@@ -79,56 +70,18 @@ a{
 	font-weight: bold;
 	transition-duration:0.2s;
 }
-
 .navi-wrapper>div:hover{
 	font-size: 2vw;
 }
-
-.navi-menu{
-	cursor: pointer;
+.navi-wrapper a{
+	color: #DADAD9;
 }
-
-/* section */
-	
-table{
-    height: 70vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.input_navi-search{
+	width: 15vw;
 }
-
-td{
-       width: 10vh;
-       height: 10vh;
-       text-align: center;
-       font-size: 20px;
-       font-family: 굴림;
-       border:1px solid blue;
-       border-radius: 8px ;
-       padding: 0.5vh;
-
-
-}
-.img-wrap{
-	width: 8vh;
-	height: 9vh;
-}
-
-.content{
+.search-view{
 	display: flex;
-	flex-direction: column;
-	justify-content: space-around;
-	width: 100%;
-	min-height: 70vh;
-	height:100vh;
-	margin-top: 15vh;
-	/* position: absolute;
-	top: 15vh;
-	left: 50%;
-	transform: translateX(-50%); */
-	background-color: #DADAD9;
-	
+	align-items: center;
 }
 
 
@@ -157,3 +110,43 @@ td{
    padding-left:70%;
    
 }
+
+/* 나라별 조회 클릭시 뜨는 나라선택 창 */
+
+.navi-extend-wrapper{
+	height: 10vh;
+	background-color: #959493;
+	transition-duration:0.5s;
+	
+}
+
+.navi-extend-wrapper>ul{
+	height:100%;
+	display: flex;
+	justify-content: space-evenly;
+	align-items:center;
+}
+
+.navi-extend-list>a{
+	color: #DADAD9;
+	
+}
+
+.navi-extend-list{
+	transition-duration:0.5s;
+	color: #DADAD9;
+}
+
+.navi-extend-list:hover {
+	font-size:3vw;
+	font-weight: bold;
+	
+}
+
+
+.content{
+	background-color: #DADAD9;
+	min-height: 80vh;
+	margin-top: 20vh;
+}
+

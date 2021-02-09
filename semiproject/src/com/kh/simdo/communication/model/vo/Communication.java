@@ -1,9 +1,9 @@
-package com.kh.simdo.comm.model.vo;
+package com.kh.simdo.communication.model.vo;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class Comm {
+public class Communication {
 	private int qstnNo;
 	private int userNo;
 	private String qstnType;

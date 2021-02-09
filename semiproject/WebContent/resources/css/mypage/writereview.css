@@ -84,8 +84,11 @@ img{
 	width: 200px;
 	text-align: center;
 	font-weight: bold;
+	transition-duration:0.2s;
 }
-
+.navi-wrapper>div:hover{
+	font-size: 2vw;
+}
 .navi-menu{
 	cursor: pointer;
 }
@@ -119,12 +122,15 @@ img{
 	margin-bottom: 3%;
 }
 
+.search-view{
+	
+}
+
 .mv-search{
 	margin-bottom: 3%;
 	display: flex;
 	justify-content: space-around;
 	background-color: white;
-	height: 6%;
 	align-items: center;
 	border: 1px solid;
 }

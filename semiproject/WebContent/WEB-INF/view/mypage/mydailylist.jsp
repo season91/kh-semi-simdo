@@ -42,21 +42,24 @@
 	</div>
 	
 	<section class="content">
+	<c:forEach var="review" items="${requestScope.reviewList}" varStatus="status">
 		<div class="content-wrapper">
+			<c:if test="${status.first eq true}">
 			<div class="top-wrapper">
-				2020-12-25
+				${review.watchDate}
 			</div>
+			</c:if>
 			<div class="myreviewbox">
 				<div class="myreviewbox-left">
-					<img class="mvPoster" src="https://ssl.pstatic.net/imgmovie/mdi/mit110/1544/154449_P27_141613.jpg">
+					<img class="mvPoster" src="${review.thumbnail}">
 				</div>
 				<div class="myreviewbox-right">
 					<div class="myreviewbox-right-wrapper">
 						<div class="movietitle">
-							영화 제목
+							${review.mvTitle}
 						</div>
 						<div class="mymoviescore">
-							내 별점: 3.9
+							내 별점: ${review.score}
 						</div>
 						<div class="moviescore">
 							평균 별점: 4.2
@@ -65,12 +68,13 @@
 							내 후기
 						</div>
 						<div class="myreviewcontent">
-							아 너무너무 재밌고 너무 짱이고 짱짱짱!!!
+							${review.rvContent}
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		</c:forEach>
 	</section>
 	
 	<footer class="bottom">

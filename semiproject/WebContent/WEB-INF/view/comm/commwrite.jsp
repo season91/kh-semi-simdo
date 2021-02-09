@@ -15,8 +15,9 @@
 
 	  <div class="header-wrapper">
      <header class="header-section">
-         <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%" alt="logo" src="/resources/image/logo.png"></a>
-         <c:choose>
+	 <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
+	  OnClick="location.href ='/index.do'"></a>
+      		   <c:choose>
             <c:when test="${empty sessionScope.user}">
                <%-- 비로그인 상태 --%>
                <div class="top-right" style="width: 20vh">
@@ -37,10 +38,10 @@
 
       <nav class="navi">
 	      <div class="navi-wrapper">
-	      	<div class="nation-view">나라별</div>
-	        <div class="year-view">장르별</div>
-	        <div class="rank-view"><a>심도순</a></div>
-	        <div class="new-view"><a>평점순</a></div>
+	      	<div class="nation-view" style="cursor:pointer;">나라별</div>
+	        <div class="genre-view" style="cursor:pointer;">장르별</div>
+	        <div class="score-view" OnClick="location.href ='/movie/naviview.do'" style="cursor:pointer;">평점순</div>
+	        <div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
 	        <div class="search-view">
 					<input type="search" class="input_navi-search" name="search">
 	        		<button class="btn_navi-search"><i class="fas fa-search"></i></button>
@@ -51,30 +52,39 @@
    </div>
 
 	<div class="content">
-	<h2 class="tit">QA작성</h2>
-	<div class="desc_board">
-		<form action="${context}/comm/upload.do" method="post" enctype="multipart/form-data">
-			<div>
-			<select name="select">
+	<div class="menu">
+   	<br>
+   	<a style="font-weight: bold; font-size:big">커뮤니케이션</a><br>
+   	<a href="/comm/noticelist.do">공지게시판</a><br>
+   	<a href="/comm/write.do">QnA</a>
+   	</div>
+   	<div class="content2">
+	<p class="tit">QA작성</p>
+	
+		
+			<form action="${context}/comm/upload.do" method="post">
+			<select name="qstntype">
     		<option value="none">=== 유형선택 ===</option>
-    		<option value="korean">영화관련</option>
-    		<option value="english">서비스관련</option>
-    	
+    		<option value="영화관련">영화관련</option>
+    		<option value="서비스관련">서비스관련</option>
+    		
   			</select>
+  			
+  			
 				<div class="tit_board">
-					제목 : <input type="text" name="qstn_title" required="required"/> <br>
-					작성자 : <input type="text" name="user_nm" required="required"/> <br>
+					제목 : <input type="text" name="qstntitle" required="required"/> <br>
+					
 					<!-- multiple : 여러개 파일 선택을 허용하는 속성 -->
 					파일 : <input type="file" name="files" id="contract_file" multiple/>
 				</div>
 				<div class="text">
-					<textarea id="board-content" class="board-content" name="qstn_content" 
+					<textarea id="board-content" class="board-content" name="qstncontent" 
 					style="width:99%; height:300px;" required="required"></textarea>
 				</div>
 				<div class="btn_section" style="background-color:gray color=white">
 					<button>확인</button>
 				</div>
-			</div>
+			
 		</form>
 	</div>
 </div>

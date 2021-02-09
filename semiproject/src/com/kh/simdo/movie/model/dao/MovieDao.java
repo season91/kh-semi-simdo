@@ -38,6 +38,7 @@ public class MovieDao {
 			rset = pstm.executeQuery();
 			if(rset.next()) {
 				movie = new Movie();
+				movie.setMvNo(rset.getString("mv_no"));
 				movie.setMvTitle(rset.getString("mv_title"));
 				movie.setScore(rset.getInt("score"));
 				movie.setDirector(rset.getString("director"));
@@ -48,6 +49,7 @@ public class MovieDao {
 				movie.setPlot(rset.getString("plot"));
 				movie.setRating(rset.getString("rating"));
 				movie.setPoster(rset.getString("poster"));
+				movie.setThumbnail(rset.getString("thumbnail"));
 			}
 		} catch (SQLException e) {
 			throw new DataAccessException(ErrorCode.SM01, e);
@@ -259,9 +261,9 @@ public class MovieDao {
 		PreparedStatement pstm = null;
 		try {
 			
-			String query = "insert into mv_basic_info(mv_no, mv_title, mv_titleorg, director, genre, release_date, plot, nation, runtime, rating, thumbnail, poster) "+
+			String sql = "insert into mv_basic_info(mv_no, mv_title, mv_titleorg, director, genre, release_date, plot, nation, runtime, rating, thumbnail, poster) "+
 					"values(?,?,?,?,?,?,?,?,?,?,?,?)";
-			pstm = conn.prepareStatement(query);
+			pstm = conn.prepareStatement(sql);
 			pstm.setString(1,movie.getMvNo());
 			pstm.setString(2, movie.getMvTitle());
 			pstm.setString(3, movie.getMvTitleorg());
