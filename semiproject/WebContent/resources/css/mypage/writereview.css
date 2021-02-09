@@ -119,12 +119,15 @@ img{
 	margin-bottom: 3%;
 }
 
+.search-view{
+	
+}
+
 .mv-search{
 	margin-bottom: 3%;
 	display: flex;
 	justify-content: space-around;
 	background-color: white;
-	height: 6%;
 	align-items: center;
 	border: 1px solid;
 }

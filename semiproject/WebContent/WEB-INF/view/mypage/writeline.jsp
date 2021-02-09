@@ -30,11 +30,11 @@
 		</header>
 		<nav class="navi">
 			<div class="navi-wrapper">
-				<div class="my-mv-calendar navi-menu" onclick="location.href='/mypage/calendar.do'">영화 달력</div>
+				<div class="my-mv-calendar navi-menu">영화 달력</div>
 				<div class="my-mv-review navi-menu" onclick="location.href='/mypage/mywritelist.do'">영화 후기</div>
-				<div class="my-mv navi-menu" onclick="location.href='/mypage/mywish.do'">찜목록</div>
+				<div class="my-mv navi-menu">찜목록</div>
 				<div class="my-info navi-menu" onclick="location.href='/user/infochange.do'">회원 정보 변경</div>
-				<div class="my-qna navi-menu" onclick="location.href='/mypage/myqnalist.do'">나의 문의 & 요청</div>
+				<div class="my-qna navi-menu">나의 문의 & 요청</div>
 			</div>
 		</nav>
 	</div>
@@ -43,25 +43,30 @@
 		<div class="content-footer-wrapper">
 			<div class="content-wrapper">
 				<div class="content-title">나만의 명대사 작성</div>
-				<div class="mv-search">
-					<input class="input_search" type="text" name="mvTitle"><a><i class="fas fa-search search-icon"></i></a>
-				</div>
-				<form class="frm_writereview">
-					<div class="writeBox-wrapper">
-						<div class="writeBox-left">
-							<img src="http://file.koreafilm.or.kr/thm/02/00/04/25/tn_DPK011558.jpg">
-						</div>
-						<div class="writeBox-right">
-							<div class="mvInfo-wrapper">
-								<div class="movieTitle">아가씨</div>
-							</div>
-							<div class="wrtieBox-content">
-								<textarea class="review-content" name="rvContent"></textarea>
-							</div>
-						</div>
+				<form class="search-view" action="/movie/searchview.do">
+					<div class="mv-search">
+						<input class="input_search" type="search" name="search"><button class="btn_navi-search"><i class="fas fa-search search-icon"></i></button>
 					</div>
-					<button type="submit" class="btn_insert">등록하기</button>
 				</form>
+				<c:forEach var="movie" items="${res}">
+					<form class="frm_writeline" action="/mypage/insertline.do" method="post">
+						<div class="writeBox-wrapper">
+							<div class="writeBox-left">
+								<img
+						src="${movie.poster}">
+							</div>
+							<div class="writeBox-right">
+								<div class="mvInfo-wrapper">
+									<div class="movieTitle">${movie.mvTitle}</div>
+								</div>
+								<div class="wrtieBox-content">
+									<textarea class="line-content" name="lineContent"></textarea>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn_insert">등록하기</button>
+					</form>
+				</c:forEach>
 			</div>
 			
 			<footer class="bottom">

@@ -78,14 +78,23 @@ public class MypageController extends HttpServlet {
 		case "calendar.do": // 김종환
 			calendar(request,response);
 			break;
+		case "callist.do" : // 김종환
+			calendarList(request,response);
+			break;
 		case "mydailylist.do":  // 김종환
 			myDailyList(request,response);
 			break;
 		case "writereview.do" : // 김종환
 			writeReview(request, response);
 			break;
+		case "insetreview.do" : // 김종환
+			insertReview(request, response);
+			break;
 		case "writeline.do" :  // 김종환
 			writeLine(request, response);
+			break;
+		case "insetreline.do" : // 김종환
+			insertLine(request, response);
 			break;
 		case "myqnalist.do" :  // 조아영
 			myQnaList(request,response);
@@ -291,19 +300,168 @@ public class MypageController extends HttpServlet {
 		.forward(request, response);
 	}
 	
+	private void calendarList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = (User) request.getSession().getAttribute("user");
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
+		String date = year + "/" + month;
+		System.out.println("year" + year);
+		System.out.println("month" + month);
+		
+		List<UserReview> reviewRes = userReviewService.takeMonthlyReview(user.getUserNo(), date);
+		
+		
+		
+		/*
+		 * Map<String, Object> reviewCommandMap = new HashMap<>();
+		 * 
+		 * List reviewList = new ArrayList();
+		 * 
+		 * for(int i = 0; i < reviewRes.size(); i++) { String reviewJson = new
+		 * Gson().toJson(reviewRes.get(i)); reviewCommandMap = new
+		 * Gson().fromJson(reviewJson, Map.class); reviewList.add(reviewCommandMap); }
+		 */
+		
+		
+		response.getWriter().print(new Gson().toJson(reviewRes));
+		
+	
+		
+		
+	}
+	
 	private void myDailyList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = (User) request.getSession().getAttribute("user");
+		String year = request.getParameter("year");
+		String month = request.getParameter("month");
+		String day = request.getParameter("day");
+		
+		String watchDate = year + "/" + month + "/" + day;
+		List<UserReview> reviewRes = userReviewService.dailyReviewByUserNo(user.getUserNo(), watchDate);
+		
+		
+		Map<String, Object> reviewCommandMap = new HashMap<>();
+		
+		
+		List reviewList = new ArrayList();
+		
+		
+		for(int i = 0; i < reviewRes.size(); i++) {
+			String reviewJson = new Gson().toJson(reviewRes.get(i));
+			reviewCommandMap = new Gson().fromJson(reviewJson, Map.class);
+			reviewList.add(reviewCommandMap);
+		}
+		
+		
+		request.setAttribute("reviewList", reviewList);
 		request.getRequestDispatcher("/WEB-INF/view/mypage/mydailylist.jsp")
 		.forward(request, response);
+	
 	}
 	
 	private void writeReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String title = request.getParameter("title");
+		List<Movie> detailRes = movieService.selectDetail(title);
+		List movieList = parseJson(detailRes);
+		request.setAttribute("res", movieList);		
 		request.getRequestDispatcher("/WEB-INF/view/mypage/writereview.jsp")
 		.forward(request, response);
 	}
 	
+	private void insertReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = (User) request.getSession().getAttribute("user");
+		String title = request.getParameter("title");
+		List<Movie> detailRes = movieService.selectDetail(title);
+		Movie movie = detailRes.get(0);
+		
+
+		double score = Double.parseDouble(request.getParameter("score"));
+		String wtchDt = request.getParameter("watchDate");
+		String rvContent = request.getParameter("rvContent");
+		
+		System.out.println(wtchDt + "/" + title);
+		
+		Calendar c = Calendar.getInstance();
+		c.set(Calendar.YEAR, Integer.parseInt(wtchDt.substring(0, 4)));
+		c.set(Calendar.MONTH, Integer.parseInt(wtchDt.substring(5, 7))-1);
+		c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(wtchDt.substring(8, 10)));
+		long date = c.getTimeInMillis();
+		
+		java.sql.Date watchDate = new java.sql.Date(date);
+		
+		UserReview userReview = new UserReview();
+		userReview.setUserNo(user.getUserNo());
+		userReview.setScore(score);
+		userReview.setRvContent(rvContent);
+		userReview.setWatchDate(watchDate);
+		userReview.setMvNo(movie.getMvNo());
+		userReview.setMvTitle(movie.getMvTitle());
+		userReview.setThumbnail(movie.getThumbnail());
+		
+		
+		System.out.println(userReview);
+		int res = userReviewService.insertReview(userReview);
+		if(res > 0) {
+			request.setAttribute("alertMsg", "�쁺�솕 �썑湲� �벑濡앹씠 �셿猷뚮릺�뿀�뒿�땲�떎.");
+			request.setAttribute("url", "/mypage/mywritelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		} else {
+			request.setAttribute("alertMsg", "�쁺�솕 �썑湲� �벑濡� 以� �뿉�윭媛� 諛쒖깮�뻽�뒿�땲�떎.");
+			request.setAttribute("url", "/mypage/mywritelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		}
+	}
+	
 	private void writeLine(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String title = request.getParameter("title");
+		List<Movie> detailRes = movieService.selectDetail(title);
+		List movieList = parseJson(detailRes);
+		System.out.println(movieList);
+		request.setAttribute("res", movieList);		
 		request.getRequestDispatcher("/WEB-INF/view/mypage/writeline.jsp")
 		.forward(request, response);
+	}
+	
+	private void insertLine(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession();
+		User user = (User)session.getAttribute("user");
+		Movie movie = (Movie)session.getAttribute("title");
+
+		String rvContent = request.getParameter("rvContent");
+
+		
+		UserFmsline userFmsline = new UserFmsline();
+		userFmsline.setUserNo(user.getUserNo());
+		userFmsline.setFmlContent(rvContent);
+		userFmsline.setMvNo(movie.getMvNo());
+		userFmsline.setMvTitle(movie.getMvTitle());
+		userFmsline.setThumbnail(movie.getThumbnail());
+		
+		
+		
+		int res = userReviewService.insertLine(userFmsline);
+		if(res > 0) {
+			request.getSession().removeAttribute("reviewNo");
+			request.setAttribute("alertMsg", "�쁺�솕 �썑湲� �닔�젙�씠 �셿猷뚮릺�뿀�뒿�땲�떎.");
+			request.setAttribute("url", "/mypage/mywritelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		} else {
+			request.setAttribute("alertMsg", "�쁺�솕 �썑湲� �닔�젙 以� �뿉�윭媛� 諛쒖깮�뻽�뒿�땲�떎.");
+			request.setAttribute("url", "/mypage/mywritelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		}
 	}
 	
 	/**
