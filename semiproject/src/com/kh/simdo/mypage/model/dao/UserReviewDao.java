@@ -359,7 +359,7 @@ public class UserReviewDao {
 	
 	/**
 	 * 
-	 * @Author :
+	 * @Author : 조아영
 	   @Date : 2021. 2. 5.
 	   @param conn
 	   @param mvNo

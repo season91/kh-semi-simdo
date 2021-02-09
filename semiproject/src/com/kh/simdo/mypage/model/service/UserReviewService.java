@@ -336,8 +336,7 @@ public class UserReviewService {
 		} finally {
 			jdt.close(conn);
 		}
-		
-		
+
 		return wish;
 	}
 	
