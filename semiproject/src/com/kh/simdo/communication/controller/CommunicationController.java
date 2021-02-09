@@ -50,7 +50,7 @@ public class CommunicationController extends HttpServlet {
 		case "upload.do" :  //QnA 게시글업로드 김백관 
 			uploadComm(request,response);
 			break;
-		case "download.do" : download(request,response); break; //김백관
+		//case "download.do" : download(request,response); break; //김백관
 		case "noticelist.do": noticeList(request,response); break; //조아영
 		case "noticedetail.do" : noticeDetail(request,response); break; //조아영
 		default:
@@ -121,7 +121,7 @@ public class CommunicationController extends HttpServlet {
 		request.setAttribute("res", noticeList);
 		request.setAttribute("page", page);
 		//score 글번호 releaseDate 작성일자 mvTitle 글제목
-		request.getRequestDispatcher("/WEB-INF/view/communication/noticelist.jsp").forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/comm/noticelist.jsp").forward(request, response);
 	}
 
 	/**
@@ -154,30 +154,25 @@ public class CommunicationController extends HttpServlet {
 
 	
 	private void uploadComm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		System.out.println("여기로 오니?");
+		HttpSession session=request.getSession();
+		User user= (User)session.getAttribute("user");
 		
-		User user= (User)request.getSession().getAttribute("user");
 		
-		String qstntitle = request.getParameter("qstntitle");
-		String qstncontent = request.getParameter("qstncontent");
-		String qstntype = request.getParameter("qstntype");
+		communicationService.insertComm(user.getUserNm(),request);
 		
-		Communication communication = new Communication();
-		communication.setQstnTitle(qstntitle);
-		communication.setUserNm(user.getUserNm());
 		
-		communication.setQstnContent(qstncontent);
-		communication.setQstnType(qstntype);
-		
-		int res = communicationService.insertComm(communication);
-		if(res > 0) {
-			request
-			.getRequestDispatcher("/WEB-INF/view/comm/commlist.jsp")
-			.forward(request, response);
-		}else {
-			System.out.println("확인");
+		request.setAttribute("alertMsg", "로그인에 성공했습니다.");
+		request.getRequestDispatcher("/WEB-INF/view/index/index.jsp")
+		.forward(request, response);
 		}
-	}
+	
 
+	/**
+	 * @author 김백관
+	 * 파일 다운로드 //필요시 활성화
+	 */
+	/*
 	private void download(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 	String originFileName = request.getParameter("ofname");
 	String renameFileName = request.getParameter("rfname");
@@ -186,6 +181,7 @@ public class CommunicationController extends HttpServlet {
 	request.getRequestDispatcher("/file"+savePath+renameFileName)
 	.forward(request, response);
 }
+	 */
 }
 
 
