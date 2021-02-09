@@ -129,7 +129,7 @@
 						<p>심도 평점 : ${score}</p>
 					</div>
 					<div class="mv_info_write">
-						<span><a>후기작성</a></span> <span><a>나만의 명대사 작성</a></span> <span><a>번역</a></span>
+						<span><a href="/mypage/writereview.do?mvno=${res.mvNo}">후기작성</a></span> <span><a href="/mypage/writeline.do?mvno=${res.mvNo}">나만의 명대사 작성</a></span> <span><a>번역</a></span>
 					</div>
 
 				</div>

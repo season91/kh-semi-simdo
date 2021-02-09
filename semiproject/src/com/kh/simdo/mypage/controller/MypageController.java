@@ -12,10 +12,12 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.kh.simdo.communication.model.service.CommunicationService;
 import com.kh.simdo.communication.model.vo.Communication;
+import com.kh.simdo.movie.model.service.MovieService;
 import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.mypage.model.service.UserReviewService;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
@@ -33,6 +35,7 @@ public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserReviewService userReviewService = new UserReviewService();
     CommunicationService communicationService = new CommunicationService();
+    MovieService movieService = new MovieService();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -87,7 +90,7 @@ public class MypageController extends HttpServlet {
 		case "writereview.do" : // 김종환
 			writeReview(request, response);
 			break;
-		case "insetreview.do" : // 김종환
+		case "insertreview.do" : // 김종환
 			insertReview(request, response);
 			break;
 		case "writeline.do" :  // 김종환
@@ -360,26 +363,22 @@ public class MypageController extends HttpServlet {
 	}
 	
 	private void writeReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String title = request.getParameter("title");
-		List<Movie> detailRes = movieService.selectDetail(title);
-		List movieList = parseJson(detailRes);
-		request.setAttribute("res", movieList);		
+		String mvNo = request.getParameter("mvno");
+		Movie detailRes = movieService.selectMovieByMvNo(mvNo);
+		request.setAttribute("res", detailRes);
+			
 		request.getRequestDispatcher("/WEB-INF/view/mypage/writereview.jsp")
 		.forward(request, response);
 	}
 	
 	private void insertReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
-		String title = request.getParameter("title");
-		List<Movie> detailRes = movieService.selectDetail(title);
-		Movie movie = detailRes.get(0);
-		
+		String mvNo = request.getParameter("mvno");
+		Movie movie = movieService.selectMovieByMvNo(mvNo);
 
 		double score = Double.parseDouble(request.getParameter("score"));
 		String wtchDt = request.getParameter("watchDate");
 		String rvContent = request.getParameter("rvContent");
-		
-		System.out.println(wtchDt + "/" + title);
 		
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, Integer.parseInt(wtchDt.substring(0, 4)));
@@ -399,17 +398,17 @@ public class MypageController extends HttpServlet {
 		userReview.setThumbnail(movie.getThumbnail());
 		
 		
-		System.out.println(userReview);
+		System.out.println(userReview.toString());
 		int res = userReviewService.insertReview(userReview);
 		if(res > 0) {
-			request.setAttribute("alertMsg", "�쁺�솕 �썑湲� �벑濡앹씠 �셿猷뚮릺�뿀�뒿�땲�떎.");
+			request.setAttribute("alertMsg", "영화 후기가 등록되었습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
 			
 			request
 			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
 			.forward(request, response);
 		} else {
-			request.setAttribute("alertMsg", "�쁺�솕 �썑湲� �벑濡� 以� �뿉�윭媛� 諛쒖깮�뻽�뒿�땲�떎.");
+			request.setAttribute("alertMsg", "영화 후기 등록 중 에러가 발생했습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
 			
 			request
@@ -419,19 +418,18 @@ public class MypageController extends HttpServlet {
 	}
 	
 	private void writeLine(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String title = request.getParameter("title");
-		List<Movie> detailRes = movieService.selectDetail(title);
-		List movieList = parseJson(detailRes);
-		System.out.println(movieList);
-		request.setAttribute("res", movieList);		
+		String mvNo = request.getParameter("mvno");
+		Movie detailRes = movieService.selectMovieByMvNo(mvNo);
+		request.setAttribute("res", detailRes);
+			
 		request.getRequestDispatcher("/WEB-INF/view/mypage/writeline.jsp")
 		.forward(request, response);
 	}
 	
 	private void insertLine(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession();
-		User user = (User)session.getAttribute("user");
-		Movie movie = (Movie)session.getAttribute("title");
+		User user = (User) request.getSession().getAttribute("user");
+		String mvNo = request.getParameter("mvno");
+		Movie movie = movieService.selectMovieByMvNo(mvNo);
 
 		String rvContent = request.getParameter("rvContent");
 
@@ -448,14 +446,14 @@ public class MypageController extends HttpServlet {
 		int res = userReviewService.insertLine(userFmsline);
 		if(res > 0) {
 			request.getSession().removeAttribute("reviewNo");
-			request.setAttribute("alertMsg", "�쁺�솕 �썑湲� �닔�젙�씠 �셿猷뚮릺�뿀�뒿�땲�떎.");
+			request.setAttribute("alertMsg", "영화 후기 등록이 완료되었습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
 			
 			request
 			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
 			.forward(request, response);
 		} else {
-			request.setAttribute("alertMsg", "�쁺�솕 �썑湲� �닔�젙 以� �뿉�윭媛� 諛쒖깮�뻽�뒿�땲�떎.");
+			request.setAttribute("alertMsg", "영화 후기 등록중 에러가 났습니다");
 			request.setAttribute("url", "/mypage/mywritelist.do");
 			
 			request
