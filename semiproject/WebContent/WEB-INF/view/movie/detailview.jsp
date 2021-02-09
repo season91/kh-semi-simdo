@@ -126,7 +126,15 @@
 
 					</div>
 					<div class="mv_info_score">
-						<p>심도 평점 : ${score}</p>
+					<c:choose>
+						<c:when test="${score == 'NaN'}">
+							<p>심도 평점을 매겨주세요!</p>
+						</c:when>
+						<c:otherwise>
+							<p>심도 평점 : ${score}</p>
+						</c:otherwise>
+					</c:choose>
+						
 					</div>
 					<div class="mv_info_write">
 						<span><a>후기작성</a></span> <span><a>나만의 명대사 작성</a></span> <span><a>번역</a></span>
