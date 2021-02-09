@@ -96,7 +96,7 @@ public class MypageController extends HttpServlet {
 		case "writeline.do" :  // 김종환
 			writeLine(request, response);
 			break;
-		case "insetreline.do" : // 김종환
+		case "insertline.do" : // 김종환
 			insertLine(request, response);
 			break;
 		case "myqnalist.do" :  // 조아영
@@ -431,12 +431,12 @@ public class MypageController extends HttpServlet {
 		String mvNo = request.getParameter("mvno");
 		Movie movie = movieService.selectMovieByMvNo(mvNo);
 
-		String rvContent = request.getParameter("rvContent");
+		String lineContent = request.getParameter("lineContent");
 
 		
 		UserFmsline userFmsline = new UserFmsline();
 		userFmsline.setUserNo(user.getUserNo());
-		userFmsline.setFmlContent(rvContent);
+		userFmsline.setFmlContent(lineContent);
 		userFmsline.setMvNo(movie.getMvNo());
 		userFmsline.setMvTitle(movie.getMvTitle());
 		userFmsline.setThumbnail(movie.getThumbnail());
@@ -445,15 +445,14 @@ public class MypageController extends HttpServlet {
 		
 		int res = userReviewService.insertLine(userFmsline);
 		if(res > 0) {
-			request.getSession().removeAttribute("reviewNo");
-			request.setAttribute("alertMsg", "영화 후기 등록이 완료되었습니다.");
+			request.setAttribute("alertMsg", "나만의 명대사 등록이 완료되었습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
 			
 			request
 			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
 			.forward(request, response);
 		} else {
-			request.setAttribute("alertMsg", "영화 후기 등록중 에러가 났습니다");
+			request.setAttribute("alertMsg", "나만의 명대사 등록중 에러가 났습니다");
 			request.setAttribute("url", "/mypage/mywritelist.do");
 			
 			request
