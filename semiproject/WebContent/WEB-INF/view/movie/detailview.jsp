@@ -69,8 +69,7 @@
 			<div class="mv_info_middle-wrap">
 			
 				<div class="mv_info_top_left mv_info_img">
-					<img
-						src="${res.poster}">
+					<img src="${res.poster}">
 				</div>
 				<div class="mv_info_top_right">
 					<div class="mv_info-title_wrap">
