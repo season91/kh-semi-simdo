@@ -14,14 +14,14 @@ import com.kh.simdo.common.exception.ToAlertException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
 import com.kh.simdo.common.util.http.HttpUtils;
 import com.kh.simdo.movie.model.vo.Movie;
-import com.kh.simdo.mypage.model.dao.UserReviewDao;
+import com.kh.simdo.mypage.model.dao.MypageDao;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
 import com.kh.simdo.mypage.model.vo.Wish;
 
-public class UserReviewService {
+public class MypageService {
 	
-	UserReviewDao userReviewDao = new UserReviewDao();
+	MypageDao mypageDao = new MypageDao();
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 
 	/**
@@ -33,7 +33,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		List<UserReview> reviewList = null;
 		try {
-			reviewList = userReviewDao.selectReviewByUserNo(conn, UserNo);
+			reviewList = mypageDao.selectReviewByUserNo(conn, UserNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -52,7 +52,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		Map<String, Object> reviewContent = null;
 		try {
-			reviewContent = userReviewDao.selectReviewByReviewNo(conn, reviewNo);
+			reviewContent = mypageDao.selectReviewByReviewNo(conn, reviewNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -69,7 +69,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		List<UserFmsline> fmslineList = null;
 		try {
-			fmslineList = userReviewDao.selectFmslineByUserNo(conn, UserNo);
+			fmslineList = mypageDao.selectFmslineByUserNo(conn, UserNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -88,7 +88,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		Map<String, Object> fmslineContent = null;
 		try {
-			fmslineContent = userReviewDao.selectFmslineByFmslineNo(conn, fmslineNo);
+			fmslineContent = mypageDao.selectFmslineByFmslineNo(conn, fmslineNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -106,7 +106,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.deleteReview(conn, reviewNo);
+			res = mypageDao.deleteReview(conn, reviewNo);
 			jdt.commit(conn);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -129,7 +129,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.deleteFmsline(conn, fmslineNo);
+			res = mypageDao.deleteFmsline(conn, fmslineNo);
 			jdt.commit(conn);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -155,7 +155,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.updateReview(conn, userReview);
+			res = mypageDao.updateReview(conn, userReview);
 			jdt.commit(conn);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -181,7 +181,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.updateFmsline(conn, userFmsline);
+			res = mypageDao.updateFmsline(conn, userFmsline);
 			jdt.commit(conn);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -245,7 +245,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		List<UserReview> reviewList = null;
 		try {
-			reviewList = userReviewDao.selectFmslineByMvNo(conn, mvNo);
+			reviewList = mypageDao.selectFmslineByMvNo(conn, mvNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -265,7 +265,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		List<UserReview> reviewList = null;
 		try {
-			reviewList = userReviewDao.selectReviewByMvNo(conn, mvNo);
+			reviewList = mypageDao.selectReviewByMvNo(conn, mvNo);
 		}finally {
 			jdt.close(conn);
 		}
@@ -284,7 +284,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.insertWish(conn, userNo, movie);
+			res = mypageDao.insertWish(conn, userNo, movie);
 			jdt.commit(conn);
 		}catch (DataAccessException e) {
 			jdt.rollback(conn);
@@ -309,7 +309,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.deleteWish(conn, userNo, mvNo);
+			res = mypageDao.deleteWish(conn, userNo, mvNo);
 			jdt.commit(conn);
 		}catch (DataAccessException e) {
 			jdt.rollback(conn);
@@ -332,7 +332,7 @@ public class UserReviewService {
 		Wish wish = null;
 		Connection conn = jdt.getConnection();
 		try {
-			wish = userReviewDao.selectWish(conn, userNo, mvNo);
+			wish = mypageDao.selectWish(conn, userNo, mvNo);
 		} finally {
 			jdt.close(conn);
 		}
@@ -351,7 +351,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.insertReview(conn, userReview);
+			res = mypageDao.insertReview(conn, userReview);
 			jdt.commit(conn);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -370,7 +370,7 @@ public class UserReviewService {
 		int res = 0;
 		
 		try {
-			res = userReviewDao.insertLine(conn, userFmsLine);
+			res = mypageDao.insertLine(conn, userFmsLine);
 			jdt.commit(conn);
 		} catch (DataAccessException e) {
 			// TODO: handle exception
@@ -389,7 +389,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		List<UserReview> reviewList = null;
 		try {
-			reviewList = userReviewDao.dailyReviewByUserNo(conn, UserNo, watchDate);
+			reviewList = mypageDao.dailyReviewByUserNo(conn, UserNo, watchDate);
 		}finally {
 			jdt.close(conn);
 		}
@@ -403,7 +403,7 @@ public class UserReviewService {
 		Connection conn = jdt.getConnection();
 		List<UserReview> reviewList = null;
 		try {
-			reviewList = userReviewDao.takeMonthlyReview(conn, UserNo, date);
+			reviewList = mypageDao.takeMonthlyReview(conn, UserNo, date);
 		}finally {
 			jdt.close(conn);
 		}

@@ -93,9 +93,8 @@
 							</c:otherwise>
 						</c:choose>
 							
-							
-							<c:choose>
-								<c:when test="${empty fmsList}">
+						<c:choose>
+								<c:when test="${empty reviewList}">
 									<button name="write-is">
 									<i class="fas fa-journal-whills" id="btn_write-is"></i>
 									</button>
@@ -126,7 +125,15 @@
 
 					</div>
 					<div class="mv_info_score">
-						<p>심도 평점 : ${score}</p>
+					<c:choose>
+						<c:when test="${score == 'NaN'}">
+							<p>심도 평점을 매겨주세요!</p>
+						</c:when>
+						<c:otherwise>
+							<p>심도 평점 : ${score}</p>
+						</c:otherwise>
+					</c:choose>
+						
 					</div>
 					<div class="mv_info_write">
 						<span><a href="/mypage/writereview.do?mvno=${res.mvNo}">후기작성</a></span> <span><a href="/mypage/writeline.do?mvno=${res.mvNo}">나만의 명대사 작성</a></span> <span><a>번역</a></span>

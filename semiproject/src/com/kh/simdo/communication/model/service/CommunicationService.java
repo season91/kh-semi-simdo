@@ -30,21 +30,26 @@ public class CommunicationService {
 	public void insertComm(String userNm, HttpServletRequest request) {
 		Connection conn = jdt.getConnection();
 		//게시글 저장
+		System.out.println("서비스안도니??");
+		// 문의  파일업로드내용  이부분이 업로드가 안되고있다.
 		Map<String,List> commData = new FileUtil().fileUpload(request);
-		
+		System.out.println("util실행후 ");
 		Communication communication = new Communication();
 		
+		System.out.println("vo넣은거 시작");
 		communication.setUserNm(userNm);
 		
+		// 문의 텍스트내용이고 
 		communication.setQstnTitle(commData.get("qstntitle").get(0).toString());
 		communication.setQstnContent(commData.get("qstncontent").get(0).toString());
 		communication.setQstnType(commData.get("qstntype").get(0).toString());
-		System.out.println("서비스까지 온다.");
-
+		
+		System.out.println("vo넣은거끝");
 		
 		try {
 			communicationDao.insertComm(conn, communication);
 			for(FileVO fileData : (List<FileVO>)commData.get("fileData")) {
+				System.out.println("파일 넣는중  ");
 				communicationDao.insertFile(conn, fileData);
 			}
 
@@ -52,7 +57,7 @@ public class CommunicationService {
 			
 		}catch(DataAccessException e) {
 			jdt.rollback(conn);
-			throw new ToAlertException(e.error,e);
+			throw new ToAlertException(e.error);
 		}finally {
 			jdt.close(conn);
 		}

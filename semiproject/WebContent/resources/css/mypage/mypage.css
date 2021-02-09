@@ -64,6 +64,11 @@
 	width: 200px;
 	text-align: center;
 	font-weight: bold;
+	transition-duration:0.2s;
+}
+
+.navi-wrapper>div:hover{
+	font-size: 2vw;
 }
 
 .navi-menu{

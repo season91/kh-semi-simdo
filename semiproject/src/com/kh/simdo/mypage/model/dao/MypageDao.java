@@ -17,9 +17,9 @@ import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
 import com.kh.simdo.mypage.model.vo.Wish;
 
-public class UserReviewDao {
+public class MypageDao {
 	
-	public UserReviewDao() {
+	public MypageDao() {
 		// TODO Auto-generated constructor stub
 	}
 	

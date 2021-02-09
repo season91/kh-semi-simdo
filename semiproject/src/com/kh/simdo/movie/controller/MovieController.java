@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.kh.simdo.movie.model.service.MovieService;
 import com.kh.simdo.movie.model.vo.Movie;
-import com.kh.simdo.mypage.model.service.UserReviewService;
+import com.kh.simdo.mypage.model.service.MypageService;
 import com.kh.simdo.mypage.model.vo.UserReview;
 import com.kh.simdo.mypage.model.vo.Wish;
 import com.kh.simdo.user.model.vo.User;
@@ -31,7 +31,7 @@ import com.kh.simdo.user.model.vo.User;
 @WebServlet("/movie/*")
 public class MovieController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	UserReviewService userReviewService = new UserReviewService();
+	MypageService mypageService = new MypageService();
 	MovieService movieService = new MovieService();
 
 	/**
@@ -81,8 +81,8 @@ public class MovieController extends HttpServlet {
 		Movie detailRes = movieService.selectMovieByMvNo(mvNo);
 		request.setAttribute("res", detailRes);
 		// 2. 영화리뷰, 명대사 가져오고 파싱해주기 
-		List reviewList = userReviewService.selectReviewByMvNo(mvNo);
-		List fmsList = userReviewService.selectFmslineByMvNo(mvNo);		
+		List reviewList = mypageService.selectReviewByMvNo(mvNo);
+		List fmsList = mypageService.selectFmslineByMvNo(mvNo);		
 		// 후기출력
 		List parseJsonrev = parseJson(reviewList);
 		request.setAttribute("reviewList", parseJsonrev);
@@ -93,15 +93,16 @@ public class MovieController extends HttpServlet {
 		request.setAttribute("fmsList", parseJsonfms);
 		
 		// 찜했다면 찜하트 색칠해주어야함
+		// user session 없으면 wish를 널로 보낼것.
 		User user = (User) request.getSession().getAttribute("user");
-		Wish wish = userReviewService.selectWish(user.getUserNo(), mvNo);
+		Wish wish = mypageService.selectWish(user.getUserNo(), mvNo);
 		request.setAttribute("wish", wish);
 		
 		String headfms = null;
 		if(parseJsonfms.size() > 0) {
 			headfms = headFms(parseJsonfms);
 		} 
-		
+		// 후기 유저 조건문 추가 
 		// 상세화면 상단에 넣어줄 명대사 출력.
 		request.setAttribute("headfms", headfms);
 		request.getRequestDispatcher("/WEB-INF/view/movie/detailview.jsp").forward(request, response);
@@ -198,7 +199,7 @@ public class MovieController extends HttpServlet {
 			Map<String,Movie> resmap = gson.fromJson(resStr, Map.class);
 		
 			// 영화 번호기준으로 리뷰리스트 가져오기
-			List reviewRes = userReviewService.selectReviewByMvNo(String.valueOf(resmap.get("mvNo")));
+			List reviewRes = mypageService.selectReviewByMvNo(String.valueOf(resmap.get("mvNo")));
 			List parseRes = parseJson(reviewRes);
 			
 			//해당영화vo와 그영화의 리뷰 map에 담아주기
