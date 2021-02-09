@@ -469,7 +469,7 @@ public class UserReviewDao {
 	public int insertWish(Connection conn, int userNo, Movie movie) {
 		int res = 0;
 		PreparedStatement pstm = null;
-		String sql = "insert into user_whishmv (wish_no, user_no, mv_no, poster) values(sc_wish_no.nextval,?,?,?)";
+		String sql = "insert into user_wishmv (wish_no, user_no, mv_no, poster) values(sc_wish_no.nextval,?,?,?)";
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, userNo);
@@ -496,7 +496,7 @@ public class UserReviewDao {
 		PreparedStatement pstm = null;
 		
 		try {
-			String sql = "delete from user_whishmv where user_no = ? and mv_no = ? ";
+			String sql = "delete from user_wishmv where user_no = ? and mv_no = ? ";
 			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, userNo);
 			pstm.setString(2, mvNo);
@@ -525,7 +525,7 @@ public class UserReviewDao {
 		
 		
 		try {
-			String sql = "select * from user_whishmv where user_no = ? and mv_no = ?";
+			String sql = "select * from user_wishmv where user_no = ? and mv_no = ?";
 			pstm = conn.prepareStatement(sql);
 			pstm.setInt(1, userNo);
 			pstm.setString(2, mvNo);
