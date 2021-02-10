@@ -187,7 +187,7 @@ public class MypageController extends HttpServlet {
 			page = Integer.parseInt(text);
 		}
 		// dao 쿼리기준 페이징번호 가져오는거 올말고 유저기준으로 수정하기.
-		int[] res = communicationService.selectPagingByQna(page);
+		int[] res = communicationService.selectPagingByQna(page, user.getUserNo());
 		request.setAttribute("start", res[0]);
 		request.setAttribute("end", res[1]);
 

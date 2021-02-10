@@ -273,6 +273,20 @@ public class MypageService {
 	}
 	
 	/**
+	 * @author 조아영
+	 * 로그인한 유저가 후기작성했는지 확인, 영화 상세화면내 후기작성여부 확인 
+	 */
+	public UserReview selectReviewByUserNoMvNo(int userNo, String mvNo) {
+		Connection conn = jdt.getConnection();
+		UserReview review = null;
+		try {
+			review = mypageDao.selectReviewByUserNoMvNo(conn, userNo, mvNo);
+		}finally {
+			jdt.close(conn);
+		}
+		return review;
+	}
+	/**
 	 * 
 	 * @Author :조아영
 	   @Date : 2021. 2. 8.

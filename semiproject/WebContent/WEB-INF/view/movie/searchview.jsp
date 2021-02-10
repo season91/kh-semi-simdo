@@ -32,7 +32,7 @@
 		<div class="navi-wrapper">
 			<div class="nation-view" style="cursor:pointer;">나라별</div>
 			<div class="genre-view" style="cursor:pointer;">장르별</div>
-			<div class="score-view" OnClick="location.href ='/movie/socreview.do'" style="cursor:pointer;">평점순</div>
+			<div class="score-view" OnClick="location.href ='/movie/scoreview.do'" style="cursor:pointer;">평점순</div>
 			<div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
 			<form class="search-view" action="/movie/searchview.do">
 				<input type="search" class="input_navi-search" name="search">

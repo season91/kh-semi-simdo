@@ -70,11 +70,11 @@ public class CommunicationService {
 	 */
 	
 	// 문의사항 처음에 출력해줄 페이징 개수 불러오기
-		public int[] selectPagingByQna(int page) {
+		public int[] selectPagingByQna(int page, int userNo) {
 			Connection conn = jdt.getConnection();
 			int[] res = new int[2];
 			try {
-				res = communicationDao.selectPagingByQna(conn, page);
+				res = communicationDao.selectPagingByQna(conn, page, userNo);
 			} finally {
 				jdt.close(conn);
 			}

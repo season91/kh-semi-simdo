@@ -117,13 +117,14 @@ public class CommunicationDao {
 	 * @author 조아영
 	 */
 		// 문의사항 페이징 범위 구하기
-		public int[] selectPagingByQna(Connection conn, int page) {
+		public int[] selectPagingByQna(Connection conn, int page, int userNo) {
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
-			String sql = "select count(*) from comm ";
+			String sql = "select count(*) from comm where user_no = ?";
 			int[] startEnd = new int[2];
 			try {
 				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, userNo);
 				rset = pstm.executeQuery();
 				System.out.println("첫실행 다오");
 				int totalContent = 0;

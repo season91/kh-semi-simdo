@@ -545,6 +545,37 @@ public class MypageDao {
 	}
 	
 	/**
+	 * @author 조아영
+	 * 영화 상세내애서 후기작성여부 확인해야 색칠가능
+	 */
+	
+	public UserReview selectReviewByUserNoMvNo(Connection conn, int userNo, String mvNo) {
+		UserReview userReview = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		
+		try {
+			String sql = "select * from user_review where user_no = ? and mv_no = ?";
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, userNo);
+			pstm.setString(2, mvNo);
+			rset = pstm.executeQuery();
+			if(rset.next()) {
+				userReview = new UserReview();
+				userReview.setMvNo(rset.getString("mv_no"));
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(ErrorCode.SU01, e);
+		} finally {
+			jdt.close(rset, pstm);
+		}
+
+		return userReview;
+		
+	}
+	
+	/**
 	 * 
 	 * @author : 김종환
 	 * @Date : 2021. 2. 9.
