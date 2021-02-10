@@ -40,6 +40,22 @@ public class MypageService {
 		return reviewList;
 		
 	}
+	/**
+	 * 
+	 * @Author : 김백관 
+	 */
+	public List<Wish> selectWishByUserNo(int UserNo) {
+	      
+	      Connection conn = jdt.getConnection();
+	      List<Wish> wishList = null;
+	      try {
+	         wishList = mypageDao.selectWishByUserNo(conn, UserNo);
+	      }finally {
+	         jdt.close(conn);
+	      }
+	      return wishList;
+	      
+	   }
 	
 	/**
 	 * 

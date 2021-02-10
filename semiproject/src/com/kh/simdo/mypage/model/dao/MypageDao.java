@@ -720,5 +720,50 @@ public class MypageDao {
 		
 		return reviewList;
 	}
-	
+	/**
+	 * 
+	 * @author : 김백관
+	 * @Date : 2021. 2. 10.
+	 * 
+	 */
+	public List<Wish> selectWishByUserNo(Connection conn, int userNo) {
+	      
+	      List<Wish> wishList = new ArrayList<>();
+	      PreparedStatement pstm = null;
+	      ResultSet rset = null;
+	      
+	      try {
+	         
+	         String query = "select u.wish_no, u.user_no, u.wish_reg_date, u.mv_no, u.poster "
+	               + "from user_wishmv u inner join \"USER\" us on(u.user_no = us.user_no) "
+	               + "where u.user_no = ? and us.is_leave = 0"
+	               + "order by u.wish_reg_date desc";
+	         
+	         pstm = conn.prepareStatement(query);
+	         pstm.setInt(1, userNo);
+	         
+	         rset = pstm.executeQuery();
+	         
+	         while(rset.next()) {
+	            
+	            Wish wish = new Wish();
+	            wish.setWishNo(rset.getString("wish_no"));
+	            wish.setUserNo(rset.getInt("user_no"));
+	            wish.setWishRegDate(rset.getDate("wish_reg_date"));
+	            wish.setMvNo(rset.getString("mv_no"));
+	            wish.setPoster(rset.getString("poster"));
+	            wishList.add(wish);
+	            
+	         }
+	         
+	      } catch (SQLException e) {
+	         // TODO Auto-generated catch block
+	         throw new DataAccessException(ErrorCode.SRV01, e);
+	      } finally {
+	         jdt.close(rset, pstm);
+	      }
+	      
+	      return wishList;
+	      
+	   }
 }
