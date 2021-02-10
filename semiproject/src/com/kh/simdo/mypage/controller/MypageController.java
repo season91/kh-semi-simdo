@@ -55,7 +55,7 @@ public class MypageController extends HttpServlet {
 		case "mypage.do" : //김백관
 			request.getRequestDispatcher("/WEB-INF/view/mypage/mypage.jsp").forward(request, response);
 			break;
-		case "mywish.do" : // 김백관 추가작업예정 찜목록
+		case "mywish.do" : // 김백관 찜목록
 			mywishList(request,response);
 			break;
 		case "mywishadd.do" : // 조아영 찜목록 DB에 넣기
