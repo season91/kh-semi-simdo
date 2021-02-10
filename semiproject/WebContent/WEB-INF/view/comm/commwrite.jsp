@@ -61,7 +61,7 @@
 	<p class="tit">QA작성</p>
 	
 		
-			<form action="${context}/comm/upload.do" method="post">
+			<form action="${context}/comm/upload.do" method="post" enctype="multipart/form-data">
 			<select name="qstntype">
     		<option value="none">=== 유형선택 ===</option>
     		<option value="영화관련">영화관련</option>

@@ -64,7 +64,6 @@ public class CommunicationDao {
 			PreparedStatement pstm = null;
 			try {
 				pstm = conn.prepareStatement(sql);
-				
 				pstm.setString(1, fileData.getOriginFileName());
 				pstm.setString(2, fileData.getRenameFileName());
 				pstm.setString(3, fileData.getSavePath());

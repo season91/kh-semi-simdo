@@ -162,7 +162,7 @@ public class CommunicationController extends HttpServlet {
 		communicationService.insertComm(user.getUserNm(),request);
 		
 		
-		request.setAttribute("alertMsg", "QnA작성이 완료되었습니다..");
+		
 		request.getRequestDispatcher("/WEB-INF/view/index/index.jsp")
 		.forward(request, response);
 		}
