@@ -36,7 +36,7 @@
 			<div class="navi-wrapper">
 				<div class="nation-view" style="cursor:pointer;">나라별</div>
 				<div class="genre-view" style="cursor:pointer;">장르별</div>
-				<div class="score-view" OnClick="location.href ='/movie/socreview.do'" style="cursor:pointer;">평점순</div>
+				<div class="score-view" OnClick="location.href ='/movie/scoreview.do'" style="cursor:pointer;">평점순</div>
 				<div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
 				<form class="search-view" action="/movie/searchview.do">
 					<input type="search" class="input_navi-search" name="search">
@@ -77,14 +77,10 @@
 						<%-- 이부분 해당 영화에 글을썻거나, 찜했으면 색깔 넣어서 표현해주어야 한다.--%>
 						
 						<div class="mv_info_btn">
-							<button name="like" class="like">
-								<i class="fas fa-thumbs-up" id="btn_like" style="color:black"></i>
-							</button>
+
 						<c:choose>
 							<c:when test="${empty wish}">
-								<button name="wish" class="wish">
-									<i class="fas fa-heart" id="btn_wish" style="color:black"></i>
-								</button>
+									<i class="fas fa-heart wish" id="btn_wish"></i>
 							</c:when>
 							<c:otherwise>
 								<button name="wish" class="wish">
@@ -93,17 +89,12 @@
 							</c:otherwise>
 						</c:choose>
 							
-							
-							<c:choose>
-								<c:when test="${empty fmsList}">
-									<button name="write-is">
-									<i class="fas fa-journal-whills" id="btn_write-is"></i>
-									</button>
+						<c:choose>
+								<c:when test="${empty write}">
+									<i class="fas fa-journal-whills write-is" id="btn_write-is"></i>
 								</c:when>
 								<c:otherwise>
-									<button name="write-is">
-									<i class="fas fa-journal-whills" id="btn_write-is" style="color:pink"></i>
-									</button>
+									<i class="fas fa-journal-whills write-is" id="btn_write-is" style="color:pink"></i>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -137,7 +128,7 @@
 						
 					</div>
 					<div class="mv_info_write">
-						<span><a href="/mypage/writereview.do?mvno=${res.mvNo}">후기작성</a></span> <span><a href="/mypage/writeline.do?mvno=${res.mvNo}">나만의 명대사 작성</a></span> <span><a>번역</a></span>
+						<span><a href="/mypage/writereview.do?mvno=${res.mvNo}">후기작성</a></span> <span><a href="/mypage/writeline.do?mvno=${res.mvNo}">나만의 명대사 작성</a></span>
 					</div>
 
 				</div>

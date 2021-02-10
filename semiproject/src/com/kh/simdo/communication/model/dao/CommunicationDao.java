@@ -29,7 +29,7 @@ public class CommunicationDao {
 		int res = 0;
 		
 		String sql = "insert into COMM (QSTN_NO, USER_NM, QSTN_TITLE, QSTN_CONTENT,QSTN_TYPE) values(sc_qstn_No.nextval, ?,?, ?,?)";
-		
+		System.out.println("문의내용저장 ");
 		PreparedStatement pstm = null;
 		try {
 			pstm = conn.prepareStatement(sql);
@@ -56,7 +56,7 @@ public class CommunicationDao {
 	//파일테이블에 파일 정보 저장
 		public int insertFile(Connection conn, FileVO fileData) {
 			int res = 0;
-			System.out.println("이놈아");
+			System.out.println("이놈아파일");
 			String sql = "insert into tb_file "
 					+ "(f_idx,origin_file_name,rename_file_name,save_path) "
 					+ "values(sc_file_idx.nextval,?,?,?)";
@@ -116,13 +116,14 @@ public class CommunicationDao {
 	 * @author 조아영
 	 */
 		// 문의사항 페이징 범위 구하기
-		public int[] selectPagingByQna(Connection conn, int page) {
+		public int[] selectPagingByQna(Connection conn, int page, int userNo) {
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
-			String sql = "select count(*) from comm";
+			String sql = "select count(*) from comm where user_no = ?";
 			int[] startEnd = new int[2];
 			try {
 				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, userNo);
 				rset = pstm.executeQuery();
 				System.out.println("첫실행 다오");
 				int totalContent = 0;

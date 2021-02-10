@@ -45,7 +45,7 @@
 
 	      	<div class="nation-view" style="cursor:pointer;">나라별</div>
 	        <div class="genre-view" style="cursor:pointer;">장르별</div>
-	        <div class="score-view" OnClick="location.href ='/movie/naviview.do'" style="cursor:pointer;">평점순</div>
+	        <div class="score-view" OnClick="location.href ='/movie/scoreview.do'" style="cursor:pointer;">평점순</div>
 	        <div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
 	       	<form class="search-view" action="/movie/searchview.do">
 					<input type="search" class="input_navi-search" name="search">
@@ -159,7 +159,7 @@
 				<address>TEL:031)111-1212</address>
 			</div>
 			<div class="bottom_right">
-				<a href="/aboutus/aboutus.do">ABOUT US</a><br>
+				<a href="/aboutus.do">ABOUT US</a><br>
 				<a href="/고객페이지/"> 고객페이지</a><br>
 				<a href="/마이페이지/"> 마이페이지</a><br>
 				<a href="/내정보관리/"> 내정보관리</a><br>

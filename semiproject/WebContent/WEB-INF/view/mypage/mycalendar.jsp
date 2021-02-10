@@ -40,7 +40,7 @@
 			</div>
 		</nav>
 	</div>
-<section class="content">
+<div class="content">
 
 <table id="calendar" border="3" align="center" style="border-color:#3333FF ">
     <tr><!-- label은 마우스로 클릭을 편하게 해줌 -->
@@ -61,27 +61,27 @@
         <td align="center"><font color ="skyblue">토</td>
     </tr> 
 </table>
-</section>
-<footer class="bottom">
-				<div class="bottom_main">
-					<h2>SIMDO:WM</h2>
-				</div>
-				<div class="bottom_content">
-					<div class="bottom_left">
-						<p>상호 주식회사 심도</p>
-						<p>사업자 등록번호:123-45-67890</p>
-						<p>주소:대한민국 </p>
-						<address>TEL:031)111-1212</address>
-					</div>
-					<div class="bottom_right">
-						<a href="/aboutus/">ABOUT US</a><br>
-						<a href="/고객페이지/"> 고객페이지</a><br>
-						<a href="/마이페이지/"> 마이페이지</a><br>
-						<a href="/내정보관리/"> 내정보관리</a><br>
-					</div>
-				</div>
-			</footer>
+</div>
+	
+	<footer class="bottom">
+		<div class="bottom_main">
+			<h2>SIMDO:WM</h2>
 		</div>
+		<div class="bottom_content">
+			<div class="bottom_left">
+				<p>상호 주식회사 심도</p>
+				<p>사업자 등록번호:123-45-67890</p>
+				<p>주소:대한민국</p>
+				<address>TEL:031)111-1212</address>
+			</div>
+			<div class="bottom_right">
+				<a href="/aboutus/">ABOUT US</a><br> <a href="/고객페이지/">
+					고객페이지</a><br> <a href="/마이페이지/"> 마이페이지</a><br> <a
+					href="/내정보관리/"> 내정보관리</a><br>
+
+			</div>
+		</div>
+	</footer>
 
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript" src="/resources/js/mypage/calendar.js"></script>
@@ -147,9 +147,9 @@ const printReview = (reviewList)=>{
 		}
 	    
 	    if(k < 1){
-	    	$("#d_" + wDay).append('<a href="/mypage/mydailylist.do?year=' + wYear + '&month=' + month + '&day=' + day + '"> <img src="' + reviewList[0].thumbnail + '"></a>');
+	    	$("#d_" + wDay).append('<a class="img-wrap" href="/mypage/mydailylist.do?year=' + wYear + '&month=' + month + '&day=' + day + '"> <img class="img-wrap" src="' + reviewList[0].thumbnail + '"></a>');
 	    }else{
-	    	$("#d_" + wDay).append('<a href="/mypage/mydailylist.do?year=' + wYear + '&month=' + month + '&day=' + day + '">' + '+' + k + '<img src="' + reviewList[0].thumbnail + '"></a>');
+	    	$("#d_" + wDay).append('<a class="img-wrap" href="/mypage/mydailylist.do?year=' + wYear + '&month=' + month + '&day=' + day + '">' + '+' + k + '<img class="img-wrap" src="' + reviewList[0].thumbnail + '"></a>');
 	    }
 }
 	

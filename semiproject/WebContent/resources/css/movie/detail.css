@@ -246,27 +246,15 @@ body{
 
 .mv_info_btn{
 	display: flex;
+	justify-content: space-around;
+	width: 10vh;
 }
 
 .mv_info_btn i{
-	display: flex;
 	font-size: 3.5vh;
-	justify-content: space-between;
 	color: black;
-	transition-duration:0.5s;
 }
 
-
-.mv_info_btn #btn_like:hover{
-	color: skyblue;
-}
-
-.mv_info_btn #btn_wish:hover{
-	color: red;
-}
-.mv_info_btn #btn_write-is:hover{
-	color: pink;
-}
 
 /* 영화제목,감독,장르 부분 */
 .mv_info_basic_content{
@@ -303,7 +291,7 @@ body{
 }
 .mv_info_write>span{
 	height:3vh;
-	width: 13vh;
+	width: 16vh;
 	background-color: gray;
 	text-align: center;
 	border-radius: 5px;

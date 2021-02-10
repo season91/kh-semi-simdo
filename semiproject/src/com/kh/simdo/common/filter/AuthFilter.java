@@ -58,57 +58,43 @@ public class AuthFilter implements Filter {
 			// 비로그인 상태일 때 권한 관리
 
 			switch (uriArr[1]) {
-			case "member":
-				switch (uriArr[2]) {
-				case "mypage":
-					if (session.getAttribute("user") == null) {
-						// 사용자에게 당신은 접근이 없다 안내하고 페이지 이동시키기. throw하니까 break 없어도 됨
-						throw new ToAlertException(ErrorCode.AUTH01);
-					}
-					break;
-				case "joinimpl":
-					if (session.getAttribute("persistUser") == null) {
-						throw new ToAlertException(ErrorCode.AUTH02);
-					}
-					break;
-				}
-				break;
 			case "board":
 				switch (uriArr[2]) {
 				case "write.do":
 					if (session.getAttribute("user") == null) {
 						throw new ToAlertException(ErrorCode.AUTH03);
 					}
-					
+
 				case "upload.do":
 					if (session.getAttribute("user") == null) {
 						throw new ToAlertException(ErrorCode.AUTH03);
 					}
-					
-				default : break;
+
+				default:
+					break;
 				}
 				break;
-			
+
 			case "mypage":
-				switch (uriArr[2]) {
-				case "myqnalist.do":
-					if (session.getAttribute("user") == null) {
-						throw new ToAlertException(ErrorCode.AUTH03);
-					}
-					
-				case "myqdetail.do":
-					if (session.getAttribute("user") == null) {
-						throw new ToAlertException(ErrorCode.AUTH03);
-					}
-					
-				default : break;
+				if (session.getAttribute("user") == null) {
+					throw new ToAlertException(ErrorCode.AUTH01);
 				}
+				break;
+			case "user":
+				switch (uriArr[2]) {
+				case "infochange.do":
+					if (session.getAttribute("user") == null) {
+						throw new ToAlertException(ErrorCode.AUTH01);
+					}
+					break;
+				}
+
 				break;
 			}
 		}
 
-	// pass the request along the filter chain
-	chain.doFilter(request,response);
+		// pass the request along the filter chain
+		chain.doFilter(request, response);
 
 	}
 

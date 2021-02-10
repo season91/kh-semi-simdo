@@ -36,8 +36,8 @@ public JDBCTemplate() {
 		
 
 		
-		//String url = "jdbc:oracle:thin:@simdoDB_medium?TNS_ADMIN=C:/CODE/wallet/Wallet_simdoDB";
-		String url = "jdbc:oracle:thin:@simdoDB_medium?TNS_ADMIN=/Users/choayoung91/Documents/CODE/wallet/Wallet_simdoDB";
+		String url = "jdbc:oracle:thin:@simdoDB_medium?TNS_ADMIN=C:/CODE/wallet/Wallet_simdoDB";
+		//String url = "jdbc:oracle:thin:@simdoDB_medium?TNS_ADMIN=/Users/choayoung91/Documents/CODE/wallet/Wallet_simdoDB";
 		
 		String user = "admin";
 		String password = "Simdodatabase4";

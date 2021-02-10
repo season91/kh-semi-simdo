@@ -17,9 +17,9 @@ import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
 import com.kh.simdo.mypage.model.vo.Wish;
 
-public class UserReviewDao {
+public class MypageDao {
 	
-	public UserReviewDao() {
+	public MypageDao() {
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -542,6 +542,37 @@ public class UserReviewDao {
 			jdt.close(rset, pstm);
 		}
 		return wish;
+	}
+	
+	/**
+	 * @author 조아영
+	 * 영화 상세내애서 후기작성여부 확인해야 색칠가능
+	 */
+	
+	public UserReview selectReviewByUserNoMvNo(Connection conn, int userNo, String mvNo) {
+		UserReview userReview = null;
+		PreparedStatement pstm = null;
+		ResultSet rset = null;
+		
+		
+		try {
+			String sql = "select * from user_review where user_no = ? and mv_no = ?";
+			pstm = conn.prepareStatement(sql);
+			pstm.setInt(1, userNo);
+			pstm.setString(2, mvNo);
+			rset = pstm.executeQuery();
+			if(rset.next()) {
+				userReview = new UserReview();
+				userReview.setMvNo(rset.getString("mv_no"));
+			}
+		} catch (SQLException e) {
+			throw new DataAccessException(ErrorCode.SU01, e);
+		} finally {
+			jdt.close(rset, pstm);
+		}
+
+		return userReview;
+		
 	}
 	
 	/**
