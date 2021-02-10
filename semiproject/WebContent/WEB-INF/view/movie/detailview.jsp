@@ -80,7 +80,9 @@
 
 						<c:choose>
 							<c:when test="${empty wish}">
-									<i class="fas fa-heart wish" id="btn_wish"></i>
+								<button name="wish" class="wish">
+										<i class="fas fa-heart wish" id="btn_wish" style="color:black"></i>
+								</button>
 							</c:when>
 							<c:otherwise>
 								<button name="wish" class="wish">
