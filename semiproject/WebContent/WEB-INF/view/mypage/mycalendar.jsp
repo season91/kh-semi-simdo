@@ -32,11 +32,11 @@
 		</header>
 		<nav class="navi">
 			<div class="navi-wrapper">
-				<div class="my-mv-calendar navi-menu">영화 달력</div>
+				<div class="my-mv-calendar navi-menu" onclick="location.href='/mypage/calendar.do'">영화 달력</div>
 				<div class="my-mv-review navi-menu" onclick="location.href='/mypage/mywritelist.do'">영화 후기</div>
-				<div class="my-mv navi-menu">찜목록</div>
+				<div class="my-mv navi-menu" onclick="location.href='/mypage/mywish.do'">찜목록</div>
 				<div class="my-info navi-menu" onclick="location.href='/user/infochange.do'">회원 정보 변경</div>
-				<div class="my-qna navi-menu">나의 문의 & 요청</div>
+				<div class="my-qna navi-menu" onclick="location.href='/mypage/myqnalist.do'">나의 문의 & 요청</div>
 			</div>
 		</nav>
 	</div>
@@ -44,21 +44,21 @@
 
 <table id="calendar" border="3" align="center" style="border-color:#3333FF ">
     <tr><!-- label은 마우스로 클릭을 편하게 해줌 -->
-        <td><label onclick="prevMonth()"><</label></td>
-        <td align="center" id="tbCalendarYM" colspan="5">
+        <td class="cal-top"><label onclick="prevMonth()"><</label></td>
+        <td class="cal-top" align="center" id="tbCalendarYM" colspan="5">
         yyyy년 m월</td>
-        <td><label onclick="nextMonth()">>
+        <td class="cal-top"><label onclick="nextMonth()">>
             
         </label></td>
     </tr>
     <tr>
-        <td align="center"><font color ="#F79DC2">일</td>
-        <td align="center">월</td>
-        <td align="center">화</td>
-        <td align="center">수</td>
-        <td align="center">목</td>
-        <td align="center">금</td>
-        <td align="center"><font color ="skyblue">토</td>
+        <td class="cal-top" align="center"><font color ="#CD0000">일</td>
+        <td class="cal-top" align="center">월</td>
+        <td class="cal-top" align="center">화</td>
+        <td class="cal-top" align="center">수</td>
+        <td class="cal-top" align="center">목</td>
+        <td class="cal-top" align="center">금</td>
+        <td class="cal-top" align="center"><font color ="#00008C">토</td>
     </tr> 
 </table>
 </div>
@@ -147,9 +147,9 @@ const printReview = (reviewList)=>{
 		}
 	    
 	    if(k < 1){
-	    	$("#d_" + wDay).append('<a class="img-wrap" href="/mypage/mydailylist.do?year=' + wYear + '&month=' + month + '&day=' + day + '"> <img class="img-wrap" src="' + reviewList[0].thumbnail + '"></a>');
+	    	$("#d_" + wDay).append('<a class="img-wrap" href="/mypage/mydailylist.do?year=' + wYear + '&month=' + month + '&day=' + day + '"><br> <img class="img-wrap" src="' + reviewList[0].thumbnail + '"></a>');
 	    }else{
-	    	$("#d_" + wDay).append('<a class="img-wrap" href="/mypage/mydailylist.do?year=' + wYear + '&month=' + month + '&day=' + day + '">' + '+' + k + '<img class="img-wrap" src="' + reviewList[0].thumbnail + '"></a>');
+	    	$("#d_" + wDay).append('<a class="img-wrap" href="/mypage/mydailylist.do?year=' + wYear + '&month=' + month + '&day=' + day + '"><br> + ' + k + ' <img class="img-wrap" src="' + reviewList[0].thumbnail + '"></a>');
 	    }
 }
 	
