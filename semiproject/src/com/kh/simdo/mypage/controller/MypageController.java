@@ -22,6 +22,7 @@ import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.mypage.model.service.MypageService;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
+import com.kh.simdo.mypage.model.vo.Wish;
 import com.kh.simdo.user.model.vo.User;
 
 /**
@@ -54,8 +55,8 @@ public class MypageController extends HttpServlet {
 		case "mypage.do" : //김백관
 			request.getRequestDispatcher("/WEB-INF/view/mypage/mypage.jsp").forward(request, response);
 			break;
-		case "mywish.do" : // 김백관 추가작업예정 찜목록
-			request.getRequestDispatcher("/WEB-INF/view/mypage/mywish.jsp").forward(request, response);
+		case "mywish.do" : // 김백관 찜목록
+			mywishList(request,response);
 			break;
 		case "mywishadd.do" : // 조아영 찜목록 DB에 넣기
 			myWishAdd(request,response);
@@ -119,6 +120,32 @@ public class MypageController extends HttpServlet {
 			break;
 		}
 	}
+	
+	/**
+	 * @author 김백관 찜목록리스트
+	 */
+	private void mywishList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	      User user = (User) request.getSession().getAttribute("user");
+	      List<Wish> wishRes = mypageService.selectWishByUserNo(user.getUserNo());
+	      
+	      Map<String, Object> wishCommandMap = new HashMap<>();
+	      
+	      
+	      List wishList = new ArrayList();
+
+	      
+	      for(int i = 0; i < wishRes.size(); i++) {
+	         String wishJson = new Gson().toJson(wishRes.get(i));
+	         wishCommandMap = new Gson().fromJson(wishJson, Map.class);
+	         wishList.add(wishCommandMap);
+	      }
+	      
+	   
+	      request.setAttribute("wishList", wishList);
+	      request.getRequestDispatcher("/WEB-INF/view/mypage/mywish.jsp")
+	      .forward(request, response);
+	   }
+	   
 	
 	/**
 	 * @author 조아영
@@ -187,7 +214,7 @@ public class MypageController extends HttpServlet {
 			page = Integer.parseInt(text);
 		}
 		// dao 쿼리기준 페이징번호 가져오는거 올말고 유저기준으로 수정하기.
-		int[] res = communicationService.selectPagingByQna(page);
+		int[] res = communicationService.selectPagingByQna(page, user.getUserNo());
 		request.setAttribute("start", res[0]);
 		request.setAttribute("end", res[1]);
 

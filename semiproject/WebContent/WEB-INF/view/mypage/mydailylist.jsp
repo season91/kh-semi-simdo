@@ -32,16 +32,17 @@
 		</header>
 		<nav class="navi">
 			<div class="navi-wrapper">
-				<div class="my-mv-calendar navi-menu">영화 달력</div>
+				<div class="my-mv-calendar navi-menu" onclick="location.href='/mypage/calendar.do'">영화 달력</div>
 				<div class="my-mv-review navi-menu" onclick="location.href='/mypage/mywritelist.do'">영화 후기</div>
-				<div class="my-mv navi-menu">찜목록</div>
+				<div class="my-mv navi-menu" onclick="location.href='/mypage/mywish.do'">찜목록</div>
 				<div class="my-info navi-menu" onclick="location.href='/user/infochange.do'">회원 정보 변경</div>
-				<div class="my-qna navi-menu">나의 문의 & 요청</div>
+				<div class="my-qna navi-menu" onclick="location.href='/mypage/myqnalist.do'">나의 문의 & 요청</div>
 			</div>
 		</nav>
 	</div>
 	
-	<section class="content">
+	<div class="content">
+	<div class="con-wrap">
 	<c:forEach var="review" items="${requestScope.reviewList}" varStatus="status">
 		<div class="content-wrapper">
 			<c:if test="${status.first eq true}">
@@ -61,9 +62,7 @@
 						<div class="mymoviescore">
 							내 별점: ${review.score}
 						</div>
-						<div class="moviescore">
-							평균 별점: 4.2
-						</div>
+						<br>
 						<div class="mymoviereview">
 							내 후기
 						</div>
@@ -75,7 +74,8 @@
 			</div>
 		</div>
 		</c:forEach>
-	</section>
+		</div>
+	</div>
 	
 	<footer class="bottom">
 		<div class="bottom_main">

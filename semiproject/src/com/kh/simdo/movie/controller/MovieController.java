@@ -75,7 +75,22 @@ public class MovieController extends HttpServlet {
 	// 기능분리 : JSP로 보내기 위해 json 파싱하기, 평점 계산하기, 상세화면 상단에 들어갈 명대사 추출하기.
 	// 1. 영화와 후기,명대사 검색
 	protected void readMore(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		String mvNo = request.getParameter("mvno");
+		// 찜했다면 찜하트 색칠해주어야함, 후기썻다면 후기 색 색칠해주어야함.
+		// user session 있으면 wish 찾을 것.
+		User user = (User) request.getSession().getAttribute("user");
+		Wish wish = null;
+		UserReview userReview = null;
+		if(user != null) {
+			int userNo = user.getUserNo();
+			wish = mypageService.selectWish(userNo, mvNo);
+			userReview = mypageService.selectReviewByUserNoMvNo(userNo, mvNo);
+		}
+		
+		request.setAttribute("wish", wish);
+		request.setAttribute("write", userReview);		
+		
 		// 영화 번호로 영화정보와 고객리뷰, 명대사정보 가져오기.
 		// 1. 영화정보 가져오기
 		Movie detailRes = movieService.selectMovieByMvNo(mvNo);
@@ -92,11 +107,7 @@ public class MovieController extends HttpServlet {
 		List parseJsonfms = parseJson(fmsList);
 		request.setAttribute("fmsList", parseJsonfms);
 		
-		// 찜했다면 찜하트 색칠해주어야함
-		// user session 없으면 wish를 널로 보낼것.
-		User user = (User) request.getSession().getAttribute("user");
-		Wish wish = mypageService.selectWish(user.getUserNo(), mvNo);
-		request.setAttribute("wish", wish);
+		
 		
 		String headfms = null;
 		if(parseJsonfms.size() > 0) {
