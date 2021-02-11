@@ -248,7 +248,7 @@ public class MovieController extends HttpServlet {
 		String thumbnail = movieService.parseThumb();
 		// movie.vo에 넣어주기
 
-		Movie movie = addMovieVo(movieDB, thumbnail);
+		Movie movie = movieService.addMovieVo(movieDB, thumbnail);
 		//System.out.println(movie);
 		
 		// DB에 movie넣는걸 성공했다면 성공알람 실패시 실패 알람
@@ -259,79 +259,5 @@ public class MovieController extends HttpServlet {
 //				System.out.println("movie실패");
 //			}
 	}
-		
-	// 1. vo넣기전에 json파일을 한번 더 분해해야 한다. 매개변수로 분해 기준 카테고리 받는다.
-	// DB용 메서드로 API통신후 받은 json을 필요에따라 추가 분해해야하는 경우가 있어 기능분리
-	protected Map<String, Object> listSeparation(Map<String, Object> map, String beforecategory, String aftercategory) {
-		Gson gson = new Gson();
-		Map<String, Object> resMap = (Map<String, Object>) map.get(beforecategory);
-		ArrayList<String> resList = (ArrayList<String>) resMap.get(aftercategory);
-		String resStr = gson.toJson(resList.get(0));
-		Map<String, Object> res = gson.fromJson(resStr, Map.class);
-
-		return res;
-	}
-
-	// 2. vo넣기 전 Date를 util->sql 타입으로 변경해주기.
-	// DB용 메서드로 날짜 형변환 해주는 메서드
-	protected Date transformDate(String strDate) {
-		// 개봉일자는 String -> util.date -> sql.date 로 변환을 해주어야 한다.
-		// util.date로 변환해주기.
-		SimpleDateFormat beforFormat = new SimpleDateFormat("yyyymmdd");
-		SimpleDateFormat afterFormat = new SimpleDateFormat("yyyy-mm-dd");
-		java.util.Date tempDate = null;
-		try {
-			tempDate = beforFormat.parse(strDate);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		// sql.date로 변환해주기.
-		String transDate = afterFormat.format(tempDate);
-		Date date = Date.valueOf(transDate);
-		return date;
-	}
-
-	// 3. vo에 넣기
-	// DB용 메서드로 vo객체에 전달받은 json값을 하나씩 넣어주는 메서드
-	protected Movie addMovieVo(Map<String, Object> movieDB, String thumbnail) {
-		// 1. KMDB 영화정보 넣어주기
-		Gson gson = new Gson();
-		Movie movie = null;
-
-		movie = new Movie();
-		movie.setMvNo((String) movieDB.get("DOCID"));
-		movie.setMvTitle((String) movieDB.get("title"));
-		movie.setMvTitleorg((String) movieDB.get("titleOrg"));
-
-		// 한번더 분해
-		Map<String, Object> directDB = listSeparation(movieDB, "directors", "director");
-		movie.setDirector((String) directDB.get("directorNm"));
-
-		movie.setGenre((String) movieDB.get("genre"));
-
-		// 개봉일자는 String -> util.date -> sql.date 로 변환을 해주어야 한다.
-		Date date = transformDate((String) movieDB.get("repRlsDate"));
-		movie.setReleaseDate(date);
-
-		// 한번더 분해
-		Map<String, Object> plotDB = listSeparation(movieDB, "plots", "plot");
-		movie.setPlot((String) plotDB.get("plotText"));
-
-		movie.setNation((String) movieDB.get("nation"));
-		movie.setRuntime(Integer.parseInt((String) movieDB.get("runtime")));
-		movie.setRating((String) movieDB.get("rating"));
-
-		String str = (String) movieDB.get("posters");
-		String[] pstArr = str.split("[|]");
-		movie.setPoster(pstArr[0]);
-		
-		// 2.네이버 API 영화 썸네일 넣어주기
-
-		movie.setThumbnail(thumbnail);
-
-		return movie;
-	}
-
 	
 }
