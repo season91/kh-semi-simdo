@@ -166,8 +166,8 @@ body{
 	margin-top: 15vh;
 }
 .mv_wrapper{
-	width:100vh;
-	height:100%;
+	width:110vh;
+	height:80%;
 	padding-top: 5vh;
 	padding-bottom:10vh;
 	display: flex;
@@ -179,8 +179,9 @@ body{
 
 .mv_list_wrap{
 	display: flex;
-	max-width:90%;
-	height: 50vh;
+	width:100%;
+	min-height:20vh;
+	max-height: 50vh;
 	background-color: rgba(255,255,255,0.2);
 	border-style:outset;
 	box-shadow: 4px 4px 2px 1px gray;
