@@ -16,6 +16,7 @@ import com.kh.simdo.common.util.file.FileVO;
 import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.communication.model.vo.Notice;
 import com.kh.simdo.movie.model.vo.Movie;
+
 /**
  * 
  * @author 김백관
@@ -372,6 +373,94 @@ public class CommunicationDao {
 				jdt.close(rset, pstm);
 			}
 			return notice;
+		}
+		
+		/**
+		 * @author MinHee
+		 */
+		
+		public int insertNotice(Connection conn, Notice notice) {
+			
+			int res = 0;
+			PreparedStatement pstm = null;
+			
+			try {
+				
+				String query = "insert into notice(notice_no, nt_title, nt_content, reg_date, writer) "
+						+ "values(sc_nt_no.nextval, ?, ?, sysdate, '관리자')";
+				pstm = conn.prepareStatement(query);
+				pstm.setString(1, notice.getNtTitle());
+				pstm.setString(2, notice.getNtContent());
+				
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				throw new DataAccessException(ErrorCode.IN01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+			
+		}
+		
+		/**
+		 * @author MinHee
+		 */
+		
+		public int updateNotice(Connection conn, Notice notice) {
+			
+			int res = 0;
+			PreparedStatement pstm = null;
+			
+			try {
+				
+				String query = "update notice set nt_title = ?, nt_content = ?, reg_date = sysdate where notice_no = ?";
+				pstm = conn.prepareStatement(query);
+				pstm.setString(1, notice.getNtTitle());
+				pstm.setString(2, notice.getNtContent());
+				pstm.setInt(3, notice.getNoticeNo());
+				
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				throw new DataAccessException(ErrorCode.UN01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+			
+		}
+		
+		/**
+		 * @author MinHee
+		 */
+		
+		public int deleteNotice(Connection conn, int noticeNo) {
+			
+			int res = 0;
+			PreparedStatement pstm = null;
+			
+			try {
+				
+				String query = "delete from notice where notice_no = ?";
+				pstm = conn.prepareStatement(query);
+				pstm.setInt(1, noticeNo);
+				
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				throw new DataAccessException(ErrorCode.DN01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+			
 		}
 	
 }

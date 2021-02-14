@@ -59,7 +59,7 @@
 								</div>
 								<div class="mvInfo-right">
 									<label><input type="date" name="watchDate" required value="${requestScope.userReview.watchDate}">감상</label>
-									<div>2020-12-29 작성</div>
+									<div>${requestScope.userReview.rvRegDate} 작성</div>
 								</div>
 							</div>
 							<div class="wrtieBox-content">

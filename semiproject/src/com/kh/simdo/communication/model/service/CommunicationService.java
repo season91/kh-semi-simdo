@@ -180,6 +180,65 @@ public class CommunicationService {
 		
 		return res;
 	}
+	
+	/**
+	 * @author MinHee
+	 */
+	public int insertNotice(Notice notice) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
 		
-			
+		try {
+			res = communicationDao.insertNotice(conn, notice);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * @author MinHee
+	 */
+	public int updateNotice(Notice notice) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = communicationDao.updateNotice(conn, notice);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * @author MinHee
+	 */
+	public int deleteNotice(int noticeNo) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = communicationDao.deleteNotice(conn, noticeNo);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
+		
 }

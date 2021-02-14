@@ -53,8 +53,12 @@ public class CommunicationController extends HttpServlet {
 		//case "download.do" : download(request,response); break; //김백관, 구현안하시기로.
 		case "noticelist.do": noticeList(request,response); break; //조아영
 		case "noticedetail.do" : noticeDetail(request,response); break; //조아영
-		case "adminnotice.do": break; // 조민희. 관리자가 공지사항 작성하기 위해 이동하는 메서드. 경로이름 수정하셔도됩니다! 
+		case "adminnotice.do": adminNotice(request,response); break; // 조민희. 관리자가 공지사항 작성하기 위해 이동하는 메서드. 경로이름 수정하셔도됩니다!
 		// 이부분 삽입, 삭제, 수정이 되야하는데 수정까지 하시기 너무 빡세면 삽입 삭제만 부탁드려용 ㅠ
+		case "adminnoticewrite.do": adminNoticeWrite(request, response); break; //조민희 관리자 공지사항 작성
+		case "adminnoticeupdate.do": adminNoticeUpdate(request, response); break; //조민희 관리자 공지사항 수정 화면으로 이동
+		case "adminnoticeupdateimpl.do": adminNoticeUpdateImpl(request, response); break; //조민희 관리자 공지사항 수정 기능 수행
+		case "adminnoticedelete.do": adminNoticeDelete(request, response); break; //조민희 관리자 공지사항 삭제
 		case "adminqnalist.do" : break; // 조아영. 모든유저 문의사항 리스트 구현 / 답변 작성 및 수정 기능 구현.
 		default:
 			break;
@@ -144,6 +148,10 @@ public class CommunicationController extends HttpServlet {
 		int noticeNo = Integer.parseInt(strNoticeNo);
 		Notice notice = communicationService.selectNoticeByNoticeNo(noticeNo);
 		
+		//민희, 관리자임을 알게 해주기 위해 코드 추가(수정, 삭제버튼을 위해서)
+		User user = (User) request.getSession().getAttribute("user");
+		request.setAttribute("admin", user.getAdmin());
+		
 		// 아영, notice 객체 jsp로 전달
 		request.setAttribute("res", notice);
 		request.getRequestDispatcher("/WEB-INF/view/comm/noticedetail.jsp").forward(request, response);
@@ -184,6 +192,126 @@ public class CommunicationController extends HttpServlet {
 	.forward(request, response);
 }
 	 */
+	
+	/**
+	 * @author MinHee
+	 * @Date 2021. 02. 15
+	 */
+	private void adminNotice(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = (User) request.getSession().getAttribute("user");
+		request.setAttribute("admin", user.getAdmin());
+		
+		request.getRequestDispatcher("/WEB-INF/view/comm/adminnotice.jsp")
+		.forward(request, response);
+	}
+	
+	/**
+	 * @author MinHee
+	 * @Date 2021. 02. 15
+	 */
+	private void adminNoticeWrite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String ntTitle = request.getParameter("ntTitle");
+		String ntContent = request.getParameter("ntContent");
+		
+		Notice notice = new Notice();
+		notice.setNtTitle(ntTitle);
+		notice.setNtContent(ntContent);
+		
+		int res = communicationService.insertNotice(notice);
+		
+		if(res > 0) {
+			request.setAttribute("alertMsg", "공지사항이 등록되었습니다.");
+			request.setAttribute("url", "/comm/noticelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		}else {
+			request.setAttribute("alertMsg", "에러 발생");
+			request.setAttribute("url", "/comm/noticelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		}
+	}
+	
+	/**
+	 * @author MinHee
+	 * @Date 2021. 02. 15
+	 */
+	private void adminNoticeUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+		Notice notice = communicationService.selectNoticeByNoticeNo(noticeNo);
+		
+		User user = (User) request.getSession().getAttribute("user");
+		request.setAttribute("admin", user.getAdmin());
+		
+		request.setAttribute("notice", notice);
+		request.getRequestDispatcher("/WEB-INF/view/comm/adminnoticeupdate.jsp")
+		.forward(request, response);
+	}
+	
+	/**
+	 * @author MinHee
+	 * @Date 2021. 02. 15
+	 */
+	private void adminNoticeUpdateImpl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String noticeNum = request.getParameter("noticeNo");
+		String ntTitle = request.getParameter("ntTitle");
+		String ntContent = request.getParameter("ntContent");
+		
+		int noticeNo = Integer.parseInt(noticeNum);
+		
+		Notice notice = new Notice();
+		notice.setNoticeNo(noticeNo);
+		notice.setNtTitle(ntTitle);
+		notice.setNtContent(ntContent);
+		
+		int res = communicationService.updateNotice(notice);
+		
+		if(res > 0) {
+			request.setAttribute("alertMsg", "공지사항이 수정되었습니다.");
+			request.setAttribute("url", "/comm/noticelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		}else {
+			request.setAttribute("alertMsg", "에러 발생");
+			request.setAttribute("url", "/comm/noticelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		}
+	}
+	
+	/**
+	 * @author MinHee
+	 * @Date 2021. 02. 15
+	 */
+	private void adminNoticeDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		int noticeNo = Integer.parseInt(request.getParameter("noticeNo"));
+		
+		int res = communicationService.deleteNotice(noticeNo);
+		
+		if(res > 0) {
+			request.setAttribute("alertMsg", "공지사항이 삭제되었습니다.");
+			request.setAttribute("url", "/comm/noticelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		}else {
+			request.setAttribute("alertMsg", "에러 발생");
+			request.setAttribute("url", "/comm/noticelist.do");
+			
+			request
+			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
+			.forward(request, response);
+		}
+	}
 }
 
 

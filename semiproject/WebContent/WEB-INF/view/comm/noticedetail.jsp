@@ -72,6 +72,15 @@
 		
       <div class="btn_section btn_list">
           <a href="/comm/noticelist.do">목록으로</a>
+          <div class="btn_admin_wrapper">
+	          <%-- 관리자라면 권한메뉴 추가  --%>
+			  <c:choose>
+				   <c:when test="${!empty admin }">
+					   <a href="/comm/adminnoticeupdate.do?noticeNo=${res.noticeNo}">수정</a>
+					   <a href="/comm/adminnoticedelete.do?noticeNo=${res.noticeNo}">삭제</a>
+				   </c:when>
+			  </c:choose>
+		  </div>
       </div>
       </div>
      </div>

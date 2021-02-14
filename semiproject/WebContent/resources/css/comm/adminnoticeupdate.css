@@ -246,24 +246,37 @@ session{
 	display: flex;
 	flex-direction:column;
 	align-items:center;
-	justify-content:space-around;
+	justify-content:space-evenly;
 }
+
 .notice_wrap>div{
 	width: 100%;
 }
+
 .notice-info{
 	height: 15vh;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
 }
+
 .notice_title{
 	border-bottom: 1px solid  #696765;
 	border-top: 1px solid  #696765;
 	font-size: 4vh;
 	padding-bottom: 1vh;
 	padding-top: 1vh;
+	display: flex;
+	justify-content: space-between;
 }
+
+.input_title{
+	width: 78%;
+	background-color: transparent;
+	border: none;
+	border-bottom: 1px solid;
+}
+
 .notice_write_wrap{
 	padding:1vh;
 	min-height: 30vh;
@@ -272,14 +285,32 @@ session{
 	color: #DADAD9;
 }
 
+.notice_write_content{
+	height: 100%;
+}
+
+.notice_content{
+	width: 99%;
+	height: 85%;
+	border: none;
+	resize: none;
+	background-color: transparent;
+}
+
 .notice_write_head{
 	font-size: 3vh;
 	margin-bottom: 1vh;
 }
 
-.btn_section{
-	display: flex;
-	justify-content: space-between;
+.btn_list{
+	text-align: center;
+}
+
+.btn_insert{
+	background-color: #696765;
+	color: white;
+	width: 50%;
+	height: 4vh;
 }
 
 .menu{
