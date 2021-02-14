@@ -394,3 +394,12 @@
 2021-02-10 14:58:46,269 [Worker-9: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CODE\kh-semi-simdo\kh-semi-simdo\semiproject\src\main\resources
 2021-02-10 14:58:46,280 [Worker-9: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
 2021-02-10 14:58:46,294 [Worker-9: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CODE\kh-semi-simdo\kh-semi-simdo\semiproject\src\test\resources
+2021-02-14 23:37:26,487 [Worker-5: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is up-to-date. Trying to read.
+2021-02-14 23:37:35,743 [Worker-3: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
+2021-02-14 23:37:35,753 [Worker-3: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CODE\kh-semi-simdo\kh-semi-simdo\semiproject\src\main\resources
+2021-02-14 23:37:35,755 [Worker-3: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
+2021-02-14 23:37:35,763 [Worker-3: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CODE\kh-semi-simdo\kh-semi-simdo\semiproject\src\test\resources
+2021-02-14 23:37:38,675 [Worker-24: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
+2021-02-14 23:37:38,684 [Worker-24: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CODE\kh-semi-simdo\kh-semi-simdo\semiproject\src\main\resources
+2021-02-14 23:37:38,685 [Worker-24: Building] WARN  o.e.m.c.i.embedder.EclipseLogger - Using platform encoding (MS949 actually) to copy filtered resources, i.e. build is platform dependent!
+2021-02-14 23:37:38,695 [Worker-24: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory E:\CODE\kh-semi-simdo\kh-semi-simdo\semiproject\src\test\resources

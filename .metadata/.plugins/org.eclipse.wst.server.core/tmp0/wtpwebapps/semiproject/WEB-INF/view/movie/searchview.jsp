@@ -7,8 +7,9 @@
 <body>
 <div class="header-wrapper">
 		<header class="header-section">
-			 <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
-         		  OnClick="location.href ='/index.do'"></a>
+			<a class="top-logo-text"><img class="top-logo-img"
+				style="width: 20vh; margin-left: 5%" alt="logo"
+				src="/resources/image/logo.png"></a>
 			<c:choose>
 				<c:when test="${empty sessionScope.user}">
 					<%-- 비로그인 상태 --%>
@@ -32,7 +33,7 @@
 		<div class="navi-wrapper">
 			<div class="nation-view" style="cursor:pointer;">나라별</div>
 			<div class="genre-view" style="cursor:pointer;">장르별</div>
-			<div class="score-view" OnClick="location.href ='/movie/socreview.do'" style="cursor:pointer;">평점순</div>
+			<div class="score-view" OnClick="location.href ='/movie/naviview.do'" style="cursor:pointer;">평점순</div>
 			<div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
 			<form class="search-view" action="/movie/searchview.do">
 				<input type="search" class="input_navi-search" name="search">
@@ -52,7 +53,7 @@
 					<div class="mv_view_text">
 						<p class="mv_title">${movie.mvTitle}</p>
 						<p class="mv_info">${movie.nation} / ${movie.director} 감독</p>
-						<a class="mv_readmore" href="/movie/detailview.do?mvno=${movie.mvNo}">더보기</a>
+						<a class="mv_readmore" href="/movie/detailview.do" name="title" value="rere">더보기</a>
 					</div>
 				</div>
 			</c:forEach>
