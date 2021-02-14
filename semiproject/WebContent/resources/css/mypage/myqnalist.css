@@ -74,9 +74,10 @@ body{
 	text-align: center;
 	font-weight: bold;
 	transition-duration:0.2s;
+	font-size: 2vh;
 }
 .navi-wrapper>div:hover{
-	font-size: 2vw;
+	font-size: 3.5vh;
 }
 .navi-wrapper a{
 	color: #DADAD9;
@@ -143,7 +144,7 @@ body{
 }
 
 .navi-extend-list:hover {
-	font-size:3vw;
+	font-size: 3.5vh;
 	font-weight: bold;
 	
 }

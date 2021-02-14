@@ -224,27 +224,9 @@ session{
 .bottom_right{
    padding-right: 1%;
 }
-
-table {
-   text-align:center;
-   width: 80%;
-   border-top: 1px solid  #959493;
- }
-
-th{
-	background-color: #959493;
-	color: #DADAD9;
-	font-weight: bold;
-}
-
-th, td {
-   border-bottom: 1px solid #959493;
-   padding: 1.5vh;
- }
  
 .menu{
 	width:30vh;
-	margin-top:15vh;
 	background-color:#959493;
 	min-height: 70vh;
 	display: flex;
@@ -267,18 +249,76 @@ th, td {
 	font-size: 3.5vh;
 }
 
-.noticelist{
-	background-color:#DADAD9;
-	min-height: 70vh;
-	margin-top: 15vh;
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-around;
-}
-
 .content{
 	display:flex;
 	background-color:#DADAD9;
+}
+
+.content{
+	display: flex;
+	min-height: 70vh;
+	margin-top: 15vh;
+}
+
+.qna_wrap{
+	width: 100vh;
+	height:70vh;
+	display: flex;
+	flex-direction:column;
+	align-items:center;
+	justify-content:space-around;
+}
+.qna_wrap>div{
+	width: 80%;
+}
+
+.qna_head{
+	display: flex;
+	flex-direction:row;
+	justify-content: space-around;
+	font-size: 2vh;
+}
+.qna-info{
+	height: 15vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+.qna_title{
+	border-bottom: 1px solid  #696765;
+	border-top: 1px solid  #696765;
+	font-size: 4vh;
+	padding-bottom: 1vh;
+	padding-top: 1vh;
+}
+.qna_info{
+	font-size: 2vh;
+}
+.qna_write_wrap{
+	padding:1vh;
+	height: 30vh;
+	border-bottom: 1px solid  #696765;
+	background-color:  #959493;
+	color: #DADAD9;
+}
+.admin_answer_wrap{
+	padding:1vh;
+	height: 20vh;
+	background-color:  #959493;
+	color: #DADAD9;
+	font-size: 2.5vh;
+}
+
+.qna_write_head{
+	font-size: 3vh;
+	margin-bottom: 1vh;
+}
+
+.qna_write_content{
+	font-size: 2vh;
+}
+
+.admin_answer_head{
+	font-size: 3vh;
+	margin-bottom: 1vh;
 }

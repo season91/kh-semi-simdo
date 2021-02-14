@@ -212,6 +212,49 @@ public class CommunicationDao {
 			
 		}
 		
+		// 관리자용 모든 유저 문의사항 글갖고 오기
+		public List<Map<String, Object>> selectAllQnaList(Connection conn, int page) {
+			Communication communication = null;
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			List<Map<String, Object>> res = new ArrayList();
+			String sql = "select * from (select rownum as num, QSTN_NO, QSTN_TITLE, QSTN_REG_DATE, QSTN_COMENT from "
+					+ "(select * from comm c join \"USER\" u using(user_no) order by  QSTN_REG_DATE desc))  "
+					+ "where num >= ? and num <= ?";
+			
+			int pagePerList = 10;
+			int startPage = (page - 1) * pagePerList + 1 ; // 시작
+			int endPage =  startPage + pagePerList - 1 ; // 끝
+			
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, startPage);
+				pstm.setInt(2, endPage);
+				rset = pstm.executeQuery();
+				
+				while(rset.next()) {
+					Map<String, Object> commandMap = new HashMap<String, Object>();
+					communication = new Communication();
+					String qnaNo = String.valueOf(rset.getInt("QSTN_NO"));
+					communication.setQstnTitle(rset.getString("QSTN_TITLE"));
+					communication.setQstnRegDate(rset.getDate("QSTN_REG_DATE"));
+					communication.setQstnComent(rset.getString("QSTN_COMENT"));
+					commandMap.put("qnaNo", qnaNo);
+					commandMap.put("comm", communication);
+					res.add(commandMap);
+				}
+				
+				
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.AUTH01, e);
+			} finally {
+				jdt.close(rset, pstm);
+			}
+			
+			return res;
+			
+		}
+		
 		/**
 		 * @author 조아영
 		 * 문의 상세보기
@@ -235,6 +278,7 @@ public class CommunicationDao {
 					comm.setQstnTitle(rset.getString("qstn_title"));
 					comm.setQstnContent(rset.getString("qstn_content"));
 					comm.setQstnComent(rset.getString("qstn_coment"));
+					
 				}
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.SB01, e);
@@ -244,6 +288,26 @@ public class CommunicationDao {
 			return comm;
 		}
 	
+		// 문의상세 관리자 답변 추가하기.
+		public int updateQnaComent(Connection conn, int qstnNo, String coment) {
+			int res = 0;
+			PreparedStatement pstm = null;
+
+			try {
+				String sql = "update comm set qstn_coment = ? where qstn_no = ?";
+				pstm = conn.prepareStatement(sql);
+				pstm.setString(1, coment);
+				pstm.setInt(2, qstnNo);
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.UM01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+		}
 		
 		// 	공자사항 페이징 범위 구하기
 		public int[] selectPagingByNotice(Connection conn, int page) {
@@ -365,6 +429,7 @@ public class CommunicationDao {
 					notice.setNtTitle(rset.getString("nt_title"));
 					notice.setRegDate(rset.getDate("reg_date"));
 					notice.setWriter(rset.getString("writer"));
+					
 				}
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.SB01, e);

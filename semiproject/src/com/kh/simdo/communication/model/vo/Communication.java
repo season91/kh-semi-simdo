@@ -13,6 +13,7 @@ public class Communication {
 	private String qstnTitle;
 	private String userNm;
 	private String qstnComent;
+	
 	public int getQstnNo() {
 		return qstnNo;
 	}
