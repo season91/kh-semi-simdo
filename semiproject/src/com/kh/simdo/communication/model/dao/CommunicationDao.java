@@ -56,7 +56,6 @@ public class CommunicationDao {
 	//파일테이블에 파일 정보 저장
 		public int insertFile(Connection conn, FileVO fileData) {
 			int res = 0;
-			System.out.println("이놈아파일");
 			String sql = "insert into tb_file "
 					+ "(f_idx,origin_file_name,rename_file_name,save_path) "
 					+ "values(sc_file_idx.nextval,?,?,?)";
@@ -176,10 +175,10 @@ public class CommunicationDao {
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
 			List<Map<String, Object>> res = new ArrayList();
-			String sql = "select * from (select rownum as num, QSTN_NO, QSTN_TITLE, QSTN_REG_DATE from"
+			String sql = "select * from (select rownum as num, QSTN_NO, QSTN_TITLE, QSTN_REG_DATE from "
 					+ "(select * from comm c join \"USER\" u using(user_no) where user_no = ? order by  QSTN_REG_DATE desc))  "
 					+ "where num >= ? and num <= ?";
-			System.out.println("조건찾는 다오");
+			
 			int pagePerList = 10;
 			int startPage = (page - 1) * pagePerList + 1 ; // 시작
 			int endPage =  startPage + pagePerList - 1 ; // 끝
@@ -195,21 +194,18 @@ public class CommunicationDao {
 					Map<String, Object> commandMap = new HashMap<String, Object>();
 					communication = new Communication();
 					String qnaNo = String.valueOf(rset.getInt("QSTN_NO"));
-					
 					communication.setQstnTitle(rset.getString("QSTN_TITLE"));
 					communication.setQstnRegDate(rset.getDate("QSTN_REG_DATE"));
-					
 					commandMap.put("qnaNo", qnaNo);
 					commandMap.put("comm", communication);
 					res.add(commandMap);
-					
 				}
 				
 				
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.AUTH01, e);
 			} finally {
-				
+				jdt.close(rset, pstm);
 			}
 			
 			return res;
@@ -313,7 +309,7 @@ public class CommunicationDao {
 			ResultSet rset = null;
 			List<Map<String, Object>> res = new ArrayList<>();
 			String sql = "select * from (select rownum as num, notice_no, nt_title, reg_date from notice order by  reg_date desc) where num >= ? and num <= ?";
-			System.out.println("조건찾는 다오");
+
 			int pagePerList = 10;
 			int startPage = (page - 1) * pagePerList + 1 ; // 시작
 			int endPage =  startPage + pagePerList - 1 ; // 끝
@@ -340,13 +336,12 @@ public class CommunicationDao {
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.AUTH01, e);
 			} finally {
-				
+				jdt.close(rset, pstm);
 			}
 			
 			return res;
 			
 		}
-		
 		
 		
 		/**

@@ -53,6 +53,7 @@ public class UserDao {
 				user.setUserBirth(rset.getDate("user_birth"));
 				user.setIsLeave(rset.getInt("is_leave"));
 				user.setUserProfile(rset.getString("user_profile"));
+				user.setAdmin(rset.getString("admin"));
 				
 			}
 			

@@ -50,13 +50,19 @@
    
    <div class="content">
    	<div class="menu">
-   	<br>
-   	<a style="font-weight: bold; font-size:big">커뮤니케이션</a><br>
-   	<a href="/comm/noticelist.do">공지게시판</a><br>
-   	<a href="/comm/write.do">QnA</a>
+	   	<p style="font-weight: bold;">커뮤니케이션</p>
+	   	<a style="font-weight: bold;" href="/comm/noticelist.do">공지게시판</a>
+	   	<a href="/comm/write.do">QnA</a>
+	   	<%-- 관리자라면 권한메뉴 추가  --%>
+	   	<c:choose>
+	   		<c:when test="${!empty admin }">
+	   		<a href="/comm/adminqnalist">관리자메뉴1(유저문의조회, 답변달기)</a>
+	   		<a href="/comm/adminnotice">관리자메뉴2(공지사항작성,삭제)</a>
+	   		</c:when>
+	   	</c:choose>
    	</div>
    	
-    <div class="content2">
+    <div class="noticelist">
 	   <table>
 			<tr>
 				<th>글번호</th>
@@ -77,7 +83,7 @@
 		<c:forEach var="i" begin="1" end="${requestScope.end}" step="1" varStatus="status">
 		<c:choose>
 			
-			<c:when test="${page !=status.count}">
+			<c:when test="${page != status.count}">
 			<a href="/comm/noticelist.do?page=${i}"><c:out value="${i}"/></a>
 			</c:when>
 			<c:otherwise>

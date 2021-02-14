@@ -60,9 +60,9 @@
 						<div class="admin_answer_write">${res.qstnComent}</div>
 					</c:otherwise>
 				</c:choose>
-				
-			</div>		
-		</div>
+				</div>		
+			</div>
+			<a style="color:#696765"href="/mypage/myqnalist.do">목록으로</a>
 	</div>
 		
 	<footer class="bottom">
