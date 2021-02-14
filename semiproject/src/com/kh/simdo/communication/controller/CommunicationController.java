@@ -18,6 +18,7 @@ import com.kh.simdo.communication.model.service.CommunicationService;
 import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.communication.model.vo.Notice;
 import com.kh.simdo.movie.model.vo.Movie;
+import com.kh.simdo.mypage.model.service.MypageService;
 import com.kh.simdo.user.model.vo.User;
 
 /**
@@ -27,7 +28,7 @@ import com.kh.simdo.user.model.vo.User;
 public class CommunicationController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	CommunicationService communicationService = new CommunicationService();
-       
+    MypageService mypageService = new MypageService();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -55,11 +56,10 @@ public class CommunicationController extends HttpServlet {
 		case "noticedetail.do" : noticeDetail(request,response); break; //조아영
 		case "adminnotice.do": adminNotice(request,response); break; // 조민희. 관리자가 공지사항 작성하기 위해 이동하는 메서드. 경로이름 수정하셔도됩니다!
 		// 이부분 삽입, 삭제, 수정이 되야하는데 수정까지 하시기 너무 빡세면 삽입 삭제만 부탁드려용 ㅠ
-		case "adminnoticewrite.do": adminNoticeWrite(request, response); break; //조민희 관리자 공지사항 작성
-		case "adminnoticeupdate.do": adminNoticeUpdate(request, response); break; //조민희 관리자 공지사항 수정 화면으로 이동
-		case "adminnoticeupdateimpl.do": adminNoticeUpdateImpl(request, response); break; //조민희 관리자 공지사항 수정 기능 수행
-		case "adminnoticedelete.do": adminNoticeDelete(request, response); break; //조민희 관리자 공지사항 삭제
-		case "adminqnalist.do" : break; // 조아영. 모든유저 문의사항 리스트 구현 / 답변 작성 및 수정 기능 구현.
+		case "adminqnalist.do" : allUserQnalist(request,response); break; // 조아영. 모든유저 문의사항 리스트 구현 / 답변 작성 및 수정 기능 구현.
+		case "adminqnacoment.do" : userQnaComent(request,response); break; // 조아영. 유저문의 답변.
+		case "adminqnacomentimpl.do" : userQnaComentImple(request,response); break; // 조아영. 유저문의 답변.
+		
 		default:
 			break;
 		}
@@ -132,6 +132,31 @@ public class CommunicationController extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/view/comm/noticelist.jsp").forward(request, response);
 	}
 
+	protected void allUserQnalist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		//모든유저 qna 가져와서 페이징처리 해주기
+		String text = request.getParameter("page");
+		List qnaAllList = new ArrayList();
+		int page = 0;
+		if(text == null) {
+			page++;
+		} else {
+			page = Integer.parseInt(text);
+		}
+		int[] res = communicationService.selectPagingByNotice(page);
+		request.setAttribute("start", res[0]);
+		request.setAttribute("end", res[1]);
+		
+		List<Map<String, Object>> pageRes = communicationService.selectAllQnaList(page);
+		qnaAllList = parseJson(pageRes);
+		request.setAttribute("res", qnaAllList);
+		request.setAttribute("page", page);
+		// 유저가 관리자임을 알려줄 것
+		User user = (User) request.getSession().getAttribute("user");
+		request.setAttribute("admin", user.getAdmin());
+		request.getRequestDispatcher("/WEB-INF/view/comm/adminqnalist.jsp").forward(request, response);
+		
+	}
+
 	/**
 	 * 
 	 * @Author : 조아영
@@ -156,6 +181,34 @@ public class CommunicationController extends HttpServlet {
 		request.setAttribute("res", notice);
 		request.getRequestDispatcher("/WEB-INF/view/comm/noticedetail.jsp").forward(request, response);
 	}
+	
+	protected void userQnaComent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 상세화면으로 이동 후 답변하기.
+		String strQnaNo = String.valueOf(request.getParameter("qnano"));
+		int qnaNo = Integer.parseInt(strQnaNo);
+		User user = (User) request.getSession().getAttribute("user");
+		request.setAttribute("admin", user.getAdmin());
+		Communication comm = communicationService.selectQnaByQstnNo(qnaNo);
+		request.setAttribute("res", comm);
+		request.getRequestDispatcher("/WEB-INF/view/comm/adminqnacoment.jsp").forward(request, response);
+	}
+
+	protected void userQnaComentImple(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// 답변내용 DB에 넣기.
+		String strQnaNo = request.getParameter("qstnno");
+		int qstnNo = Integer.parseInt(strQnaNo);
+		String coment = request.getParameter("coment");
+
+		int res = communicationService.updateQnaComent(coment, qstnNo);
+		if(res > 0 ) {
+			System.out.println("성공.");
+			allUserQnalist(request,response);
+		} else { 
+			System.out.println("실패");
+		}
+	}
+
+	
 
 	
 	private void commWrite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

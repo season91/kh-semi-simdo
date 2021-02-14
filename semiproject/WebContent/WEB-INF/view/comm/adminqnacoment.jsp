@@ -5,7 +5,7 @@
 <head>
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
-	<link rel="stylesheet" href="/resources/css/comm/noticelist.css">
+	<link rel="stylesheet" href="/resources/css/comm/adminqnacoment.css">
 </head>
 <body style="margin:0">
 
@@ -51,54 +51,37 @@
    <div class="content">
    	<div class="menu">
 	   	<p style="font-weight: bold;">커뮤니케이션</p>
-	   	<a style="font-weight: bold;" href="/comm/noticelist.do">공지게시판</a>
+	   	<a href="/comm/noticelist.do">공지게시판</a>
 	   	<a href="/comm/write.do">QnA</a>
 	   	<%-- 관리자라면 권한메뉴 추가  --%>
 	   	<c:choose>
-	   		<c:when test="${!empty admin }">
-
-	   		<a href="/comm/adminqnalist.do">관리자메뉴.QnA답변.</a>
+	   		<c:when test="${!empty admin}">
+	   		<a style="color:pink; font-weight: bold;" href="/comm/adminqnalist.do">고객문의게시판</a>
 	   		<a href="/comm/adminnotice.do">관리자메뉴2(공지사항작성,삭제)</a>
 	   		</c:when>
 	   	</c:choose>
    	</div>
-   	
-    <div class="noticelist">
-	   <table>
-			<tr>
-				<th>글번호</th>
-				<th>제목</th>
-				<th>작성일</th>
-			</tr>
-			<c:forEach var="notice" items="${res}" varStatus="status">
-				<%-- score 글번호 releaseDate 작성일자 mvTitle 글제목 --%>
-				<tr>
-					<td>${notice.noticeNo}</td>
-					<td style="cursor:pointer;" onclick="location.href='/comm/noticedetail.do?noticeno=${notice.noticeNo}'" >${notice.notice.ntTitle}</td>
-					<td>${notice.notice.regDate}</td>
-				</tr>
-			</c:forEach>
-			
-		</table>
-		<div>페이지번호 
-		<c:forEach var="i" begin="1" end="${requestScope.end}" step="1" varStatus="status">
-		<c:choose>
-			
-			<c:when test="${page != status.count}">
-			<a href="/comm/noticelist.do?page=${i}"><c:out value="${i}"/></a>
-			</c:when>
-			<c:otherwise>
-			<a href="/comm/noticelist.do?page=${i}"><span style="color:rgb(000,153,255);"><c:out value="${i}"/></span></a>
-			</c:otherwise>
-			
-		</c:choose>
-		
-		</c:forEach>
-		</div>
-		
+   	<div class="qna_wrap"> 
+			<div class="qna-info">
+				<div class="qna_head"><p>고객 문의</p><a style="color:#696765"href="/mypage/myqnalist.do">목록으로</a></div>
+				<div class="qna_title">${res.qstnTitle}</div>
+				<div class="qna_info">글번호 ${res.qstnNo} / 작성자 : ${res.userNm} / 작성일 : ${res.qstnRegDate}</div>
+			</div>
+			<div class="qna_write_wrap">
+				<div class="qna_write_head">문의 내용</div>
+				<div class="qna_write_content">${res.qstnContent}</div>
+			</div>
+			<div class="admin_answer_wrap">
+				<div class="admin_answer_head">관리자 답변</div>
+					<form action="/comm/adminqnacomentimpl.do?qstnno=${res.qstnNo}" method="post">
+						<textarea cols="60" rows="5" class="admin_answer_write" name="coment"></textarea>
+						<button style="color: #DADAD9; font-size:2vh;">답변 등록</button>
+					</form>
+				</div>		
+			</div>
+	 
    </div>
-   </div>
-   
+  
    
 	<footer class="bottom">
 		<div class="bottom_main">

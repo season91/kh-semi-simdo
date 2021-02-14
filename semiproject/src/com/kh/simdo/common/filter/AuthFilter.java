@@ -89,6 +89,11 @@ public class AuthFilter implements Filter {
 //						throw new ToAlertException(ErrorCode.AUTH01);
 //					}
 //					break;
+//				case "adminqnacoment.do":
+//					if (user.getAdmin() == null) {
+//						throw new ToAlertException(ErrorCode.AUTH01);
+//					}
+//					break;
 //				}
 //				break;
 			}
