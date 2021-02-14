@@ -1,21 +1,5 @@
 INDEX VERSION 1.131
-E:\CODE\kh-semi-simdo\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1368863829.index
+C:\CODE\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1185154088.index
 \semiproject\src
-E:\CODE\kh-semi-simdo\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1067810785.index
-\semiproject\src
-E:\CODE\kh-semi-simdo\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1946739199.index
-\semiproject\src
-E:\CODE\kh-semi-simdo\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\4023264763.index
-\semiproject\src
-E:\CODE\kh-semi-simdo\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2726881935.index
-\semiproject\src
-E:\CODE\kh-semi-simdo\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\268469130.index
-\semiproject\src
-E:\CODE\kh-semi-simdo\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1185154088.index
-\semiproject\src
-E:\CODE\kh-semi-simdo\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3816396101.index
-\semiproject\src
-E:\CODE\kh-semi-simdo\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1286046550.index
-\semiproject\src
-E:\CODE\kh-semi-simdo\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\3456500495.index
+C:\CODE\kh-semi-simdo\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1067810785.index
 \semiproject\src
