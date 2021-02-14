@@ -66,9 +66,7 @@
             </div>
             </div>
             
-            <div class="reviewBox-bottom-wrapper">
-            <a onclick="wishDel(${empty wish})">찜 해제<i class="far fa-trash-alt"></i></a>
-            </div>
+            
          
          </c:forEach>
          </c:when>
@@ -103,6 +101,6 @@
       </div>
    </footer>
 
-   <script type="text/javascript" src="${context}/resources/js/mypage/qnalist.js"></script>
+   
 </body>
 </html>
