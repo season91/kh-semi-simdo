@@ -54,8 +54,11 @@ public class CommunicationController extends HttpServlet {
 		//case "download.do" : download(request,response); break; //김백관, 구현안하시기로.
 		case "noticelist.do": noticeList(request,response); break; //조아영
 		case "noticedetail.do" : noticeDetail(request,response); break; //조아영
-		case "adminnotice.do": adminNotice(request,response); break; // 조민희. 관리자가 공지사항 작성하기 위해 이동하는 메서드. 경로이름 수정하셔도됩니다!
-		// 이부분 삽입, 삭제, 수정이 되야하는데 수정까지 하시기 너무 빡세면 삽입 삭제만 부탁드려용 ㅠ
+		case "adminnotice.do": adminNotice(request,response); break; // 조민희. 관리자가 공지사항 작성하기 위해 이동하는 메서드.
+		case "adminnoticewrite.do": adminNoticeWrite(request, response); break; //조민희 관리자 공지사항 작성
+		case "adminnoticeupdate.do": adminNoticeUpdate(request, response); break; //조민희 관리자 공지사항 수정 화면으로 이동
+		case "adminnoticeupdateimpl.do": adminNoticeUpdateImpl(request, response); break; //조민희 관리자 공지사항 수정 기능 수행
+		case "adminnoticedelete.do": adminNoticeDelete(request, response); break; //조민희 관리자 공지사항 삭제
 		case "adminqnalist.do" : allUserQnalist(request,response); break; // 조아영. 모든유저 문의사항 리스트 구현 / 답변 작성 및 수정 기능 구현.
 		case "adminqnacoment.do" : userQnaComent(request,response); break; // 조아영. 유저문의 답변.
 		case "adminqnacomentimpl.do" : userQnaComentImple(request,response); break; // 조아영. 유저문의 답변.

@@ -55,8 +55,8 @@
 		   	<%-- 관리자라면 권한메뉴 추가  --%>
 		   	<c:choose>
 		   		<c:when test="${!empty admin }">
-		   		<a href="/comm/adminqnalist.do">관리자메뉴1(유저문의조회, 답변달기)</a>
-		   		<a href="/comm/adminnotice.do">관리자메뉴2(공지사항작성,삭제)</a>
+		   		<a href="/comm/adminqnalist.do">관리자메뉴.QnA답변.</a>
+	   			<a href="/comm/adminnotice.do">관리자메뉴.공지사항작성.</a>
 		   		</c:when>
 		   	</c:choose>
 	   	</div>
