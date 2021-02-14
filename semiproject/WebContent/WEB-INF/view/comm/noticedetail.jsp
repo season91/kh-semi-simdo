@@ -51,47 +51,33 @@
 		</nav>
    </div>
    <div class="content">  
-   <div class="menu">
-   	<br>
-   	<a style="font-weight: bold; font-size:big">커뮤니케이션</a><br>
-   	<a href="/comm/noticelist.do">공지게시판</a><br>
-   	<a href="/comm/write.do">QnA</a>
+  	<div class="menu">
+	   	<p style="font-weight: bold;">커뮤니케이션</p>
+	   	<a style="font-weight: bold;" href="/comm/noticelist.do">공지게시판</a>
+	   	<a href="/comm/write.do">QnA</a>
    	</div>
-   	
-   	<div class="content2"> 
-    <h2 class="tit">공지사항</h2>
-    <hr class="a">
-    <div class="desc_board">
-      <h4 class="tit_board">제목 : ${res.ntTitle }</h4>
-      <hr class="b">
-      <div class="info" >
-          <span>게시글 번호 : ${res.noticeNo} </span>
-          <span>등록일 :${res.regDate} </span>
-      </div>
-     <%--  <div class="info">
-      	<c:forEach var="file" items="${data.fileList}">
-      		<button type="button" class="btn_down-file"
-      			onclick="downloadFile('${file.originFileName}'
-      								,'${file.renameFileName}'
-      								,'${file.savePath}')"
-      		>${file.originFileName}</button><br>
-      	</c:forEach>
-      </div> --%>
-      <hr class="c">
-      <div class="text">
-      <br>
-          ${res.ntContent} 
-      </div>
+
+   <div class="noticedetail">
+   <div class="notice_wrap">
+   	 <div class="notice-info">
+		<div class="notice_head">나의 문의 & 요청</div>
+		<div class="notice_title">${res.ntTitle}</div>
+		<div class="notice_info">게시글 번호 ${res.noticeNo} / 작성일 : ${res.regDate}</div>
+	</div>
+	
+	<div class="notice_write_wrap">
+		<div class="notice_write_head">공지사항 내용</div>
+		<div class="notice_write_content">${res.ntContent}</div>
+	</div>
+		
       <div class="btn_section btn_list">
-          <button style="color:white" onclick="submitData('list')"><span>목록</span></button>
+          <a href="/comm/noticelist.do">목록으로</a>
       </div>
       </div>
-      
+     </div>
  </div>
    
-   
-   
-   
+
 	<footer class="bottom">
 		<div class="bottom_main">
 			<h2>SIMDO:WM</h2>
@@ -112,9 +98,8 @@
 		</div>
 	</footer>
 	
-	<script type="text/javascript"
-		src="${context}/resources/js/movie/movie.js"></script>
-	
+	<script type="text/javascript" src="${context}/resources/js/movie/movie.js"></script>
+	<script type="text/javascript" src="${context}/resources/js/comm/noticedetail.js"></script>
 </body>
 </html>
    

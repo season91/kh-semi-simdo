@@ -50,21 +50,23 @@ public class CommunicationController extends HttpServlet {
 		case "upload.do" :  //QnA 게시글업로드 김백관 
 			uploadComm(request,response);
 			break;
-		//case "download.do" : download(request,response); break; //김백관
+		//case "download.do" : download(request,response); break; //김백관, 구현안하시기로.
 		case "noticelist.do": noticeList(request,response); break; //조아영
 		case "noticedetail.do" : noticeDetail(request,response); break; //조아영
+		case "adminnotice.do": break; // 조민희. 관리자가 공지사항 작성하기 위해 이동하는 메서드. 경로이름 수정하셔도됩니다! 
+		// 이부분 삽입, 삭제, 수정이 되야하는데 수정까지 하시기 너무 빡세면 삽입 삭제만 부탁드려용 ㅠ
+		case "adminqnalist.do" : break; // 조아영. 모든유저 문의사항 리스트 구현 / 답변 작성 및 수정 기능 구현.
 		default:
 			break;
 		}
 	}
-	
-
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 
+	
 	
 	/**
 	 * 
@@ -120,7 +122,9 @@ public class CommunicationController extends HttpServlet {
 		noticeList = parseJson(pageRes);
 		request.setAttribute("res", noticeList);
 		request.setAttribute("page", page);
-		//score 글번호 releaseDate 작성일자 mvTitle 글제목
+		// 유저가 관리자임을 알려줄 것
+		User user = (User) request.getSession().getAttribute("user");
+		request.setAttribute("admin", user.getAdmin());
 		request.getRequestDispatcher("/WEB-INF/view/comm/noticelist.jsp").forward(request, response);
 	}
 
@@ -158,10 +162,8 @@ public class CommunicationController extends HttpServlet {
 		HttpSession session=request.getSession();
 		User user= (User) session.getAttribute("user");
 		
-		
 		communicationService.insertComm(user.getUserNm(),request);
-		
-		
+
 		
 		request.getRequestDispatcher("/WEB-INF/view/index/index.jsp")
 		.forward(request, response);

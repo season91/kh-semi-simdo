@@ -257,18 +257,17 @@ public class MovieController extends HttpServlet {
 		Map<String, Object> movieDB = movieService.parseDb();
 		// 네이버 API 받은 자료
 		String thumbnail = movieService.parseThumb();
-		// movie.vo에 넣어주기
-
-		Movie movie = movieService.addMovieVo(movieDB, thumbnail);
-		//System.out.println(movie);
 		
+		// movie.vo에 넣어주기
+		Movie movie = movieService.addMovieVo(movieDB, thumbnail);
+
 		// DB에 movie넣는걸 성공했다면 성공알람 실패시 실패 알람
-//			int movieRes = MovieService.insertMovieInfo(movie);
-//			if (movieRes > 0) {
-//				System.out.println("movie성공");
-//			} else {
-//				System.out.println("movie실패");
-//			}
+			int movieRes = movieService.insertMovieInfo(movie);
+			if (movieRes > 0) {
+				System.out.println("movie성공");
+			} else {
+				System.out.println("movie실패");
+			}
 	}
 	
 }

@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.kh.simdo.common.code.ErrorCode;
 import com.kh.simdo.common.exception.ToAlertException;
+import com.kh.simdo.user.model.vo.User;
 
 /**
  * Servlet Filter implementation class AuthFilter
@@ -58,23 +59,6 @@ public class AuthFilter implements Filter {
 			// 비로그인 상태일 때 권한 관리
 
 			switch (uriArr[1]) {
-			case "board":
-				switch (uriArr[2]) {
-				case "write.do":
-					if (session.getAttribute("user") == null) {
-						throw new ToAlertException(ErrorCode.AUTH03);
-					}
-
-				case "upload.do":
-					if (session.getAttribute("user") == null) {
-						throw new ToAlertException(ErrorCode.AUTH03);
-					}
-
-				default:
-					break;
-				}
-				break;
-
 			case "mypage":
 				if (session.getAttribute("user") == null) {
 					throw new ToAlertException(ErrorCode.AUTH01);
@@ -90,7 +74,25 @@ public class AuthFilter implements Filter {
 				}
 
 				break;
+//			case "comm" :
+//				User user = (User) session.getAttribute("user");
+//				switch (uriArr[2]) {
+//				// 공지사항 작성 권한
+//				case "adminnotice.do":
+//					if (user.getAdmin() == null) {
+//						throw new ToAlertException(ErrorCode.AUTH01);
+//					}
+//					break;
+//				// 유저 문의하기 답변할 권한
+//				case "adminqnalist.do":
+//					if (user.getAdmin() == null) {
+//						throw new ToAlertException(ErrorCode.AUTH01);
+//					}
+//					break;
+//				}
+//				break;
 			}
+			
 		}
 
 		// pass the request along the filter chain
