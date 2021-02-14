@@ -30,11 +30,11 @@
 		</header>
 		<nav class="navi">
 			<div class="navi-wrapper">
-				<div class="my-mv-calendar navi-menu">영화 달력</div>
+				<div class="my-mv-calendar navi-menu" onclick="location.href='/mypage/calendar.do'">영화 달력</div>
 				<div class="my-mv-review navi-menu" onclick="location.href='/mypage/mywritelist.do'">영화 후기</div>
-				<div class="my-mv navi-menu">찜목록</div>
+				<div class="my-mv navi-menu" onclick="location.href='/mypage/mywish.do'">찜목록</div>
 				<div class="my-info navi-menu" onclick="location.href='/user/infochange.do'">회원 정보 변경</div>
-				<div class="my-qna navi-menu">나의 문의 & 요청</div>
+				<div class="my-qna navi-menu" onclick="location.href='/mypage/myqnalist.do'">나의 문의 & 요청</div>
 			</div>
 		</nav>
 	</div>
@@ -68,7 +68,6 @@
 									</div>
 									<div class="mvInfo-right">
 										<label><input type="date" name="watchDate" required>감상</label>
-										<div>2020-12-29 작성</div>
 									</div>
 								</div>
 								<div class="wrtieBox-content">
