@@ -52,9 +52,7 @@ public class MypageController extends HttpServlet {
 		String[] uriArr = request.getRequestURI().split("/");
 		
 		switch(uriArr[uriArr.length - 1]) {
-		case "mypage.do" : //김백관
-			request.getRequestDispatcher("/WEB-INF/view/mypage/mypage.jsp").forward(request, response);
-			break;
+		
 		case "mywish.do" : // 김백관 찜목록
 			mywishList(request,response);
 			break;
