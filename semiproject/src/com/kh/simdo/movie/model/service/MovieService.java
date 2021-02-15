@@ -120,7 +120,7 @@ public class MovieService {
 	// KMDB와 통신하는 메서드
 	public Map<String, Object> parseDb() {
 		HttpUtils utils = new HttpUtils();
-		String url = "http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?ServiceKey=RLYJPR31F2X100MT6HX3&listCount=1&actor=로버트패틴슨&collection=kmdb_new2&detail=Y&query=크리스틴스튜어트&startCount=4";
+		String url = "http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?ServiceKey=RLYJPR31F2X100MT6HX3&query=마치아스&actor=플로리안&detail=Y&nation=독일&collection=kmdb_new2&listCount=1";
 		String jsonRes = utils.get(url);
 		//System.out.println(jsonRes);
 		Gson gson = new Gson();
@@ -149,12 +149,12 @@ public class MovieService {
 		String title = null;
 
 		try {
-			title = URLEncoder.encode("브레이킹던", "UTF-8");
+			title = URLEncoder.encode("100일동안100가지로100퍼센트행복찾기", "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException("검색어 인코딩 실패", e);
 		}
 
-		String apiURL = "https://openapi.naver.com/v1/search/movie.json?query=" + title +"&yearfrom=2012&yearto=2013"; // json 결과
+		String apiURL = "https://openapi.naver.com/v1/search/movie.json?query=" + title; // json 결과
 
 		// String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text;
 

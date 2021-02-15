@@ -5,15 +5,13 @@
 <link rel="stylesheet" href="${context}/resources/css/common/reset.css">
 <link rel="stylesheet" href="${context}/resources/css/movie/navi.css">
 <link rel="stylesheet" href="${context}/resources/css/all.css">
-
 </head>
 <body>
 
 	<div class="header-wrapper">
 		<header class="header-section">
-			<a class="top-logo-text"><img class="top-logo-img"
-				style="width: 20vh; margin-left: 5%" alt="logo"
-				src="/resources/image/logo.png"></a>
+			 <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
+         		  OnClick="location.href ='/index.do'"></a>
 			<c:choose>
 				<c:when test="${empty sessionScope.user}">
 					<%-- 비로그인 상태 --%>
@@ -25,7 +23,7 @@
 				<c:otherwise>
 					<%-- 로그인 상태 --%>
 					<div class="top-right" style="width: 40vh">
-						<a class="top_user top_join" href="/mypage/mypage.do">마이페이지</a> <a
+						<a class="top_user top_join" href="/mypage/calendar.do">마이페이지</a> <a
 							class="top_user" href="/comm/noticelist.do">커뮤니케이션</a> <a
 							class="top_user" href="/user/logout.do">로그아웃</a>
 					</div>
@@ -36,7 +34,7 @@
 			<div class="navi-wrapper">
 				<div class="nation-view" style="cursor:pointer;">나라별</div>
 				<div class="genre-view" style="cursor:pointer;">장르별</div>
-				<div class="score-view" OnClick="location.href ='/movie/naviview.do'" style="cursor:pointer;">평점순</div>
+				<div class="score-view" OnClick="location.href ='/movie/scoreview.do'" style="cursor:pointer;">평점순</div>
 				<div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
 				<form class="search-view" action="/movie/searchview.do">
 					<input type="search" class="input_navi-search" name="search">
@@ -82,9 +80,10 @@
 				<address>TEL:031)111-1212</address>
 			</div>
 			<div class="bottom_right">
-				<a href="/aboutus/">ABOUT US</a><br> <a href="/고객페이지/">
-					고객페이지</a><br> <a href="/마이페이지/"> 마이페이지</a><br> <a
-					href="/내정보관리/"> 내정보관리</a><br>
+				 <a href="/aboutus.do">ABOUT US</a><br>
+            <a href="/mypage/calendar.do"> 고객페이지</a><br>
+            <a href="/mypage/calendar.do"> 마이페이지</a><br>
+            <a href="/user/infochange.do"> 내정보관리</a><br>
 
 			</div>
 		</div>

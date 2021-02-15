@@ -5,13 +5,13 @@
 <head>
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
-	<link rel="stylesheet" href="/resources/css/comm/noticelist.css">
+	<link rel="stylesheet" href="/resources/css/comm/adminnotice.css">
 </head>
 <body style="margin:0">
 
 	  <div class="header-wrapper">
      <header class="header-section">
-       <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
+          <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
          		  OnClick="location.href ='/index.do'"></a>
          <c:choose>
             <c:when test="${empty sessionScope.user}">
@@ -32,7 +32,7 @@
          </c:choose>
       </header>
 
-    	<nav class="navi">
+      	<nav class="navi">
 			<div class="navi-wrapper">
 				<div class="nation-view" style="cursor:pointer;">나라별</div>
 				<div class="genre-view" style="cursor:pointer;">장르별</div>
@@ -47,59 +47,45 @@
 			</div>
 		</nav>
    </div>
-   
-   <div class="content">
-   	<div class="menu">
-	   	<p style="font-weight: bold;">커뮤니케이션</p>
-	   	<a style="font-weight: bold;" href="/comm/noticelist.do">공지게시판</a>
-	   	<a href="/comm/write.do">QnA</a>
-	   	<%-- 관리자라면 권한메뉴 추가  --%>
-	   	<c:choose>
-	   		<c:when test="${!empty admin }">
+	<div class="content">
+	   	<div class="menu">
+		   	<p style="font-weight: bold;">커뮤니케이션</p>
+		   	<a style="font-weight: bold;" href="/comm/noticelist.do">공지게시판</a>
+		   	<a href="/comm/write.do">QnA</a>
+		   	<%-- 관리자라면 권한메뉴 추가  --%>
+		   	<c:choose>
+		   		<c:when test="${!empty admin }">
+		   		<a href="/comm/adminqnalist.do">관리자메뉴.QnA답변.</a>
+	   			<a href="/comm/adminnotice.do">관리자메뉴.공지사항작성.</a>
+		   		</c:when>
+		   	</c:choose>
+	   	</div>
 
-	   		<a href="/comm/adminqnalist.do">관리자메뉴.QnA답변.</a>
-	   		<a href="/comm/adminnotice.do">관리자메뉴.공지사항작성.</a>
-	   		</c:when>
-	   	</c:choose>
-   	</div>
-   	
-    <div class="noticelist">
-	   <table>
-			<tr>
-				<th>글번호</th>
-				<th>제목</th>
-				<th>작성일</th>
-			</tr>
-			<c:forEach var="notice" items="${res}" varStatus="status">
-				<%-- score 글번호 releaseDate 작성일자 mvTitle 글제목 --%>
-				<tr>
-					<td>${notice.noticeNo}</td>
-					<td style="cursor:pointer;" onclick="location.href='/comm/noticedetail.do?noticeno=${notice.noticeNo}'" >${notice.notice.ntTitle}</td>
-					<td>${notice.notice.regDate}</td>
-				</tr>
-			</c:forEach>
+	   <form class="noticedetail" action="/comm/adminnoticewrite.do" method="post">
+		   <div class="notice_wrap">
+		   	 <div class="notice-info">
+				<div class="notice_head">공지사항 작성</div>
+				<div class="notice_title">
+					<label>제목</label>
+					<input class="input_title" type="text" name="ntTitle" required>
+				</div>
+			</div>
 			
-		</table>
-		<div>페이지번호 
-		<c:forEach var="i" begin="1" end="${requestScope.end}" step="1" varStatus="status">
-		<c:choose>
-			
-			<c:when test="${page != status.count}">
-			<a href="/comm/noticelist.do?page=${i}"><c:out value="${i}"/></a>
-			</c:when>
-			<c:otherwise>
-			<a href="/comm/noticelist.do?page=${i}"><span style="color:rgb(000,153,255);"><c:out value="${i}"/></span></a>
-			</c:otherwise>
-			
-		</c:choose>
-		
-		</c:forEach>
-		</div>
-		
-   </div>
-   </div>
+			<div class="notice_write_wrap">
+				<div class="notice_write_head">공지사항 내용</div>
+				<div class="notice_write_content">
+					<textarea class="notice_content" name="ntContent" required></textarea>
+				</div>
+			</div>
+				
+		      <div class="btn_section btn_list">
+		          <button type="submit" class="btn_insert">등록하기</button>
+		      </div>
+		     </div>
+	    </form>
+ </div>
    
-   
+
 	<footer class="bottom">
 		<div class="bottom_main">
 			<h2>SIMDO:WM</h2>
@@ -120,8 +106,8 @@
 		</div>
 	</footer>
 	
-	
 	<script type="text/javascript" src="${context}/resources/js/movie/movie.js"></script>
+	<script type="text/javascript" src="${context}/resources/js/comm/noticedetail.js"></script>
 </body>
 </html>
    

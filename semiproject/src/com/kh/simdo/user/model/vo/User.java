@@ -19,6 +19,7 @@ public class User {
 	private Date userBirth;
 	private int isLeave;
 	private String userProfile; //DB column_name 수정필요
+	private String admin;
 
 	public int getUserNo() {
 		return userNo;
@@ -28,6 +29,14 @@ public class User {
 		this.userNo = userNo;
 	}
 	
+	public String getAdmin() {
+		return admin;
+	}
+
+	public void setAdmin(String admin) {
+		this.admin = admin;
+	}
+
 	public String getUserEmail() {
 		return userEmail;
 	}
@@ -96,7 +105,9 @@ public class User {
 	public String toString() {
 		return "User [userNo=" + userNo + ", userEmail=" + userEmail + ", userPw=" + userPw + ", userTel=" + userTel
 				+ ", userNm=" + userNm + ", userGender=" + userGender + ", userBirth=" + userBirth + ", isLeave="
-				+ isLeave + ", userProfile=" + userProfile + "]";
+				+ isLeave + ", userProfile=" + userProfile + ", admin=" + admin + "]";
 	}
+
+	
 	
 }
