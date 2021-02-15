@@ -65,7 +65,7 @@
 			<input type="text" name="noticeNo" style="display: none" value="${requestScope.notice.noticeNo}">
 		   <div class="notice_wrap">
 		   	 <div class="notice-info">
-				<div class="notice_head">공지사항 작성</div>
+				<div class="notice_head">공지사항 수정</div>
 				<div class="notice_title">
 					<label>제목</label>
 					<input class="input_title" type="text" name="ntTitle" required value="${requestScope.notice.ntTitle}">
