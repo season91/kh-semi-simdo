@@ -78,7 +78,7 @@
 	
 	<footer class="bottom">
 		<div class="bottom_main">
-			<h2>SIMDO:WM</h2>
+			<h3>SIMDO:WM</h3>
 		</div>
 		<div class="bottom_content">
 			<div class="bottom_left">
