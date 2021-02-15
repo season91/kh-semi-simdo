@@ -265,12 +265,14 @@ public class CommunicationController extends HttpServlet {
 
 	
 	private void uploadComm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("여기로 오니?");
+		
 		HttpSession session=request.getSession();
 		User user= (User) session.getAttribute("user");
 		
-		communicationService.insertComm(user.getUserNm(),request);
-
+		
+		communicationService.insertComm(user.getUserNm(),user.getUserNo(),request);
+		
+		
 		
 		request.getRequestDispatcher("/WEB-INF/view/index/index.jsp")
 		.forward(request, response);
