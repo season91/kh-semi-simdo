@@ -4,12 +4,38 @@
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
-<filter>
-	<filter-name>encoding</filter-name>
-	<filter-class>com.kh.simdo.common.filter.EncodingFilter</filter-class>
-</filter>
-<filter-mapping>
-	<filter-name>encoding</filter-name>
-	<url-pattern>*.do</url-pattern>
-</filter-mapping>
+ 
+   <filter>
+    <filter-name>encoding</filter-name>
+    <filter-class>com.kh.simdo.common.filter.EncodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+     <filter-name>encoding</filter-name>
+     <url-pattern>*.do</url-pattern> <!-- 동적자원에 대한 요청이 올 때만 필터가 돌도록 -->
+  </filter-mapping>
+  <filter>
+     <filter-name>auth</filter-name>
+     <filter-class>com.kh.simdo.common.filter.AuthFilter</filter-class>
+  </filter>
+  <filter-mapping>
+     <filter-name>auth</filter-name>
+     <url-pattern>*.do</url-pattern>
+  </filter-mapping>
+	<error-page>
+		<!-- response상태 코드에 따라 에러페이지로 이동-->
+		<error-code>404</error-code>
+		<location>/WEB-INF/view/common/404_error_page.jsp</location>
+	</error-page>
+	<error-page>
+		<!-- response상태 코드에 따라 에러페이지로 이동-->
+		<error-code>500</error-code>
+		<location>/WEB-INF/view/common/500_error_page.jsp</location>
+	</error-page>
+  
+  <!-- /exception으로 요청이 재지정 되며
+       request와 response 객체가 ExceptionHandler 서블릿으로 전달 -->
+  <error-page>
+     <exception-type>com.kh.simdo.common.exception.CustomException</exception-type>
+     <location>/exception</location>
+  </error-page>
 </web-app>

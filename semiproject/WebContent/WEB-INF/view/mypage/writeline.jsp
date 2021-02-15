@@ -4,7 +4,7 @@
 <head>
 	<link rel="stylesheet" href="/resources/css/all.css">
 	<link rel="stylesheet" href="/resources/css/common/reset.css">
-	<link rel="stylesheet" href="/resources/css/mypage/writereview.css">
+	<link rel="stylesheet" href="/resources/css/mypage/writeline.css">
 </head>
 <body>
 	<div class="header-wrapper">
@@ -21,7 +21,7 @@
 			<c:otherwise>
 				<%-- 로그인 상태 --%>
 				<div class="top-right" style="width: 40vh">
-					<a class="top_user top_join" href="/mypage/mypage.do">마이페이지</a>
+					<a class="top_user top_join" href="/mypage/calendar.do">마이페이지</a>
 					<a class="top_user" href="/comm/noticelist.do">커뮤니케이션</a>
 					<a class="top_user" href="/user/logout.do">로그아웃</a>
 				</div>
@@ -30,11 +30,11 @@
 		</header>
 		<nav class="navi">
 			<div class="navi-wrapper">
-				<div class="my-mv-calendar navi-menu">영화 달력</div>
+				<div class="my-mv-calendar navi-menu" onclick="location.href='/mypage/calendar.do'">영화 달력</div>
 				<div class="my-mv-review navi-menu" onclick="location.href='/mypage/mywritelist.do'">영화 후기</div>
-				<div class="my-mv navi-menu">찜목록</div>
+				<div class="my-mv navi-menu" onclick="location.href='/mypage/mywish.do'">찜목록</div>
 				<div class="my-info navi-menu" onclick="location.href='/user/infochange.do'">회원 정보 변경</div>
-				<div class="my-qna navi-menu">나의 문의 & 요청</div>
+				<div class="my-qna navi-menu" onclick="location.href='/mypage/myqnalist.do'">나의 문의 & 요청</div>
 			</div>
 		</nav>
 	</div>
@@ -82,10 +82,10 @@
 						<address>TEL:031)111-1212</address>
 					</div>
 					<div class="bottom_right">
-						<a href="/aboutus/">ABOUT US</a><br>
-						<a href="/고객페이지/"> 고객페이지</a><br>
-						<a href="/마이페이지/"> 마이페이지</a><br>
-						<a href="/내정보관리/"> 내정보관리</a><br>
+						 <a href="/aboutus.do">ABOUT US</a><br>
+              <a href="/comm/noticelist.do"> 고객페이지</a><br>
+            <a href="/mypage/calendar.do"> 마이페이지</a><br>
+            <a href="/user/infochange.do"> 내정보관리</a><br>
 					</div>
 				</div>
 			</footer>

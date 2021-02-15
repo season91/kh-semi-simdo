@@ -91,28 +91,40 @@ a{
 /* section */
 	
 table{
-    height: 70vh;
+    height: 69vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
 
+tbody{
+	box-shadow: 4px 4px 2px 1px grey;
+}
+
+td.cal-top {
+    height: 2.5vh;
+    width: 10vh;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    border: 1px solid #6e6e6e;
+    background: #a0a0a0;
+}
+
 td{
-       width: 10vh;
-       height: 10vh;
+       width: 9vh;
+       height: 9vh;
        text-align: center;
        font-size: 20px;
-       font-family: 굴림;
-       border:1px solid blue;
-       border-radius: 8px ;
+       border:1px solid gray;
        padding: 0.5vh;
 
 
 }
 .img-wrap{
-	width: 8vh;
-	height: 9vh;
+	width: 5vh;
+	height: 6vh;
 }
 
 .content{
@@ -121,8 +133,8 @@ td{
 	justify-content: space-around;
 	width: 100%;
 	min-height: 70vh;
-	height:100vh;
-	margin-top: 15vh;
+	height:75vh;
+	margin-top: 12vh;
 	/* position: absolute;
 	top: 15vh;
 	left: 50%;
@@ -134,26 +146,31 @@ td{
 
 /* footer */
 .bottom{
-   height:15vh;   
+   height:15vh;
    background-color: #DADAD9;
    color: #696765;
+   bottom: 0;
+   position: absolute;
+   width: 100%;
 }
+
 .bottom_main{
-   font-weight:bold;
-   height:2vh;
-   padding-left:1%;
-   padding-top:1%;
+   font-weight: bold;
+   height: 2vh;
+   padding-left: 1%;
+   padding-top: 1%;
    
 }
+
 .bottom_left{
-   padding-left:1%;
-   
+   padding-left: 1%;
 }
+
 .bottom_content{
-   display:flex;
-   
+   display: flex;
+   justify-content: space-between;
 }
+
 .bottom_right{
-   padding-left:70%;
-   
+   padding-right: 1%;
 }

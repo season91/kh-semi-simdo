@@ -25,7 +25,7 @@
 				<c:otherwise>
 					<%-- 로그인 상태 --%>
 					<div class="top-right" style="width: 40vh">
-						<a class="top_user top_join" href="/mypage/mypage.do">마이페이지</a> <a
+						<a class="top_user top_join" href="/mypage/calendar.do">마이페이지</a> <a
 							class="top_user" href="/comm/noticelist.do">커뮤니케이션</a> <a
 							class="top_user" href="/user/logout.do">로그아웃</a>
 					</div>
@@ -45,13 +45,16 @@
 	</div>
 	
 	<div class="content">
-		<div>나의 문의 요청!</div>
+		<div class="qna_head">나의 문의 요청!</div>
+		<p>작성은 <a href="/comm/write.do">커뮤니케이션->QnA(클릭시 이동)</a>에서 작성해주세요^^</p>
+		
 		<table>
 		
 			<tr>
 				<th>글번호</th>
 				<th>제목</th>
 				<th>작성일</th>
+				<th>관리자 답변</th>
 			</tr>
 			<c:forEach var="qna" items="${res}" varStatus="status">
 				<%-- score 글번호 releaseDate 작성일자 mvTitle 글제목 --%>
@@ -59,6 +62,15 @@
 					<td>${qna.qnaNo}</td>
 					<td style="cursor:pointer;" onclick="location.href='/mypage/myqnadetail.do?qstnno=${qna.qnaNo}'" >${qna.comm.qstnTitle}</td>
 					<td>${qna.comm.qstnRegDate}</td>
+					<c:choose>
+						<c:when test="${empty qna.comm.qstnComent}">
+						<td>미답변</td>
+						</c:when>
+						<c:otherwise>
+						<td>답변완료</td>
+						</c:otherwise>
+					</c:choose>
+					
 				</tr>
 			</c:forEach>
 			
@@ -92,9 +104,10 @@
 				<address>TEL:031)111-1212</address>
 			</div>
 			<div class="bottom_right">
-				<a href="/aboutus/">ABOUT US</a><br> <a href="/고객페이지/">
-					고객페이지</a><br> <a href="/마이페이지/"> 마이페이지</a><br> <a
-					href="/내정보관리/"> 내정보관리</a><br>
+				 <a href="/aboutus.do">ABOUT US</a><br>
+              <a href="/comm/noticelist.do"> 고객페이지</a><br>
+            <a href="/mypage/calendar.do"> 마이페이지</a><br>
+            <a href="/user/infochange.do"> 내정보관리</a><br>
 
 			</div>
 		</div>

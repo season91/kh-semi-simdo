@@ -68,9 +68,10 @@
 	text-align: center;
 	font-weight: bold;
 	transition-duration:0.2s;
+	font-size: 2vh;
 }
 .navi-wrapper>div:hover{
-	font-size: 2vw;
+	font-size: 3.5vh;
 }
 
 .navi-wrapper a{
@@ -112,7 +113,7 @@ session{
 }
 
 .navi-extend-list:hover {
-	font-size:3vw;
+	font-size: 3.5vh;
 	font-weight: bold;
 	
 }
@@ -226,9 +227,8 @@ session{
 
 table {
    text-align:center;
-   width: 100%;
+   width: 80%;
    border-top: 1px solid  #959493;
-   border-collapse: collapse;
  }
 
 th{
@@ -236,28 +236,48 @@ th{
 	color: #DADAD9;
 	font-weight: bold;
 }
+
 th, td {
    border-bottom: 1px solid #959493;
    padding: 1.5vh;
  }
+ 
 .menu{
-	padding:5px;
+	width:30vh;
 	margin-top:15vh;
-	background-color:#969696;
-	height:70vh;
-	width:100px;
-	float:left;
+	background-color:#959493;
+	min-height: 70vh;
+	display: flex;
+	text-align: center;
+	flex-direction: column;
 } 
-.content2{
-	
-	margin-left:30%;
-	margin-top:20vh;
-	background-color:#DADAD9;
-	height:70vh;
-	width:700px;
-	float:left;
-	
+.menu>p{
+	margin-top: 5vh;
+	font-size: 3vh;
+	text-align: center;
 }
+
+.menu>a{
+	transition-duration:0.2s;
+	font-size: 2.5vh;
+}
+
+.menu>a:hover{
+	transition-duration:0.2s;
+	font-size: 3.5vh;
+}
+
+.noticelist{
+	background-color:#DADAD9;
+	min-height: 70vh;
+	margin-top: 15vh;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+}
+
 .content{
 	display:flex;
 	background-color:#DADAD9;

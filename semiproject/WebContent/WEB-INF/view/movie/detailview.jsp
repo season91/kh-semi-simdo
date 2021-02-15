@@ -25,7 +25,7 @@
 				<c:otherwise>
 					<%-- 로그인 상태 --%>
 					<div class="top-right" style="width: 40vh">
-						<a class="top_user top_join" href="/mypage/mypage.do">마이페이지</a> <a
+						<a class="top_user top_join" href="/mypage/calendar.do">마이페이지</a> <a
 							class="top_user" href="/comm/noticelist.do">커뮤니케이션</a> <a
 							class="top_user" href="/user/logout.do">로그아웃</a>
 					</div>
@@ -37,7 +37,7 @@
 			<div class="navi-wrapper">
 				<div class="nation-view" style="cursor:pointer;">나라별</div>
 				<div class="genre-view" style="cursor:pointer;">장르별</div>
-				<div class="score-view" OnClick="location.href ='/movie/socreview.do'" style="cursor:pointer;">평점순</div>
+				<div class="score-view" OnClick="location.href ='/movie/scoreview.do'" style="cursor:pointer;">평점순</div>
 				<div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
 				<form class="search-view" action="/movie/searchview.do">
 					<input type="search" class="input_navi-search" name="search">
@@ -78,13 +78,11 @@
 						<%-- 이부분 해당 영화에 글을썻거나, 찜했으면 색깔 넣어서 표현해주어야 한다.--%>
 						
 						<div class="mv_info_btn">
-							<button name="like" class="like">
-								<i class="fas fa-thumbs-up" id="btn_like" style="color:black"></i>
-							</button>
+
 						<c:choose>
 							<c:when test="${empty wish}">
 								<button name="wish" class="wish">
-									<i class="fas fa-heart" id="btn_wish" style="color:black"></i>
+										<i class="fas fa-heart wish" id="btn_wish" style="color:black"></i>
 								</button>
 							</c:when>
 							<c:otherwise>
@@ -95,15 +93,11 @@
 						</c:choose>
 							
 						<c:choose>
-								<c:when test="${empty reviewList}">
-									<button name="write-is">
-									<i class="fas fa-journal-whills" id="btn_write-is"></i>
-									</button>
+								<c:when test="${empty write}">
+									<i class="fas fa-journal-whills write-is" id="btn_write-is"></i>
 								</c:when>
 								<c:otherwise>
-									<button name="write-is">
-									<i class="fas fa-journal-whills" id="btn_write-is" style="color:pink"></i>
-									</button>
+									<i class="fas fa-journal-whills write-is" id="btn_write-is" style="color:pink"></i>
 								</c:otherwise>
 							</c:choose>
 						</div>
@@ -137,7 +131,7 @@
 						
 					</div>
 					<div class="mv_info_write">
-						<span><a href="/mypage/writereview.do?mvno=${res.mvNo}">후기작성</a></span> <span><a href="/mypage/writeline.do?mvno=${res.mvNo}">나만의 명대사 작성</a></span> <span><a>번역</a></span>
+						<span><a href="/mypage/writereview.do?mvno=${res.mvNo}">후기작성</a></span> <span><a href="/mypage/writeline.do?mvno=${res.mvNo}">나만의 명대사 작성</a></span>
 					</div>
 
 				</div>
@@ -206,9 +200,10 @@
 				<address>TEL:031)111-1212</address>
 			</div>
 			<div class="bottom_right">
-				<a href="/aboutus/">ABOUT US</a><br> <a href="/고객페이지/">
-					고객페이지</a><br> <a href="/마이페이지/"> 마이페이지</a><br> <a
-					href="/내정보관리/"> 내정보관리</a><br>
+				 <a href="/aboutus.do">ABOUT US</a><br>
+               <a href="/comm/noticelist.do"> 고객페이지</a><br>
+            <a href="/mypage/calendar.do"> 마이페이지</a><br>
+            <a href="/user/infochange.do"> 내정보관리</a><br>
 
 			</div>
 		</div>

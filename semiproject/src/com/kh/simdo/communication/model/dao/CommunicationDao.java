@@ -16,6 +16,7 @@ import com.kh.simdo.common.util.file.FileVO;
 import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.communication.model.vo.Notice;
 import com.kh.simdo.movie.model.vo.Movie;
+
 /**
  * 
  * @author 김백관
@@ -28,15 +29,16 @@ public class CommunicationDao {
 	public int insertComm(Connection conn, Communication communication) {
 		int res = 0;
 		
-		String sql = "insert into COMM (QSTN_NO, USER_NM, QSTN_TITLE, QSTN_CONTENT,QSTN_TYPE) values(sc_qstn_No.nextval, ?,?, ?,?)";
+		String sql = "insert into COMM (QSTN_NO, USER_NM, USER_NO, QSTN_TITLE, QSTN_CONTENT,QSTN_TYPE) values(sc_qstn_No.nextval, ?,?,?, ?,?)";
 		System.out.println("문의내용저장 ");
 		PreparedStatement pstm = null;
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, communication.getUserNm());
-			pstm.setString(2, communication.getQstnTitle());
-			pstm.setString(3, communication.getQstnContent());
-			pstm.setString(4, communication.getQstnType());
+			pstm.setInt(2, communication.getUserNo());
+			pstm.setString(3, communication.getQstnTitle());
+			pstm.setString(4, communication.getQstnContent());
+			pstm.setString(5, communication.getQstnType());
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(ErrorCode.IB01, e);
@@ -56,7 +58,6 @@ public class CommunicationDao {
 	//파일테이블에 파일 정보 저장
 		public int insertFile(Connection conn, FileVO fileData) {
 			int res = 0;
-			System.out.println("이놈아파일");
 			String sql = "insert into tb_file "
 					+ "(f_idx,origin_file_name,rename_file_name,save_path) "
 					+ "values(sc_file_idx.nextval,?,?,?)";
@@ -64,7 +65,6 @@ public class CommunicationDao {
 			PreparedStatement pstm = null;
 			try {
 				pstm = conn.prepareStatement(sql);
-				
 				pstm.setString(1, fileData.getOriginFileName());
 				pstm.setString(2, fileData.getRenameFileName());
 				pstm.setString(3, fileData.getSavePath());
@@ -117,13 +117,14 @@ public class CommunicationDao {
 	 * @author 조아영
 	 */
 		// 문의사항 페이징 범위 구하기
-		public int[] selectPagingByQna(Connection conn, int page) {
+		public int[] selectPagingByQna(Connection conn, int page, int userNo) {
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
-			String sql = "select count(*) from comm ";
+			String sql = "select count(*) from comm where user_no = ?";
 			int[] startEnd = new int[2];
 			try {
 				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, userNo);
 				rset = pstm.executeQuery();
 				System.out.println("첫실행 다오");
 				int totalContent = 0;
@@ -176,10 +177,10 @@ public class CommunicationDao {
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
 			List<Map<String, Object>> res = new ArrayList();
-			String sql = "select * from (select rownum as num, QSTN_NO, QSTN_TITLE, QSTN_REG_DATE from"
+			String sql = "select * from (select rownum as num, QSTN_NO, QSTN_TITLE, QSTN_REG_DATE, QSTN_COMENT from "
 					+ "(select * from comm c join \"USER\" u using(user_no) where user_no = ? order by  QSTN_REG_DATE desc))  "
 					+ "where num >= ? and num <= ?";
-			System.out.println("조건찾는 다오");
+			
 			int pagePerList = 10;
 			int startPage = (page - 1) * pagePerList + 1 ; // 시작
 			int endPage =  startPage + pagePerList - 1 ; // 끝
@@ -195,21 +196,110 @@ public class CommunicationDao {
 					Map<String, Object> commandMap = new HashMap<String, Object>();
 					communication = new Communication();
 					String qnaNo = String.valueOf(rset.getInt("QSTN_NO"));
-					
 					communication.setQstnTitle(rset.getString("QSTN_TITLE"));
 					communication.setQstnRegDate(rset.getDate("QSTN_REG_DATE"));
-					
+					communication.setQstnComent(rset.getString("QSTN_COMENT"));
 					commandMap.put("qnaNo", qnaNo);
 					commandMap.put("comm", communication);
 					res.add(commandMap);
-					
 				}
 				
 				
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.AUTH01, e);
 			} finally {
+				jdt.close(rset, pstm);
+			}
+			
+			return res;
+			
+		}
+		
+		// 관리자용 모든 유저 문의사항 글갖고 오기
+		// 문의사항 페이징 범위 구하기
+		public int[] selectPagingByAllQna(Connection conn, int page) {
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			String sql = "select count(*) from comm";
+			int[] startEnd = new int[2];
+			try {
+				pstm = conn.prepareStatement(sql);
+				rset = pstm.executeQuery();
+				System.out.println("첫실행 다오");
+				int totalContent = 0;
+				int totalPage = 0;
 				
+				if(rset.next()) {
+					totalContent += rset.getInt(1);
+				}
+				
+				if(totalContent == 0) {
+					return null;
+				}
+				
+				// 최종 전체 페이지 개수
+				totalPage =  totalContent / 10;
+				if(totalContent % 10 > 0) {
+					//나머지가 있다면 1더해준다.
+					totalPage++;
+				}
+				
+				// 페이징 범위 계산
+				// 시작 끝 페이지
+				int startPage, endPage;
+				startPage = ((page -1)/10)*10+1;
+				endPage = startPage + 10 -1;
+				if(endPage > totalPage) {
+					endPage = totalPage;
+				}
+				
+				// 시작과 끝 결과(숫자) 전달해줄 배열
+				startEnd[0]=startPage;
+				startEnd[1]=endPage;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return startEnd;
+		}
+				
+		public List<Map<String, Object>> selectAllQnaList(Connection conn, int page) {
+			Communication communication = null;
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			List<Map<String, Object>> res = new ArrayList();
+			String sql = "select * from (select rownum as num, QSTN_NO, QSTN_TITLE, QSTN_REG_DATE, QSTN_COMENT from "
+					+ "(select * from comm c join \"USER\" u using(user_no) order by  QSTN_REG_DATE desc))  "
+					+ "where num >= ? and num <= ?";
+			
+			int pagePerList = 10;
+			int startPage = (page - 1) * pagePerList + 1 ; // 시작
+			int endPage =  startPage + pagePerList - 1 ; // 끝
+			
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, startPage);
+				pstm.setInt(2, endPage);
+				rset = pstm.executeQuery();
+				
+				while(rset.next()) {
+					Map<String, Object> commandMap = new HashMap<String, Object>();
+					communication = new Communication();
+					String qnaNo = String.valueOf(rset.getInt("QSTN_NO"));
+					communication.setQstnTitle(rset.getString("QSTN_TITLE"));
+					communication.setQstnRegDate(rset.getDate("QSTN_REG_DATE"));
+					communication.setQstnComent(rset.getString("QSTN_COMENT"));
+					commandMap.put("qnaNo", qnaNo);
+					commandMap.put("comm", communication);
+					res.add(commandMap);
+				}
+				
+				
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.AUTH01, e);
+			} finally {
+				jdt.close(rset, pstm);
 			}
 			
 			return res;
@@ -225,8 +315,7 @@ public class CommunicationDao {
 			Communication comm = null;
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
-			String sql = "select * "
-					+ "from comm where qstn_no = ?";
+			String sql = "select * from comm where qstn_no = ?";
 			try {
 				pstm = conn.prepareStatement(sql);
 				pstm.setInt(1, qstnNo);
@@ -239,6 +328,7 @@ public class CommunicationDao {
 					comm.setQstnTitle(rset.getString("qstn_title"));
 					comm.setQstnContent(rset.getString("qstn_content"));
 					comm.setQstnComent(rset.getString("qstn_coment"));
+					
 				}
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.SB01, e);
@@ -247,7 +337,86 @@ public class CommunicationDao {
 			}
 			return comm;
 		}
+		
+		/**
+		 * 
+		 * @Author : 조아영
+		   @Date : 2021. 2. 15.
+		   @param conn
+		   @param qstnNo
+		   @param coment
+		   @return
+		   @work : 문의 수정하기
+		 */
 	
+		public int updateQna(Connection conn, int qstnNo, String qnaTitle, String qnaContent) {
+			int res = 0;
+			PreparedStatement pstm = null;
+			String sql = "update comm set qstn_title = ? , qstn_content = ? where qstn_no = ?";
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setString(1, qnaTitle);
+				pstm.setString(2, qnaContent);
+				pstm.setInt(3, qstnNo);
+				
+				res = pstm.executeUpdate();
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.UQ01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			
+			return res;
+		}
+
+		public int deleteQna(Connection conn, int qstnNo) {
+			int res = 0;
+			PreparedStatement pstm = null;
+			String sql ="delete from comm where qstn_no = ?";
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, qstnNo);
+				
+				res = pstm.executeUpdate();
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.DQ01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+		}
+
+		/**
+		 * 
+		 * @Author : 조아영
+		   @Date : 2021. 2. 15.
+		   @param conn
+		   @param qstnNo
+		   @param coment
+		   @return
+		   @work : 관리자용 답변 추가
+		 */
+		public int updateQnaComent(Connection conn, int qstnNo, String coment) {
+			int res = 0;
+			PreparedStatement pstm = null;
+
+			try {
+				String sql = "update comm set qstn_coment = ? where qstn_no = ?";
+				pstm = conn.prepareStatement(sql);
+				pstm.setString(1, coment);
+				pstm.setInt(2, qstnNo);
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.UQ02, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+		}
 		
 		// 	공자사항 페이징 범위 구하기
 		public int[] selectPagingByNotice(Connection conn, int page) {
@@ -312,8 +481,9 @@ public class CommunicationDao {
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
 			List<Map<String, Object>> res = new ArrayList<>();
-			String sql = "select * from (select rownum as num, notice_no, nt_title, reg_date from notice order by  reg_date desc) where num >= ? and num <= ?";
-			System.out.println("조건찾는 다오");
+			String sql = "select * from (select rownum as num, notice_no, nt_title, REG_DATE from (select * from notice order by  reg_date desc))  "
+					+" where num >= ? and num <= ?";
+
 			int pagePerList = 10;
 			int startPage = (page - 1) * pagePerList + 1 ; // 시작
 			int endPage =  startPage + pagePerList - 1 ; // 끝
@@ -340,13 +510,12 @@ public class CommunicationDao {
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.AUTH01, e);
 			} finally {
-				
+				jdt.close(rset, pstm);
 			}
 			
 			return res;
 			
 		}
-		
 		
 		
 		/**
@@ -370,6 +539,7 @@ public class CommunicationDao {
 					notice.setNtTitle(rset.getString("nt_title"));
 					notice.setRegDate(rset.getDate("reg_date"));
 					notice.setWriter(rset.getString("writer"));
+					
 				}
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.SB01, e);
@@ -377,6 +547,94 @@ public class CommunicationDao {
 				jdt.close(rset, pstm);
 			}
 			return notice;
+		}
+		
+		/**
+		 * @author MinHee
+		 */
+		
+		public int insertNotice(Connection conn, Notice notice) {
+			
+			int res = 0;
+			PreparedStatement pstm = null;
+			
+			try {
+				
+				String query = "insert into notice(notice_no, nt_title, nt_content, reg_date, writer) "
+						+ "values(sc_nt_no.nextval, ?, ?, sysdate, '관리자')";
+				pstm = conn.prepareStatement(query);
+				pstm.setString(1, notice.getNtTitle());
+				pstm.setString(2, notice.getNtContent());
+				
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				throw new DataAccessException(ErrorCode.IN01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+			
+		}
+		
+		/**
+		 * @author MinHee
+		 */
+		
+		public int updateNotice(Connection conn, Notice notice) {
+			
+			int res = 0;
+			PreparedStatement pstm = null;
+			
+			try {
+				
+				String query = "update notice set nt_title = ?, nt_content = ?, reg_date = sysdate where notice_no = ?";
+				pstm = conn.prepareStatement(query);
+				pstm.setString(1, notice.getNtTitle());
+				pstm.setString(2, notice.getNtContent());
+				pstm.setInt(3, notice.getNoticeNo());
+				
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				throw new DataAccessException(ErrorCode.UN01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+			
+		}
+		
+		/**
+		 * @author MinHee
+		 */
+		
+		public int deleteNotice(Connection conn, int noticeNo) {
+			
+			int res = 0;
+			PreparedStatement pstm = null;
+			
+			try {
+				
+				String query = "delete from notice where notice_no = ?";
+				pstm = conn.prepareStatement(query);
+				pstm.setInt(1, noticeNo);
+				
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				throw new DataAccessException(ErrorCode.DN01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+			
 		}
 	
 }

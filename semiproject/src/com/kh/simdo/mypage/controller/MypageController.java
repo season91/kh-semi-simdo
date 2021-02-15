@@ -22,6 +22,7 @@ import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.mypage.model.service.MypageService;
 import com.kh.simdo.mypage.model.vo.UserFmsline;
 import com.kh.simdo.mypage.model.vo.UserReview;
+import com.kh.simdo.mypage.model.vo.Wish;
 import com.kh.simdo.user.model.vo.User;
 
 /**
@@ -51,11 +52,9 @@ public class MypageController extends HttpServlet {
 		String[] uriArr = request.getRequestURI().split("/");
 		
 		switch(uriArr[uriArr.length - 1]) {
-		case "mypage.do" : //김백관
-			request.getRequestDispatcher("/WEB-INF/view/mypage/mypage.jsp").forward(request, response);
-			break;
-		case "mywish.do" : // 김백관 추가작업예정 찜목록
-			request.getRequestDispatcher("/WEB-INF/view/mypage/mywish.jsp").forward(request, response);
+		
+		case "mywish.do" : // 김백관 찜목록
+			mywishList(request,response);
 			break;
 		case "mywishadd.do" : // 조아영 찜목록 DB에 넣기
 			myWishAdd(request,response);
@@ -96,7 +95,7 @@ public class MypageController extends HttpServlet {
 		case "writeline.do" :  // 김종환
 			writeLine(request, response);
 			break;
-		case "insetreline.do" : // 김종환
+		case "insertline.do" : // 김종환
 			insertLine(request, response);
 			break;
 		case "myqnalist.do" :  // 조아영
@@ -104,6 +103,15 @@ public class MypageController extends HttpServlet {
 			break;
 		case "myqnadetail.do" : // 조아영
 			myQnaDetail(request,response); 
+			break;
+		case "myqnaupdate.do" :  // 조아영
+			myQnaUpdate(request,response);
+			break;
+		case "myqnaupdateimpl.do" :  // 조아영
+			myQnaUpdateImpl(request,response);
+			break;
+		case "myqnadelete.do" : // 조아영
+			myQnaDelete(request,response); 
 			break;
 		case "myreviewupdate.do" : //조민희
 			myReviewUpdate(request, response);
@@ -119,6 +127,32 @@ public class MypageController extends HttpServlet {
 			break;
 		}
 	}
+	
+	/**
+	 * @author 김백관 찜목록리스트
+	 */
+	private void mywishList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	      User user = (User) request.getSession().getAttribute("user");
+	      List<Wish> wishRes = mypageService.selectWishByUserNo(user.getUserNo());
+	      
+	      Map<String, Object> wishCommandMap = new HashMap<>();
+	      
+	      
+	      List wishList = new ArrayList();
+
+	      
+	      for(int i = 0; i < wishRes.size(); i++) {
+	         String wishJson = new Gson().toJson(wishRes.get(i));
+	         wishCommandMap = new Gson().fromJson(wishJson, Map.class);
+	         wishList.add(wishCommandMap);
+	      }
+	      
+	   
+	      request.setAttribute("wishList", wishList);
+	      request.getRequestDispatcher("/WEB-INF/view/mypage/mywish.jsp")
+	      .forward(request, response);
+	   }
+	   
 	
 	/**
 	 * @author 조아영
@@ -187,9 +221,14 @@ public class MypageController extends HttpServlet {
 			page = Integer.parseInt(text);
 		}
 		// dao 쿼리기준 페이징번호 가져오는거 올말고 유저기준으로 수정하기.
-		int[] res = communicationService.selectPagingByQna(page);
-		request.setAttribute("start", res[0]);
-		request.setAttribute("end", res[1]);
+		int[] res = communicationService.selectPagingByQna(page, user.getUserNo());
+		if(res != null) {
+			request.setAttribute("start", res[0]);
+			request.setAttribute("end", res[1]);
+		} else {
+			request.setAttribute("start", 0);
+			request.setAttribute("end", 0);
+		}
 
 		
 		List<Map<String, Object>> pageRes = communicationService.selectQnaList(page, user.getUserNo());
@@ -215,6 +254,55 @@ public class MypageController extends HttpServlet {
 		System.out.println(communication);
 		request.setAttribute("res", communication);
 		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnadetail.jsp").forward(request, response);
+	}
+	
+	protected void myQnaUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String qnaNo = String.valueOf(request.getParameter("qstnno"));
+		int qstnNo = Integer.parseInt(qnaNo);
+		
+		Communication communication = communicationService.selectQnaByQstnNo(qstnNo);
+		System.out.println(communication);
+		request.setAttribute("res", communication);
+		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnaupdate.jsp").forward(request, response);
+	}
+	
+	protected void myQnaUpdateImpl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String qnaNo = String.valueOf(request.getParameter("qstnno"));
+		int qstnNo = Integer.parseInt(qnaNo);
+		
+		String qnaTitle = request.getParameter("title");
+		String qnaContent = request.getParameter("content");
+		
+		int res = communicationService.updateQna(qstnNo, qnaTitle, qnaContent);
+		if(res > 0) {
+			request.setAttribute("alertMsg", "수정이 완료되었습니다.");
+			request.setAttribute("url", "/mypage/myqnalist.do");
+			
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
+		} else {
+			request.setAttribute("alertMsg", "수정이 실패했습니다.");
+			request.setAttribute("url", "/mypage/myqnalist.do");
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
+		}
+		
+	}
+	
+	protected void myQnaDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String qnaNo = String.valueOf(request.getParameter("qstnno"));
+		int qstnNo = Integer.parseInt(qnaNo);
+		
+		int res = communicationService.deleteQna(qstnNo);
+		if(res > 0) {
+			request.setAttribute("alertMsg", "삭제되었습니다.");
+			request.setAttribute("url", "/mypage/myqnalist.do");
+			
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
+		} else {
+			request.setAttribute("alertMsg", "삭제 실패했습니다.");
+			request.setAttribute("url", "/mypage/myqnalist.do");
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
+		}
+		
 	}
 
 	/**
@@ -431,12 +519,12 @@ public class MypageController extends HttpServlet {
 		String mvNo = request.getParameter("mvno");
 		Movie movie = movieService.selectMovieByMvNo(mvNo);
 
-		String rvContent = request.getParameter("rvContent");
+		String lineContent = request.getParameter("lineContent");
 
 		
 		UserFmsline userFmsline = new UserFmsline();
 		userFmsline.setUserNo(user.getUserNo());
-		userFmsline.setFmlContent(rvContent);
+		userFmsline.setFmlContent(lineContent);
 		userFmsline.setMvNo(movie.getMvNo());
 		userFmsline.setMvTitle(movie.getMvTitle());
 		userFmsline.setThumbnail(movie.getThumbnail());
@@ -445,15 +533,14 @@ public class MypageController extends HttpServlet {
 		
 		int res = mypageService.insertLine(userFmsline);
 		if(res > 0) {
-			request.getSession().removeAttribute("reviewNo");
-			request.setAttribute("alertMsg", "영화 후기 등록이 완료되었습니다.");
+			request.setAttribute("alertMsg", "나만의 명대사 등록이 완료되었습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
 			
 			request
 			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
 			.forward(request, response);
 		} else {
-			request.setAttribute("alertMsg", "영화 후기 등록중 에러가 났습니다");
+			request.setAttribute("alertMsg", "나만의 명대사 등록중 에러가 났습니다");
 			request.setAttribute("url", "/mypage/mywritelist.do");
 			
 			request
@@ -579,9 +666,7 @@ public class MypageController extends HttpServlet {
 			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
 			.forward(request, response);
 		}
-		
-		request.getRequestDispatcher("/WEB-INF/view/mypage/mylineupdate.jsp")
-		.forward(request, response);
+
 	}
 
 
