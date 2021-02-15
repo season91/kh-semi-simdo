@@ -118,11 +118,16 @@ public class CommunicationController extends HttpServlet {
 		} else {
 			page = Integer.parseInt(text);
 		}
-		
+
 
 		int[] res = communicationService.selectPagingByNotice(page);
-		request.setAttribute("start", res[0]);
-		request.setAttribute("end", res[1]);
+		if(res != null) {
+			request.setAttribute("start", res[0]);
+			request.setAttribute("end", res[1]);
+		} else {
+			request.setAttribute("start", 0);
+			request.setAttribute("end", 0);
+		}
 		
 		List<Map<String, Object>> pageRes = communicationService.selectNoticeList(page);
 		
@@ -135,6 +140,16 @@ public class CommunicationController extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/view/comm/noticelist.jsp").forward(request, response);
 	}
 
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 15.
+	   @param request
+	   @param response
+	   @throws ServletException
+	   @throws IOException
+	   @work :
+	 */
 	protected void allUserQnalist(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//모든유저 qna 가져와서 페이징처리 해주기
 		String text = request.getParameter("page");
@@ -146,8 +161,14 @@ public class CommunicationController extends HttpServlet {
 			page = Integer.parseInt(text);
 		}
 		int[] res = communicationService.selectPagingByNotice(page);
-		request.setAttribute("start", res[0]);
-		request.setAttribute("end", res[1]);
+		if(res != null) {
+			request.setAttribute("start", res[0]);
+			request.setAttribute("end", res[1]);
+		} else {
+			request.setAttribute("start", 0);
+			request.setAttribute("end", 0);
+		}
+		
 		
 		List<Map<String, Object>> pageRes = communicationService.selectAllQnaList(page);
 		qnaAllList = parseJson(pageRes);
@@ -185,6 +206,16 @@ public class CommunicationController extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/view/comm/noticedetail.jsp").forward(request, response);
 	}
 	
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 15.
+	   @param request
+	   @param response
+	   @throws ServletException
+	   @throws IOException
+	   @work :
+	 */
 	protected void userQnaComent(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 상세화면으로 이동 후 답변하기.
 		String strQnaNo = String.valueOf(request.getParameter("qnano"));
@@ -196,6 +227,16 @@ public class CommunicationController extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/view/comm/adminqnacoment.jsp").forward(request, response);
 	}
 
+	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 15.
+	   @param request
+	   @param response
+	   @throws ServletException
+	   @throws IOException
+	   @work :
+	 */
 	protected void userQnaComentImple(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// 답변내용 DB에 넣기.
 		String strQnaNo = request.getParameter("qstnno");
@@ -215,8 +256,10 @@ public class CommunicationController extends HttpServlet {
 
 	
 	private void commWrite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	request.getRequestDispatcher("/WEB-INF/view/comm/commwrite.jsp")
-	.forward(request, response);
+		User user = (User) request.getSession().getAttribute("user");
+		request.setAttribute("admin", user.getAdmin());
+		request.getRequestDispatcher("/WEB-INF/view/comm/commwrite.jsp")
+		.forward(request, response);
 
 	}
 
