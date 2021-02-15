@@ -79,7 +79,7 @@
 			</div>
 			<div class="bottom_right">
 				 <a href="/aboutus.do">ABOUT US</a><br>
-            <a href="/mypage/calendar.do"> 고객페이지</a><br>
+              <a href="/comm/noticelist.do"> 고객페이지</a><br>
             <a href="/mypage/calendar.do"> 마이페이지</a><br>
             <a href="/user/infochange.do"> 내정보관리</a><br>
 			</div>

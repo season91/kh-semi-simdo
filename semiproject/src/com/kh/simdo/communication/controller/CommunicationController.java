@@ -274,7 +274,7 @@ public class CommunicationController extends HttpServlet {
 		
 		
 		
-		request.getRequestDispatcher("/WEB-INF/view/index/index.jsp")
+		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnalist.jsp")
 		.forward(request, response);
 		}
 	
