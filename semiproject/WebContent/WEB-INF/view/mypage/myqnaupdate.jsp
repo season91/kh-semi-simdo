@@ -1,13 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
-<head>
+<%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt"%>
 <link rel="stylesheet" href="${context}/resources/css/common/reset.css">
-<link rel="stylesheet" href="${context}/resources/css/movie/navi.css">
+<link rel="stylesheet" href="${context}/resources/css/mypage/myqnaupdate.css">
 <link rel="stylesheet" href="${context}/resources/css/all.css">
-</head>
 <body>
-<div class="header-wrapper">
+	<div class="header-wrapper">
 		<header class="header-section">
 			 <a class="top-logo-text"><img class="top-logo-img" style="width: 20vh; margin-left: 5%; cursor:pointer;" alt="logo;" src="/resources/image/logo.png"
          		  OnClick="location.href ='/index.do'"></a>
@@ -31,42 +30,31 @@
 		</header>
 		<nav class="navi">
 			<div class="navi-wrapper">
-				<div class="nation-view" style="cursor:pointer;">나라별</div>
-				<div class="genre-view" style="cursor:pointer;">장르별</div>
-				<div class="score-view" OnClick="location.href ='/movie/scoreview.do'" style="cursor:pointer;">평점순</div>
-				<div class="review-view" OnClick="location.href ='/movie/reviewview.do'" style="cursor:pointer;">후기순</div>
-				<form class="search-view" action="/movie/searchview.do">
-					<input type="search" class="input_navi-search" name="search">
-					<button class="btn_navi-search">
-						<i class="fas fa-search"></i>
-					</button>
-				</form>
+				<div class="my-mv-calendar navi-menu" onclick="location.href='/mypage/calendar.do'">영화 달력</div>
+				<div class="my-mv-review navi-menu" onclick="location.href='/mypage/mywritelist.do'">영화 후기</div>
+				<div class="my-mv navi-menu" onclick="location.href='/mypage/mywish.do'">찜목록</div>
+				<div class="my-info navi-menu" onclick="location.href='/user/infochange.do'">회원 정보 변경</div>
+				<div class="my-qna navi-menu" onclick="location.href='/mypage/myqnalist.do'">나의 문의 & 요청</div>
 			</div>
 		</nav>
 	</div>
-
-
+	
 	<div class="content">
-		<div class="mv_view_title">${requestScope.navi} 조회 결과입니다.</div>
-		<div class="mv_wrapper">
-		
-		<%-- 여기서 검색결과 하나씩 출력 --%>
-		<c:forEach var="movie" items="${res}">
-			<div class="mv_view_list">
-				<div class="mv_view_img">
-					<img src="${movie.poster}">
-				</div>
-				<div class="mv_view_text">
-					<p class="mv_title">${movie.mvTitle}</p>
-					<p class="mv_info">${movie.nation} / ${movie.director} 감독</p>
-					<a class="mv_readmore" href="/movie/detailview.do?mvno=${movie.mvNo}">더보기</a>
-				</div>
+		<form class="qna_wrap" action="/mypage/myqnaupdateimpl.do?qstnno=${res.qstnNo}" method="post"> 
+			<div class="qna-info">
+				<div class="qna_head">나의 문의 & 요청 수정하기</div>
+				<div class="qna_title"><input type="text" name="title" class="title" placeholder="수정할 문의 제목 작성하세요."></div>
 			</div>
-		</c:forEach>
-		</div>
+			<div class="qna_write_wrap">
+				<div class="qna_write_head">문의 수정 내용</div>
+				<div ><textarea name="content" class="qna_write_content"  placeholder="수정할 문의 내용 작성하세요."></textarea></div>
+			</div>
+			<button class="btn-update">수정하기</button>
+		</form>
+			<a style="color:#696765"href="/mypage/myqnalist.do">목록으로</a>
+			
 	</div>
-
-
+		
 	<footer class="bottom">
 		<div class="bottom_main">
 			<h2>SIMDO:WM</h2>
@@ -80,15 +68,13 @@
 			</div>
 			<div class="bottom_right">
 				 <a href="/aboutus.do">ABOUT US</a><br>
-              <a href="/comm/noticelist.do"> 고객페이지</a><br>
+               <a href="/comm/noticelist.do"> 고객페이지</a><br>
             <a href="/mypage/calendar.do"> 마이페이지</a><br>
             <a href="/user/infochange.do"> 내정보관리</a><br>
 
 			</div>
 		</div>
 	</footer>
-
-	<script type="text/javascript"
-		src="${context}/resources/js/movie/movie.js"></script>
+	
 </body>
 </html>

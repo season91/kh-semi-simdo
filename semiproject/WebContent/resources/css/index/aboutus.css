@@ -1,9 +1,7 @@
 h2{
-	font-size:30px;
+	font-size:30spx;
 }
-body{
-	text-align:center;
-}
+
 .p1{
 	margin:2%;
 }
@@ -14,5 +12,9 @@ body{
 	margin:2%;
 }
 .aboutus{
- 	margin-top:10vh;
+ 	margin-top:15vh;
+ 	text-align:center;
+}
+footer{
+	bottom:0;
 }

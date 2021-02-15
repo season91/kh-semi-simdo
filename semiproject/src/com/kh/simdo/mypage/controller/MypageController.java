@@ -104,6 +104,15 @@ public class MypageController extends HttpServlet {
 		case "myqnadetail.do" : // 조아영
 			myQnaDetail(request,response); 
 			break;
+		case "myqnaupdate.do" :  // 조아영
+			myQnaUpdate(request,response);
+			break;
+		case "myqnaupdateimpl.do" :  // 조아영
+			myQnaUpdateImpl(request,response);
+			break;
+		case "myqnadelete.do" : // 조아영
+			myQnaDelete(request,response); 
+			break;
 		case "myreviewupdate.do" : //조민희
 			myReviewUpdate(request, response);
 			break;
@@ -220,7 +229,6 @@ public class MypageController extends HttpServlet {
 			request.setAttribute("start", 0);
 			request.setAttribute("end", 0);
 		}
-		
 
 		
 		List<Map<String, Object>> pageRes = communicationService.selectQnaList(page, user.getUserNo());
@@ -246,6 +254,55 @@ public class MypageController extends HttpServlet {
 		System.out.println(communication);
 		request.setAttribute("res", communication);
 		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnadetail.jsp").forward(request, response);
+	}
+	
+	protected void myQnaUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String qnaNo = String.valueOf(request.getParameter("qstnno"));
+		int qstnNo = Integer.parseInt(qnaNo);
+		
+		Communication communication = communicationService.selectQnaByQstnNo(qstnNo);
+		System.out.println(communication);
+		request.setAttribute("res", communication);
+		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnaupdate.jsp").forward(request, response);
+	}
+	
+	protected void myQnaUpdateImpl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String qnaNo = String.valueOf(request.getParameter("qstnno"));
+		int qstnNo = Integer.parseInt(qnaNo);
+		
+		String qnaTitle = request.getParameter("title");
+		String qnaContent = request.getParameter("content");
+		
+		int res = communicationService.updateQna(qstnNo, qnaTitle, qnaContent);
+		if(res > 0) {
+			request.setAttribute("alertMsg", "수정이 완료되었습니다.");
+			request.setAttribute("url", "/mypage/myqnalist.do");
+			
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
+		} else {
+			request.setAttribute("alertMsg", "수정이 실패했습니다.");
+			request.setAttribute("url", "/mypage/myqnalist.do");
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
+		}
+		
+	}
+	
+	protected void myQnaDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String qnaNo = String.valueOf(request.getParameter("qstnno"));
+		int qstnNo = Integer.parseInt(qnaNo);
+		
+		int res = communicationService.deleteQna(qstnNo);
+		if(res > 0) {
+			request.setAttribute("alertMsg", "삭제되었습니다.");
+			request.setAttribute("url", "/mypage/myqnalist.do");
+			
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
+		} else {
+			request.setAttribute("alertMsg", "삭제 실패했습니다.");
+			request.setAttribute("url", "/mypage/myqnalist.do");
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
+		}
+		
 	}
 
 	/**
@@ -609,7 +666,7 @@ public class MypageController extends HttpServlet {
 			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
 			.forward(request, response);
 		}
-		
+
 	}
 
 

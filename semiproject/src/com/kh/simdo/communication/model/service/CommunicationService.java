@@ -2,11 +2,13 @@ package com.kh.simdo.communication.model.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.gson.Gson;
 import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.exception.ToAlertException;
 import com.kh.simdo.common.jdbc.JDBCTemplate;
@@ -27,7 +29,7 @@ public class CommunicationService {
 	 * 게시글 정보/파일 업로드
 	 */
 	
-	public <Int>void insertComm(String userNm, Int userNo,HttpServletRequest request) {
+	public <Int> void insertComm(String userNm, Int userNo,HttpServletRequest request) {
 		Connection conn = jdt.getConnection();
 		//게시글 저장
 		System.out.println("서비스안도니??");
@@ -67,15 +69,55 @@ public class CommunicationService {
 	
 
 	/**
+	 * 
+	 * @Author : 조아영
+	   @Date : 2021. 2. 8.
+	   @param res
+	   @return
+	   @work : jsp로 보내기 위해 list->json 파싱
+	 */
+	 public List parseJson(List res) {
+			List list = new ArrayList();
+			Map<String, Object> commandMap = new HashMap<String, Object>();
+			for (int i = 0; i < res.size(); i++) {
+				String json = new Gson().toJson(res.get(i));
+				//System.out.println("전"+json);
+			commandMap = new Gson().fromJson(json, Map.class);
+			//System.out.println("후"+commandMap.get("qstnNo"));
+				list.add(commandMap);
+			}
+			return list;
+	}
+	 
+
+
+	/**
 	 * @author 조아영
 	 */
 	
-	// 문의사항 처음에 출력해줄 페이징 개수 불러오기
+	// 유저용 문의사항 처음에 출력해줄 페이징 개수 불러오기
 		public int[] selectPagingByQna(int page, int userNo) {
 			Connection conn = jdt.getConnection();
 			int[] res = new int[2];
 			try {
 				res = communicationDao.selectPagingByQna(conn, page, userNo);
+			} finally {
+				jdt.close(conn);
+			}
+			
+			return res;
+		}
+		
+	/**
+	 * @author 조아영
+	 */
+	
+	// 관리자용 문의사항 처음에 출력해줄 페이징 개수 불러오기
+		public int[] selectPagingByAllQna(int page) {
+			Connection conn = jdt.getConnection();
+			int[] res = new int[2];
+			try {
+				res = communicationDao.selectPagingByAllQna(conn, page);
 			} finally {
 				jdt.close(conn);
 			}
@@ -125,7 +167,7 @@ public class CommunicationService {
 		
 	}
 	
-	// 관리자용 모든 유저 문의사항 글갖고 오기
+	// 관리자용 n페이지의 모든 유저 문의사항 글갖고 오기
 	public List<Map<String, Object>> selectAllQnaList(int page){
 		Connection conn = jdt.getConnection();
 		List<Map<String, Object>> res = new ArrayList<Map<String, Object>>();
@@ -173,6 +215,41 @@ public class CommunicationService {
 		Communication res = null;
 		try {
 			res = communicationDao.selectQnaByQstnNo(conn, qstnNo);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
+	
+
+	// 유저용 문의사항 수정
+	public int updateQna(int qstnNo, String qnaTitle, String qnaContent) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		try {
+			res = communicationDao.updateQna(conn, qstnNo, qnaTitle, qnaContent);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+		
+	}
+	
+	public int deleteQna(int qstnNo) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		try {
+			res = communicationDao.deleteQna(conn, qstnNo);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
 		} finally {
 			jdt.close(conn);
 		}

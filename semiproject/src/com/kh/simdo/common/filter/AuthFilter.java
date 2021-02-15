@@ -74,28 +74,29 @@ public class AuthFilter implements Filter {
 				}
 
 				break;
-//			case "comm" :
-//				User user = (User) session.getAttribute("user");
-//				switch (uriArr[2]) {
-//				// 공지사항 작성 권한
-//				case "adminnotice.do":
-//					if (user.getAdmin() == null) {
-//						throw new ToAlertException(ErrorCode.AUTH01);
-//					}
-//					break;
-//				// 유저 문의하기 답변할 권한
-//				case "adminqnalist.do":
-//					if (user.getAdmin() == null) {
-//						throw new ToAlertException(ErrorCode.AUTH01);
-//					}
-//					break;
-//				case "adminqnacoment.do":
-//					if (user.getAdmin() == null) {
-//						throw new ToAlertException(ErrorCode.AUTH01);
-//					}
-//					break;
-//				}
-//				break;
+			case "comm" :
+				User user = (User) session.getAttribute("user");
+				switch (uriArr[2]) {
+				// 공지사항 작성 권한
+				case "adminnotice.do":
+					if (user.getAdmin() == null) {
+						throw new ToAlertException(ErrorCode.AUTH04);
+					}
+					break;
+				// 유저 문의하기 답변할 권한
+				case "adminqnalist.do":
+					if (user.getAdmin() == null) {
+						throw new ToAlertException(ErrorCode.AUTH04);
+					}
+					break;
+					
+				case "adminqnacoment.do":
+					if (user.getAdmin() == null) {
+						throw new ToAlertException(ErrorCode.AUTH04);
+					}
+					break;
+				}
+				break;
 			}
 			
 		}

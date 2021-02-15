@@ -61,13 +61,13 @@
    		<p class="p1">
    	     배우고 싶은 언어 또는 관심있는 나라에 따라 영화를 보고 명대사를 직접 공부해보는 사이트<br>
    	     국가별로 생활언어에 유용한 작품을 추천하여 영화를 보며 언어능력을 향상시키고픈 사용자들에게 유용한 정보를 제공한다.<br>
-   	     국가별,장르별로 관심이 있는 작품을 본 뒤 생각나는 명대사를 직접 영어로 작문해보고 번역기능을 이용할 수 있다.!<br>	
+   	     국가별,장르별로 관심이 있는 작품을 본 뒤 생각나는 명대사를 직접 원하는 나라의 언어로 작문해보고 번역기능을 이용할 수 있다!<br>	
    		</p>
    		
    		<h2>사용 기술</h2>
    		
    		<p class="p2">사용언어 : JAVA,JAVASCRIPT,ORACLE,HTML,CSS,JSP,SERVELT<br>
-   		사용한 api :추천기능 오픈소스, 공공데이터 영화DB, 네이버와 카카오 로그인, 캘린더, 게시판에디터  <br>
+   		사용한 api :공공데이터 영화DB, 네이버 영화, 네이버 파파고, 네이버와 카카오 로그인 <br>
    		</p>
    		
    		<h2>개발자</h2>
@@ -78,7 +78,7 @@
 	
 	<footer class="bottom">
 		<div class="bottom_main">
-			<h2>SIMDO:WM</h2>
+			<h3>SIMDO:WM</h3>
 		</div>
 		<div class="bottom_content">
 			<div class="bottom_left">
@@ -89,7 +89,7 @@
 			</div>
 			<div class="bottom_right">
 				 <a href="/aboutus.do">ABOUT US</a><br>
-            <a href="/mypage/calendar.do"> 고객페이지</a><br>
+               <a href="/comm/noticelist.do"> 고객페이지</a><br>
             <a href="/mypage/calendar.do"> 마이페이지</a><br>
             <a href="/user/infochange.do"> 내정보관리</a><br>
 			</div>
@@ -97,5 +97,6 @@
 	</footer>
 	
 
+<script type="text/javascript" src="${context}/resources/js/movie/movie.js"></script>
 </body>
 </html>

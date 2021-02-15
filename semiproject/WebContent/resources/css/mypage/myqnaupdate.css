@@ -1,5 +1,6 @@
 @charset "UTF-8";
 
+
 body{
 	background-color: #DADAD9;
 	color: #696765;
@@ -60,7 +61,7 @@ body{
 .navi-wrapper{
 	height:100%;
 	display: flex;
-	justify-content: space-evenly;
+	justify-content:space-evenly;
 
 }
 
@@ -120,6 +121,7 @@ body{
    padding-right: 1%;
 }
 
+
 /* 나라별 조회 클릭시 뜨는 나라선택 창 */
 
 .navi-extend-wrapper{
@@ -157,29 +159,76 @@ body{
 	display: flex;
 	flex-direction:column;
 	align-items:center;
-	justify-content:space-around;
 	min-height: 70vh;
 	margin-top: 15vh;
 }
 
-table {
-	text-align:center;
-    width: 80%;
-    border-top: 1px solid  #959493;
-    border-collapse: collapse;
- }
-
-th{
-	background-color: #959493;
-	color: #DADAD9;
-	font-weight: bold;
+.qna_wrap{
+	margin-top:5vh;
+	width: 100vh;
+	min-height:50vh;
+	display: flex;
+	flex-direction:column;
+	align-items:center;
 }
-th, td {
-   border-bottom: 1px solid #959493;
-   padding: 1.5vh;
- }
- 
+.qna_wrap>div{
+	width: 100%;
+}
+.qna-info{
+	height: 15vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+}
+.qna_title{
+	border-bottom: 1px solid  #696765;
+	border-top: 1px solid  #696765;
+	font-size: 4vh;
+	padding-bottom: 1vh;
+	padding-top: 1vh;
+}
+.qna_write_wrap{
+	
+	height: 30vh;
+	border-bottom: 1px solid  #696765;
+	background-color:  #959493;
+	color: #DADAD9;
+}
+
+
+.qna_write_head{
+	font-size: 3vh;
+	margin-bottom: 1vh;
+}
+
+.qna_write_content{
+	width: 99%;
+	height: 20vh;
+	border: none;
+	resize: none;
+	background-color: transparent;
+	font-size: 2.5vh;
+	color: #DADAD9;
+}
 .qna_head{
 	font-size: 3vh;
 	font-weight: bold;
+}
+.title{
+	width: 99%;
+	height: 85%;
+	border: none;
+	resize: none;
+	background-color: transparent;
+	font-size: 3vh;
+}
+
+.btn-update{
+	margin-top:1vh;
+	width:100%;
+	height:3vh;
+	font-size:1.5vh;
+	background-color: #959493;
+	color: #DADAD9;
+	
 }

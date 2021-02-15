@@ -47,7 +47,7 @@
    <div class="content">
    <div class="content_title">
       <div class="name_wish">내가 찜한 영화</div>
-      <button class="btn_write" onclick="location.href='/movie/naviview.do?nation=대한민국'">등록하기</button>
+      <button class="btn_write" onclick="location.href='/movie/naviview.do?nation=대한민국'">영화 고르러 가기</button>
    </div> 
                
          <c:choose>
@@ -80,8 +80,10 @@
       
          </c:otherwise>
    </c:choose>
+   
       </div> 
-   <footer class="bottom">
+  
+    <footer class="bottom">
       <div class="bottom_main">
          <h2>SIMDO:WM</h2>
       </div>
@@ -94,7 +96,7 @@
          </div>
          <div class="bottom_right">
            <a href="/aboutus.do">ABOUT US</a><br>
-            <a href="/mypage/calendar.do"> 고객페이지</a><br>
+              <a href="/comm/noticelist.do"> 고객페이지</a><br>
             <a href="/mypage/calendar.do"> 마이페이지</a><br>
             <a href="/user/infochange.do"> 내정보관리</a><br>
          </div>

@@ -97,7 +97,7 @@
 			</div>
 			<div class="bottom_right">
 				 <a href="/aboutus.do">ABOUT US</a><br>
-            <a href="/mypage/calendar.do"> 고객페이지</a><br>
+              <a href="/comm/noticelist.do"> 고객페이지</a><br>
             <a href="/mypage/calendar.do"> 마이페이지</a><br>
             <a href="/user/infochange.do"> 내정보관리</a><br>
 			</div>
@@ -105,7 +105,6 @@
 	</footer>
 	
 	<script type="text/javascript" src="${context}/resources/js/movie/movie.js"></script>
-	<script type="text/javascript" src="${context}/resources/js/comm/noticedetail.js"></script>
 </body>
 </html>
    

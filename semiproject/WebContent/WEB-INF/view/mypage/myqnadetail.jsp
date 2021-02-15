@@ -62,7 +62,11 @@
 				</c:choose>
 				</div>		
 			</div>
-			<a style="color:#696765"href="/mypage/myqnalist.do">목록으로</a>
+			<div class="qna-bottom">
+				<a href="/mypage/myqnalist.do">목록으로</a>
+				<a href="/mypage/myqnaupdate.do?qstnno=${res.qstnNo}">수정</a>
+				<a href="/mypage/myqnadelete.do?qstnno=${res.qstnNo}">삭제</a>
+			</div>
 	</div>
 		
 	<footer class="bottom">
@@ -78,7 +82,7 @@
 			</div>
 			<div class="bottom_right">
 				 <a href="/aboutus.do">ABOUT US</a><br>
-            <a href="/mypage/calendar.do"> 고객페이지</a><br>
+               <a href="/comm/noticelist.do"> 고객페이지</a><br>
             <a href="/mypage/calendar.do"> 마이페이지</a><br>
             <a href="/user/infochange.do"> 내정보관리</a><br>
 
