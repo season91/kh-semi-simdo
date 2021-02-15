@@ -54,16 +54,14 @@
 	   	<a href="/comm/noticelist.do">공지게시판</a>
 	   	<a href="/comm/write.do">QnA</a>
 	   	<%-- 관리자라면 권한메뉴 추가  --%>
-	   	<c:choose>
-	   		<c:when test="${!empty admin}">
-	   		<a style="color:pink; font-weight: bold;" href="/comm/adminqnalist.do">고객문의게시판</a>
-	   		<a href="/comm/adminnotice.do">관리자메뉴2(공지사항작성,삭제)</a>
-	   		</c:when>
-	   	</c:choose>
+   		<c:if test="${!empty admin }">
+   		<a href="/comm/adminqnalist.do" style="color:white">문의사항답변</a>
+   		<a href="/comm/adminnotice.do" style="color:white">공지사항작성</a>
+   		</c:if>
    	</div>
    	<div class="qna_wrap"> 
 			<div class="qna-info">
-				<div class="qna_head"><p>고객 문의</p><a style="color:#696765"href="/mypage/myqnalist.do">목록으로</a></div>
+				<div class="qna_head"><p>고객 문의</p><a style="color:#696765"href="/comm/adminqnalist.do">목록으로</a></div>
 				<div class="qna_title">${res.qstnTitle}</div>
 				<div class="qna_info">글번호 ${res.qstnNo} / 작성자 : ${res.userNm} / 작성일 : ${res.qstnRegDate}</div>
 			</div>
@@ -74,8 +72,8 @@
 			<div class="admin_answer_wrap">
 				<div class="admin_answer_head">관리자 답변</div>
 					<form action="/comm/adminqnacomentimpl.do?qstnno=${res.qstnNo}" method="post">
-						<textarea cols="60" rows="5" class="admin_answer_write" name="coment"></textarea>
-						<button style="color: #DADAD9; font-size:2vh;">답변 등록</button>
+						<textarea class="admin_answer_write" name="coment"></textarea>
+						<button class="btn_answer"style="color: #DADAD9; font-size:2vh;">답변 등록</button>
 					</form>
 				</div>		
 			</div>

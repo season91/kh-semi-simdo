@@ -27,7 +27,7 @@ public class CommunicationService {
 	 * 게시글 정보/파일 업로드
 	 */
 	
-	public void insertComm(String userNm, HttpServletRequest request) {
+	public <Int>void insertComm(String userNm, Int userNo,HttpServletRequest request) {
 		Connection conn = jdt.getConnection();
 		//게시글 저장
 		System.out.println("서비스안도니??");
@@ -38,6 +38,7 @@ public class CommunicationService {
 		
 		System.out.println("vo넣은거 시작");
 		communication.setUserNm(userNm);
+		communication.setUserNo((int) userNo);
 		
 		// 문의 텍스트내용이고 
 		communication.setQstnTitle(commData.get("qstntitle").get(0).toString());

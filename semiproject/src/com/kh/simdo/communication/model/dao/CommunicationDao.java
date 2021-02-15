@@ -29,15 +29,16 @@ public class CommunicationDao {
 	public int insertComm(Connection conn, Communication communication) {
 		int res = 0;
 		
-		String sql = "insert into COMM (QSTN_NO, USER_NM, QSTN_TITLE, QSTN_CONTENT,QSTN_TYPE) values(sc_qstn_No.nextval, ?,?, ?,?)";
+		String sql = "insert into COMM (QSTN_NO, USER_NM, USER_NO, QSTN_TITLE, QSTN_CONTENT,QSTN_TYPE) values(sc_qstn_No.nextval, ?,?,?, ?,?)";
 		System.out.println("문의내용저장 ");
 		PreparedStatement pstm = null;
 		try {
 			pstm = conn.prepareStatement(sql);
 			pstm.setString(1, communication.getUserNm());
-			pstm.setString(2, communication.getQstnTitle());
-			pstm.setString(3, communication.getQstnContent());
-			pstm.setString(4, communication.getQstnType());
+			pstm.setInt(2, communication.getUserNo());
+			pstm.setString(3, communication.getQstnTitle());
+			pstm.setString(4, communication.getQstnContent());
+			pstm.setString(5, communication.getQstnType());
 			res = pstm.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataAccessException(ErrorCode.IB01, e);

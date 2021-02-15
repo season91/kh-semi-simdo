@@ -252,21 +252,17 @@ session{
 .content{
 	display:flex;
 	background-color:#DADAD9;
-}
-
-.content{
-	display: flex;
 	min-height: 70vh;
 	margin-top: 15vh;
 }
 
 .qna_wrap{
-	width: 100vh;
+	width: 100%;
 	height:70vh;
 	display: flex;
 	flex-direction:column;
 	align-items:center;
-	justify-content:space-around;
+	justify-content:center;
 }
 .qna_wrap>div{
 	width: 80%;
@@ -321,4 +317,12 @@ session{
 .admin_answer_head{
 	font-size: 3vh;
 	margin-bottom: 1vh;
+}
+
+.admin_answer_write{
+	width: 99%;
+	height: 10vh;
+	border: none;
+	resize: none;
+	background-color: #DADAD9;
 }

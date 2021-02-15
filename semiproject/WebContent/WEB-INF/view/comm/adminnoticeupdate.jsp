@@ -53,12 +53,10 @@
 		   	<a style="font-weight: bold;" href="/comm/noticelist.do">공지게시판</a>
 		   	<a href="/comm/write.do">QnA</a>
 		   	<%-- 관리자라면 권한메뉴 추가  --%>
-		   	<c:choose>
-		   		<c:when test="${!empty admin }">
-		   		<a href="/comm/adminqnalist.do">관리자메뉴.QnA답변.</a>
-	   			<a href="/comm/adminnotice.do">관리자메뉴.공지사항작성.</a>
-		   		</c:when>
-		   	</c:choose>
+	   		<c:if test="${!empty admin }">
+	   		<a href="/comm/adminqnalist.do" style="color:white">문의사항답변</a>
+	   		<a href="/comm/adminnotice.do" style="color:white">공지사항작성</a>
+	   		</c:if>
 	   	</div>
 
 	   <form class="noticedetail" action="/comm/adminnoticeupdateimpl.do" method="post">
