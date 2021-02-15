@@ -21,6 +21,16 @@
      <filter-name>auth</filter-name>
      <url-pattern>*.do</url-pattern>
   </filter-mapping>
+	<error-page>
+		<!-- response상태 코드에 따라 에러페이지로 이동-->
+		<error-code>404</error-code>
+		<location>/WEB-INF/view/common/404_error_page.jsp</location>
+	</error-page>
+	<error-page>
+		<!-- response상태 코드에 따라 에러페이지로 이동-->
+		<error-code>500</error-code>
+		<location>/WEB-INF/view/common/500_error_page.jsp</location>
+	</error-page>
   
   <!-- /exception으로 요청이 재지정 되며
        request와 response 객체가 ExceptionHandler 서블릿으로 전달 -->
