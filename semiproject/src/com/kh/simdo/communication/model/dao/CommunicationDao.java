@@ -374,7 +374,8 @@ public class CommunicationDao {
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
 			List<Map<String, Object>> res = new ArrayList<>();
-			String sql = "select * from (select rownum as num, notice_no, nt_title, reg_date from notice order by  reg_date desc) where num >= ? and num <= ?";
+			String sql = "select * from (select rownum as num, notice_no, nt_title, REG_DATE from (select * from notice order by  reg_date desc))  "
+					+" where num >= ? and num <= ?";
 
 			int pagePerList = 10;
 			int startPage = (page - 1) * pagePerList + 1 ; // 시작

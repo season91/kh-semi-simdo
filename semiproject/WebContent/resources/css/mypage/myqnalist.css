@@ -74,10 +74,9 @@ body{
 	text-align: center;
 	font-weight: bold;
 	transition-duration:0.2s;
-	font-size: 2vh;
 }
 .navi-wrapper>div:hover{
-	font-size: 3.5vh;
+	font-size: 2vw;
 }
 .navi-wrapper a{
 	color: #DADAD9;
@@ -92,29 +91,33 @@ body{
 
 
 /* footer */
+
 .bottom{
-   height:15vh;   
+   height:15vh;
    background-color: #DADAD9;
    color: #696765;
+   width: 100%;
 }
+
 .bottom_main{
-   font-weight:bold;
-   height:2vh;
-   padding-left:1%;
-   padding-top:1%;
+   font-weight: bold;
+   height: 2vh;
+   padding-left: 1%;
+   padding-top: 1%;
    
 }
+
 .bottom_left{
-   padding-left:1%;
-   
+   padding-left: 1%;
 }
+
 .bottom_content{
-   display:flex;
-   
+   display: flex;
+   justify-content: space-between;
 }
+
 .bottom_right{
-   padding-left:70%;
-   
+   padding-right: 1%;
 }
 
 /* 나라별 조회 클릭시 뜨는 나라선택 창 */
