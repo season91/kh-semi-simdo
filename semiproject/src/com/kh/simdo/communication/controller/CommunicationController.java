@@ -232,9 +232,7 @@ public class CommunicationController extends HttpServlet {
 		}
 	}
 
-	
 
-	
 	private void commWrite(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
 		request.setAttribute("admin", user.getAdmin());
@@ -245,14 +243,37 @@ public class CommunicationController extends HttpServlet {
 	
 	
 	private void uploadComm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		HttpSession session=request.getSession();
-		User user= (User) session.getAttribute("user");
+		String text = request.getParameter("page");
+		User user = (User) request.getSession().getAttribute("user");
 		
 		communicationService.insertComm(user.getUserNm(),user.getUserNo(),request);
+		
+		List qnaList = new ArrayList();
+		int page = 0;
+		if(text == null) {
+			page++;
+		} else {
+			page = Integer.parseInt(text);
+		}
+		// dao 쿼리기준 페이징번호 가져오는거 올말고 유저기준으로 수정하기.
+		int[] res = communicationService.selectPagingByQna(page, user.getUserNo());
+		if(res != null) {
+			request.setAttribute("start", res[0]);
+			request.setAttribute("end", res[1]);
+		} else {
+			request.setAttribute("start", 0);
+			request.setAttribute("end", 0);
+		}
 
-		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnalist.jsp")
-		.forward(request, response);
+		
+		List<Map<String, Object>> pageRes = communicationService.selectQnaList(page, user.getUserNo());
+		
+		qnaList = communicationService.parseJson(pageRes);
+		request.setAttribute("res", qnaList);
+		request.setAttribute("page", page);
+		
+		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnalist.jsp").forward(request, response);
+		
 		}
 	
 
