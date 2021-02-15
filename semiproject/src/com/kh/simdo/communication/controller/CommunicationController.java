@@ -140,6 +140,7 @@ public class CommunicationController extends HttpServlet {
 			page = Integer.parseInt(text);
 		}
 		int[] res = communicationService.selectPagingByAllQna(page);
+		
 		if(res != null) {
 			request.setAttribute("start", res[0]);
 			request.setAttribute("end", res[1]);
@@ -248,11 +249,8 @@ public class CommunicationController extends HttpServlet {
 		HttpSession session=request.getSession();
 		User user= (User) session.getAttribute("user");
 		
-		
 		communicationService.insertComm(user.getUserNm(),user.getUserNo(),request);
-		
-		
-		
+
 		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnalist.jsp")
 		.forward(request, response);
 		}

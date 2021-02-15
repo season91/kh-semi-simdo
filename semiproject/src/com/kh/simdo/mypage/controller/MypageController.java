@@ -666,9 +666,7 @@ public class MypageController extends HttpServlet {
 			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
 			.forward(request, response);
 		}
-		
-		request.getRequestDispatcher("/WEB-INF/view/mypage/mylineupdate.jsp")
-		.forward(request, response);
+
 	}
 
 

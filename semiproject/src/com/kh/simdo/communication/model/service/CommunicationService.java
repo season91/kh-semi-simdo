@@ -89,7 +89,7 @@ public class CommunicationService {
 			return list;
 	}
 	 
-	 
+
 
 	/**
 	 * @author 조아영

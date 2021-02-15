@@ -452,7 +452,7 @@ public class MypageDao {
 				
 			}
 		} catch (SQLException e) {
-			throw new DataAccessException(ErrorCode.SU01, e);
+			throw new DataAccessException(ErrorCode.SRV02, e);
 		} finally {
 			jdt.close(rset, pstm);
 		}
