@@ -566,7 +566,7 @@ public class MypageDao {
 				userReview.setMvNo(rset.getString("mv_no"));
 			}
 		} catch (SQLException e) {
-			throw new DataAccessException(ErrorCode.SU01, e);
+			throw new DataAccessException(ErrorCode.SRV01, e);
 		} finally {
 			jdt.close(rset, pstm);
 		}

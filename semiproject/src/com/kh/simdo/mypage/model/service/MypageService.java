@@ -211,6 +211,25 @@ public class MypageService {
 	}
 	
 	/**
+	 * @author 조아영
+	 * 
+	 */
+	
+	public List parseJson(List res) {
+			List list = new ArrayList();
+			Map<String, Object> commandMap = new HashMap<String, Object>();
+			for (int i = 0; i < res.size(); i++) {
+				String json = new Gson().toJson(res.get(i));
+				//System.out.println("전"+json);
+				commandMap = new Gson().fromJson(json, Map.class);
+				//System.out.println("후"+commandMap.get("qstnNo"));
+				list.add(commandMap);
+			}
+			return list;
+	}
+	 
+	
+	/**
 	 * 
 	 * @Author : 아영
 	 */

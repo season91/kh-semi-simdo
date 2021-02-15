@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-
 import com.google.gson.Gson;
 import com.kh.simdo.common.exception.DataAccessException;
 import com.kh.simdo.common.exception.ToAlertException;
@@ -21,18 +19,19 @@ import com.kh.simdo.common.util.http.HttpUtils;
 import com.kh.simdo.movie.model.dao.MovieDao;
 import com.kh.simdo.movie.model.vo.Movie;
 import com.kh.simdo.mypage.model.vo.UserReview;
+
 /**
  * 
  * @author 조아영
  *
  */
 public class MovieService {
-	
+
 	JDBCTemplate jdt = JDBCTemplate.getInstance();
 	MovieDao movieDao = new MovieDao();
-	
+
 	// [3] 영화 상세정보 관련 메서드
-	public List<Movie> selectMovieByReviewCount(){
+	public List<Movie> selectMovieByReviewCount() {
 		Connection conn = jdt.getConnection();
 		List<Movie> res = new ArrayList();
 		try {
@@ -42,16 +41,16 @@ public class MovieService {
 		}
 		return res;
 	}
-	
+
 	/**
 	 * 
 	 * @Author :
-	   @Date : 2021. 2. 6.
-	   @param count
-	   @return
-	   @work :
+	 * @Date : 2021. 2. 6.
+	 * @param count
+	 * @return
+	 * @work :
 	 */
-	public List<Movie> selectMovieByScore(int count){
+	public List<Movie> selectMovieByScore(int count) {
 		Connection conn = jdt.getConnection();
 		List<Movie> res = new ArrayList();
 		try {
@@ -61,11 +60,11 @@ public class MovieService {
 		}
 		return res;
 	}
-	
+
 	// [2] 영화 조회 메서드
-	//영화 상세정보 조회
-	public Movie selectMovieByMvNo(String mvNo){
-		System.out.println("selectDetail"+mvNo);
+	// 영화 상세정보 조회
+	public Movie selectMovieByMvNo(String mvNo) {
+		System.out.println("selectDetail" + mvNo);
 		Movie res = new Movie();
 		Connection conn = jdt.getConnection();
 		try {
@@ -75,12 +74,12 @@ public class MovieService {
 		}
 		return res;
 	}
-	
+
 	// 영화 장르별 조회
-	public List<Movie> selectMovieByGenre(String genre){
+	public List<Movie> selectMovieByGenre(String genre) {
 		List<Movie> res = new ArrayList<Movie>();
 		Connection conn = jdt.getConnection();
-		System.out.println("selectGenre서비스"+genre);
+		System.out.println("selectGenre서비스" + genre);
 		try {
 			res = movieDao.selectMovieByGenre(conn, genre);
 		} finally {
@@ -88,12 +87,12 @@ public class MovieService {
 		}
 		return res;
 	}
-	
+
 	// 영화 나라별 조회
-	public List<Movie> selectMovieByNation(String nation){
+	public List<Movie> selectMovieByNation(String nation) {
 		List<Movie> res = new ArrayList<Movie>();
 		Connection conn = jdt.getConnection();
-		System.out.println("selectNation"+nation);
+		System.out.println("selectNation" + nation);
 		try {
 			res = movieDao.selectMovieByNation(conn, nation);
 		} finally {
@@ -101,10 +100,10 @@ public class MovieService {
 		}
 		return res;
 	}
-	
+
 	// 영화 정보 검색으로 영화정보 조회해서 가져오기.
 	public List<Movie> selectMovieByTitle(String searchTitle) {
-		System.out.println("selectSearchTitle"+searchTitle);
+		System.out.println("selectSearchTitle" + searchTitle);
 		List<Movie> res = new ArrayList<Movie>();
 		Connection conn = jdt.getConnection();
 		try {
@@ -112,20 +111,20 @@ public class MovieService {
 		} finally {
 			jdt.close(conn);
 		}
-	
+
 		return res;
 	}
-	
+
 	// [1] DB 넣는 메서드부분
 	// KMDB와 통신하는 메서드
 	public Map<String, Object> parseDb() {
 		HttpUtils utils = new HttpUtils();
-		String url = "http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?ServiceKey=RLYJPR31F2X100MT6HX3&query=마치아스&actor=플로리안&detail=Y&nation=독일&collection=kmdb_new2&listCount=1";
+		String url = "http://api.koreafilm.or.kr/openapi-data2/wisenut/search_api/search_json2.jsp?ServiceKey=RLYJPR31F2X100MT6HX3&listCount=1&actor=주이디샤넬&collection=kmdb_new2&detail=Y&query=조셉고든";
 		String jsonRes = utils.get(url);
-		//System.out.println(jsonRes);
+		// System.out.println(jsonRes);
 		Gson gson = new Gson();
 		Map<String, Object> mapRes = gson.fromJson(jsonRes, Map.class);
-		
+
 		// 받은 자료 Data 값만 가져오게 분해 후 리턴
 		ArrayList<String> dataList = (ArrayList<String>) mapRes.get("Data");
 		String dataRes = gson.toJson(dataList.get(0));
@@ -135,9 +134,9 @@ public class MovieService {
 		ArrayList<String> resultList = (ArrayList<String>) dataMap.get("Result");
 		String resultRes = gson.toJson(resultList.get(0));
 		Map<String, Object> resultMap = gson.fromJson(resultRes, Map.class);
-		
+
 		return resultMap;
-		
+
 	}
 
 	// 네이버 API와 통신하는 메서드
@@ -149,7 +148,7 @@ public class MovieService {
 		String title = null;
 
 		try {
-			title = URLEncoder.encode("100일동안100가지로100퍼센트행복찾기", "UTF-8");
+			title = URLEncoder.encode("500일의썸머", "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException("검색어 인코딩 실패", e);
 		}
@@ -164,7 +163,7 @@ public class MovieService {
 
 		String jsonRes = util.get(apiURL, requestHeaders);
 		System.out.println(jsonRes);
-		
+
 		Map<String, Object> mapRes = gson.fromJson(jsonRes, Map.class);
 		ArrayList<String> itemList = (ArrayList<String>) mapRes.get("items");
 		String itemRes = gson.toJson(itemList.get(0));
@@ -173,10 +172,10 @@ public class MovieService {
 		System.out.println(thumb);
 		return thumb;
 	}
-	
+
 	// DB에 넣는 메서드
 	public int insertMovieInfo(Movie movie) {
-		Connection conn =jdt.getConnection();
+		Connection conn = jdt.getConnection();
 		int res = 0;
 		try {
 			res = movieDao.insertMovieInfo(conn, movie);
@@ -192,7 +191,6 @@ public class MovieService {
 		System.out.println("서비스");
 		return res;
 	}
-
 
 	// 1. vo넣기전에 json파일을 한번 더 분해해야 한다. 매개변수로 분해 기준 카테고리 받는다.
 	// DB용 메서드로 API통신후 받은 json을 필요에따라 추가 분해해야하는 경우가 있어 기능분리
@@ -228,7 +226,7 @@ public class MovieService {
 
 	// 3. vo에 넣기
 	// DB용 메서드로 vo객체에 전달받은 json값을 하나씩 넣어주는 메서드
-	
+
 	public Movie addMovieVo(Map<String, Object> movieDB, String thumbnail) {
 		// 1. KMDB 영화정보 넣어주기
 		Gson gson = new Gson();
@@ -260,7 +258,7 @@ public class MovieService {
 		String str = (String) movieDB.get("posters");
 		String[] pstArr = str.split("[|]");
 		movie.setPoster(pstArr[0]);
-		
+
 		// 2.네이버 API 영화 썸네일 넣어주기
 
 		movie.setThumbnail(thumbnail);

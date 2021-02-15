@@ -12,7 +12,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.kh.simdo.communication.model.service.CommunicationService;
@@ -26,7 +25,7 @@ import com.kh.simdo.mypage.model.vo.Wish;
 import com.kh.simdo.user.model.vo.User;
 
 /**
- * @author 김종환(달력), 조민희(후기,명대사리스트), 조아영(QnA),김백관(메인, 찜목록, 공지사항)
+ * @author 김종환(달력), 조민희(후기,명대사리스트), 조아영(QnA,공지사항, 찜기능추가해제),김백관(메인, 찜목록(추가만, 삭제는 구현안하시기로)
  */
 /**
  * Servlet implementation class MypageController
@@ -35,194 +34,189 @@ import com.kh.simdo.user.model.vo.User;
 public class MypageController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	MypageService mypageService = new MypageService();
-    CommunicationService communicationService = new CommunicationService();
-    MovieService movieService = new MovieService();
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public MypageController() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
+	CommunicationService communicationService = new CommunicationService();
+	MovieService movieService = new MovieService();
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public MypageController() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String[] uriArr = request.getRequestURI().split("/");
-		
-		switch(uriArr[uriArr.length - 1]) {
-		
-		case "mywish.do" : // 김백관 찜목록
-			mywishList(request,response);
+
+		switch (uriArr[uriArr.length - 1]) {
+
+		case "mywish.do": // 김백관 찜목록
+			mywishList(request, response);
 			break;
-		case "mywishadd.do" : // 조아영 찜목록 DB에 넣기
-			myWishAdd(request,response);
+		case "mywishadd.do": // 조아영 찜목록 DB에 넣기
+			myWishAdd(request, response);
 			break;
-		case "mywishdel.do" : // 조아영 찜목록 DB에 삭제
-			myWishDel(request,response);
+		case "mywishdel.do": // 조아영 찜목록 DB에 삭제
+			myWishDel(request, response);
 			break;
-		case "mywritelist.do" : //조민희
+		case "mywritelist.do": // 조민희
 			myWriteList(request, response);
 			break;
-		case "reviewdelete.do" : //조민희
+		case "reviewdelete.do": // 조민희
 			reviewDelete(request, response);
 			break;
-		case "fmslinedelete.do" : //조민희
+		case "fmslinedelete.do": // 조민희
 			fmslineDelete(request, response);
 			break;
-		case "translation.do" : //넘기는목적, 하다가지울게요
+		case "translation.do": // 넘기는목적, 하다가지울게요
 			translation(request, response);
 			break;
-		case "translationimpl.do" : // 조민희, 조아영
+		case "translationimpl.do": // 조민희, 조아영
 			translationImpl(request, response);
 			break;
 		case "calendar.do": // 김종환
-			calendar(request,response);
+			calendar(request, response);
 			break;
-		case "callist.do" : // 김종환
-			calendarList(request,response);
+		case "callist.do": // 김종환
+			calendarList(request, response);
 			break;
-		case "mydailylist.do":  // 김종환
-			myDailyList(request,response);
+		case "mydailylist.do": // 김종환
+			myDailyList(request, response);
 			break;
-		case "writereview.do" : // 김종환
+		case "writereview.do": // 김종환
 			writeReview(request, response);
 			break;
-		case "insertreview.do" : // 김종환
+		case "insertreview.do": // 김종환
 			insertReview(request, response);
 			break;
-		case "writeline.do" :  // 김종환
+		case "writeline.do": // 김종환
 			writeLine(request, response);
 			break;
-		case "insertline.do" : // 김종환
+		case "insertline.do": // 김종환
 			insertLine(request, response);
 			break;
-		case "myqnalist.do" :  // 조아영
-			myQnaList(request,response);
+		case "myqnalist.do": // 조아영
+			myQnaList(request, response);
 			break;
-		case "myqnadetail.do" : // 조아영
-			myQnaDetail(request,response); 
+		case "myqnadetail.do": // 조아영
+			myQnaDetail(request, response);
 			break;
-		case "myqnaupdate.do" :  // 조아영
-			myQnaUpdate(request,response);
+		case "myqnaupdate.do": // 조아영
+			myQnaUpdate(request, response);
 			break;
-		case "myqnaupdateimpl.do" :  // 조아영
-			myQnaUpdateImpl(request,response);
+		case "myqnaupdateimpl.do": // 조아영
+			myQnaUpdateImpl(request, response);
 			break;
-		case "myqnadelete.do" : // 조아영
-			myQnaDelete(request,response); 
+		case "myqnadelete.do": // 조아영
+			myQnaDelete(request, response);
 			break;
-		case "myreviewupdate.do" : //조민희
+		case "myreviewupdate.do": // 조민희
 			myReviewUpdate(request, response);
 			break;
-		case "myreviewupdateimpl.do" : //조민희
+		case "myreviewupdateimpl.do": // 조민희
 			myReviewUpdateImpl(request, response);
 			break;
-		case "mylineupdate.do" : //조민희
+		case "mylineupdate.do": // 조민희
 			myLineUpdate(request, response);
 			break;
-		case "mylineupdateimpl.do" : //조민희
+		case "mylineupdateimpl.do": // 조민희
 			myLineUpdateImpl(request, response);
 			break;
 		}
 	}
-	
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
+
 	/**
 	 * @author 김백관 찜목록리스트
 	 */
-	private void mywishList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	      User user = (User) request.getSession().getAttribute("user");
-	      List<Wish> wishRes = mypageService.selectWishByUserNo(user.getUserNo());
-	      
-	      Map<String, Object> wishCommandMap = new HashMap<>();
-	      
-	      
-	      List wishList = new ArrayList();
+	private void mywishList(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		User user = (User) request.getSession().getAttribute("user");
+		List<Wish> wishRes = mypageService.selectWishByUserNo(user.getUserNo());
 
-	      
-	      for(int i = 0; i < wishRes.size(); i++) {
-	         String wishJson = new Gson().toJson(wishRes.get(i));
-	         wishCommandMap = new Gson().fromJson(wishJson, Map.class);
-	         wishList.add(wishCommandMap);
-	      }
-	      
-	   
-	      request.setAttribute("wishList", wishList);
-	      request.getRequestDispatcher("/WEB-INF/view/mypage/mywish.jsp")
-	      .forward(request, response);
-	   }
-	   
-	
+		Map<String, Object> wishCommandMap = new HashMap<>();
+
+		List wishList = new ArrayList();
+
+		for (int i = 0; i < wishRes.size(); i++) {
+			String wishJson = new Gson().toJson(wishRes.get(i));
+			wishCommandMap = new Gson().fromJson(wishJson, Map.class);
+			wishList.add(wishCommandMap);
+		}
+
+		request.setAttribute("wishList", wishList);
+		request.getRequestDispatcher("/WEB-INF/view/mypage/mywish.jsp").forward(request, response);
+	}
+
 	/**
 	 * @author 조아영
 	 */
-	private void myWishAdd(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void myWishAdd(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
 		Movie movie = new Movie();
 		movie.setMvNo(request.getParameter("mvno"));
 		movie.setPoster(request.getParameter("poster"));
-		
+
 		int res = mypageService.insertWish(user.getUserNo(), movie);
-		if(res > 0) {
+		if (res > 0) {
 			System.out.println("성공");
-			
+
 		} else {
 			System.out.println("실패");
 		}
-		
+
 	}
-	
+
 	/**
 	 * @author 조아영
 	 */
-	private void myWishDel(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void myWishDel(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
 		String mvNo = request.getParameter("mvno");
 		int res = mypageService.deleteWish(user.getUserNo(), mvNo);
-		
-		if(res > 0) {
+
+		if (res > 0) {
 			System.out.println("삭제성공");
 		} else {
 			System.out.println("삭제실패");
 		}
 	}
-	
+
 	/**
 	 * @author 조아영
 	 * 
 	 */
-	
-	 protected List parseJson(List res) {
-			List list = new ArrayList();
-			Map<String, Object> commandMap = new HashMap<String, Object>();
-			for (int i = 0; i < res.size(); i++) {
-				String json = new Gson().toJson(res.get(i));
-				//System.out.println("전"+json);
-				commandMap = new Gson().fromJson(json, Map.class);
-				//System.out.println("후"+commandMap.get("qstnNo"));
-				list.add(commandMap);
-			}
-			return list;
-	}
-	 /**
-		 * @author 조아영
-		 * 
-		 */
-	protected void myQnaList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void myQnaList(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// 페이징표현해주는 메서드
 		String text = request.getParameter("page");
 		User user = (User) request.getSession().getAttribute("user");
 		List qnaList = new ArrayList();
 		int page = 0;
-		if(text == null) {
+		if (text == null) {
 			page++;
 		} else {
 			page = Integer.parseInt(text);
 		}
 		// dao 쿼리기준 페이징번호 가져오는거 올말고 유저기준으로 수정하기.
 		int[] res = communicationService.selectPagingByQna(page, user.getUserNo());
-		if(res != null) {
+		if (res != null) {
 			request.setAttribute("start", res[0]);
 			request.setAttribute("end", res[1]);
 		} else {
@@ -230,179 +224,176 @@ public class MypageController extends HttpServlet {
 			request.setAttribute("end", 0);
 		}
 
-		
 		List<Map<String, Object>> pageRes = communicationService.selectQnaList(page, user.getUserNo());
-		
-		qnaList = parseJson(pageRes);
+
+		qnaList = mypageService.parseJson(pageRes);
 		request.setAttribute("res", qnaList);
 		request.setAttribute("page", page);
-		
-		//score 글번호 releaseDate 작성일자 mvTitle 글제목
-		
-		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnalist.jsp").forward(request, response);	
+
+		// score 글번호 releaseDate 작성일자 mvTitle 글제목
+
+		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnalist.jsp").forward(request, response);
 	}
-	
+
 	/**
 	 * @author 조아영
 	 * 
 	 */
-	protected void myQnaDetail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void myQnaDetail(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String qnaNo = String.valueOf(request.getParameter("qstnno"));
 		int qstnNo = Integer.parseInt(qnaNo);
-		
+
 		Communication communication = communicationService.selectQnaByQstnNo(qstnNo);
 		System.out.println(communication);
 		request.setAttribute("res", communication);
 		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnadetail.jsp").forward(request, response);
 	}
-	
-	protected void myQnaUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void myQnaUpdate(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String qnaNo = String.valueOf(request.getParameter("qstnno"));
 		int qstnNo = Integer.parseInt(qnaNo);
-		
+
 		Communication communication = communicationService.selectQnaByQstnNo(qstnNo);
 		System.out.println(communication);
 		request.setAttribute("res", communication);
 		request.getRequestDispatcher("/WEB-INF/view/mypage/myqnaupdate.jsp").forward(request, response);
 	}
-	
-	protected void myQnaUpdateImpl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void myQnaUpdateImpl(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String qnaNo = String.valueOf(request.getParameter("qstnno"));
 		int qstnNo = Integer.parseInt(qnaNo);
-		
+
 		String qnaTitle = request.getParameter("title");
 		String qnaContent = request.getParameter("content");
-		
+
 		int res = communicationService.updateQna(qstnNo, qnaTitle, qnaContent);
-		if(res > 0) {
+		if (res > 0) {
 			request.setAttribute("alertMsg", "수정이 완료되었습니다.");
 			request.setAttribute("url", "/mypage/myqnalist.do");
-			
+
 			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		} else {
 			request.setAttribute("alertMsg", "수정이 실패했습니다.");
 			request.setAttribute("url", "/mypage/myqnalist.do");
 			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		}
-		
+
 	}
-	
-	protected void myQnaDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	protected void myQnaDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String qnaNo = String.valueOf(request.getParameter("qstnno"));
 		int qstnNo = Integer.parseInt(qnaNo);
-		
+
 		int res = communicationService.deleteQna(qstnNo);
-		if(res > 0) {
+		if (res > 0) {
 			request.setAttribute("alertMsg", "삭제되었습니다.");
 			request.setAttribute("url", "/mypage/myqnalist.do");
-			
+
 			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		} else {
 			request.setAttribute("alertMsg", "삭제 실패했습니다.");
 			request.setAttribute("url", "/mypage/myqnalist.do");
 			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		}
-		
+
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
-	
-	private void myWriteList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void myWriteList(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
 		List<UserReview> reviewRes = mypageService.selectReviewByUserNo(user.getUserNo());
 		List<UserFmsline> fmslineRes = mypageService.selectFmslineByUserNo(user.getUserNo());
-		
+
 		Map<String, Object> reviewCommandMap = new HashMap<>();
 		Map<String, Object> fmslineCommandMap = new HashMap<>();
-		
+
 		List reviewList = new ArrayList();
 		List fmslineList = new ArrayList();
-		
-		for(int i = 0; i < reviewRes.size(); i++) {
+
+		for (int i = 0; i < reviewRes.size(); i++) {
 			String reviewJson = new Gson().toJson(reviewRes.get(i));
 			reviewCommandMap = new Gson().fromJson(reviewJson, Map.class);
 			reviewList.add(reviewCommandMap);
 		}
-		
-		for(int i = 0; i < fmslineRes.size(); i++) {
+
+		for (int i = 0; i < fmslineRes.size(); i++) {
 			String fmslineJson = new Gson().toJson(fmslineRes.get(i));
 			fmslineCommandMap = new Gson().fromJson(fmslineJson, Map.class);
 			fmslineList.add(fmslineCommandMap);
 		}
-		
+
 		request.setAttribute("reviewList", reviewList);
 		request.setAttribute("fmslineList", fmslineList);
-		request.getRequestDispatcher("/WEB-INF/view/mypage/mywritelist.jsp")
-		.forward(request, response);
+		request.getRequestDispatcher("/WEB-INF/view/mypage/mywritelist.jsp").forward(request, response);
 	}
-	
-	private void reviewDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	private void reviewDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int reviewNo = Integer.parseInt(request.getParameter("reviewNo"));
-		
+
 		int res = mypageService.deleteReview(reviewNo);
-		if(res > 0) {
+		if (res > 0) {
 			response.getWriter().print("success");
-		}else {
+		} else {
 			response.getWriter().print("fail");
 		}
 	}
-	
-	private void fmslineDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	private void fmslineDelete(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int fmslineNo = Integer.parseInt(request.getParameter("fmslineNo"));
-		
+
 		int res = mypageService.deleteFmsline(fmslineNo);
-		if(res > 0) {
+		if (res > 0) {
 			response.getWriter().print("success");
-		}else {
+		} else {
 			response.getWriter().print("fail");
 		}
 	}
-	
-	private void translation(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/view/mypage/translation.jsp")
-		.forward(request, response);
+
+	private void translation(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/view/mypage/translation.jsp").forward(request, response);
 	}
-	
-	private void translationImpl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	private void translationImpl(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String data = request.getParameter("data");
 		Gson gson = new Gson();
 		Map parsedData = gson.fromJson(data, Map.class);
-		
+
 		String text = (String) parsedData.get("text");
 		String lan = (String) parsedData.get("lan");
-		
+
 		String res = mypageService.papagoAPI(text, lan);
-		
-		if(res != null) {
+
+		if (res != null) {
 			response.getWriter().print(res);
-		}else {
+		} else {
 			response.getWriter().print("fail");
 		}
 	}
-	
-	private void calendar(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/view/mypage/mycalendar.jsp")
-		.forward(request, response);
+
+	private void calendar(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.getRequestDispatcher("/WEB-INF/view/mypage/mycalendar.jsp").forward(request, response);
 	}
-	
-	private void calendarList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	private void calendarList(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
 		String date = year + "/" + month;
 		System.out.println("year" + year);
 		System.out.println("month" + month);
-		
+
 		List<UserReview> reviewRes = mypageService.takeMonthlyReview(user.getUserNo(), date);
-		
-		
-		
+
 		/*
 		 * Map<String, Object> reviewCommandMap = new HashMap<>();
 		 * 
@@ -412,54 +403,47 @@ public class MypageController extends HttpServlet {
 		 * Gson().toJson(reviewRes.get(i)); reviewCommandMap = new
 		 * Gson().fromJson(reviewJson, Map.class); reviewList.add(reviewCommandMap); }
 		 */
-		
-		
+
 		response.getWriter().print(new Gson().toJson(reviewRes));
-		
-	
-		
-		
+
 	}
-	
-	private void myDailyList(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	private void myDailyList(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
 		String year = request.getParameter("year");
 		String month = request.getParameter("month");
 		String day = request.getParameter("day");
-		
+
 		String watchDate = year + "/" + month + "/" + day;
 		List<UserReview> reviewRes = mypageService.dailyReviewByUserNo(user.getUserNo(), watchDate);
-		
-		
+
 		Map<String, Object> reviewCommandMap = new HashMap<>();
-		
-		
+
 		List reviewList = new ArrayList();
-		
-		
-		for(int i = 0; i < reviewRes.size(); i++) {
+
+		for (int i = 0; i < reviewRes.size(); i++) {
 			String reviewJson = new Gson().toJson(reviewRes.get(i));
 			reviewCommandMap = new Gson().fromJson(reviewJson, Map.class);
 			reviewList.add(reviewCommandMap);
 		}
-		
-		
+
 		request.setAttribute("reviewList", reviewList);
-		request.getRequestDispatcher("/WEB-INF/view/mypage/mydailylist.jsp")
-		.forward(request, response);
-	
+		request.getRequestDispatcher("/WEB-INF/view/mypage/mydailylist.jsp").forward(request, response);
+
 	}
-	
-	private void writeReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	private void writeReview(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String mvNo = request.getParameter("mvno");
 		Movie detailRes = movieService.selectMovieByMvNo(mvNo);
 		request.setAttribute("res", detailRes);
-			
-		request.getRequestDispatcher("/WEB-INF/view/mypage/writereview.jsp")
-		.forward(request, response);
+
+		request.getRequestDispatcher("/WEB-INF/view/mypage/writereview.jsp").forward(request, response);
 	}
-	
-	private void insertReview(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	private void insertReview(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
 		String mvNo = request.getParameter("mvno");
 		Movie movie = movieService.selectMovieByMvNo(mvNo);
@@ -467,15 +451,15 @@ public class MypageController extends HttpServlet {
 		double score = Double.parseDouble(request.getParameter("score"));
 		String wtchDt = request.getParameter("watchDate");
 		String rvContent = request.getParameter("rvContent");
-		
+
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, Integer.parseInt(wtchDt.substring(0, 4)));
-		c.set(Calendar.MONTH, Integer.parseInt(wtchDt.substring(5, 7))-1);
+		c.set(Calendar.MONTH, Integer.parseInt(wtchDt.substring(5, 7)) - 1);
 		c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(wtchDt.substring(8, 10)));
 		long date = c.getTimeInMillis();
-		
+
 		java.sql.Date watchDate = new java.sql.Date(date);
-		
+
 		UserReview userReview = new UserReview();
 		userReview.setUserNo(user.getUserNo());
 		userReview.setScore(score);
@@ -484,190 +468,171 @@ public class MypageController extends HttpServlet {
 		userReview.setMvNo(movie.getMvNo());
 		userReview.setMvTitle(movie.getMvTitle());
 		userReview.setThumbnail(movie.getThumbnail());
-		
-		
+
 		System.out.println(userReview.toString());
 		int res = mypageService.insertReview(userReview);
-		if(res > 0) {
+		if (res > 0) {
 			request.setAttribute("alertMsg", "영화 후기가 등록되었습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
-			
-			request
-			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
-			.forward(request, response);
+
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		} else {
 			request.setAttribute("alertMsg", "영화 후기 등록 중 에러가 발생했습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
-			
-			request
-			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
-			.forward(request, response);
+
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		}
 	}
-	
-	private void writeLine(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	private void writeLine(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String mvNo = request.getParameter("mvno");
 		Movie detailRes = movieService.selectMovieByMvNo(mvNo);
 		request.setAttribute("res", detailRes);
-			
-		request.getRequestDispatcher("/WEB-INF/view/mypage/writeline.jsp")
-		.forward(request, response);
+
+		request.getRequestDispatcher("/WEB-INF/view/mypage/writeline.jsp").forward(request, response);
 	}
-	
-	private void insertLine(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+	private void insertLine(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User user = (User) request.getSession().getAttribute("user");
 		String mvNo = request.getParameter("mvno");
 		Movie movie = movieService.selectMovieByMvNo(mvNo);
 
 		String lineContent = request.getParameter("lineContent");
 
-		
 		UserFmsline userFmsline = new UserFmsline();
 		userFmsline.setUserNo(user.getUserNo());
 		userFmsline.setFmlContent(lineContent);
 		userFmsline.setMvNo(movie.getMvNo());
 		userFmsline.setMvTitle(movie.getMvTitle());
 		userFmsline.setThumbnail(movie.getThumbnail());
-		
-		
-		
+
 		int res = mypageService.insertLine(userFmsline);
-		if(res > 0) {
+		if (res > 0) {
 			request.setAttribute("alertMsg", "나만의 명대사 등록이 완료되었습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
-			
-			request
-			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
-			.forward(request, response);
+
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		} else {
 			request.setAttribute("alertMsg", "나만의 명대사 등록중 에러가 났습니다");
 			request.setAttribute("url", "/mypage/mywritelist.do");
-			
-			request
-			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
-			.forward(request, response);
+
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @Author : MinHee
 	 * @Date : 2021. 2. 6.
 	 * @work :
 	 */
-	private void myReviewUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void myReviewUpdate(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int reviewNo = (int) Double.parseDouble(request.getParameter("reviewNo"));
 		Map<String, Object> reviewContent = mypageService.selectReviewByReviewNo(reviewNo);
 		UserReview userReview = (UserReview) reviewContent.get("userReview");
 		String poster = (String) reviewContent.get("poster");
-		
+
 		request.setAttribute("userReview", userReview);
 		request.setAttribute("poster", poster);
 		request.getSession().setAttribute("reviewNo", userReview.getReviewNo());
-		
-		request.getRequestDispatcher("/WEB-INF/view/mypage/myreviewupdate.jsp")
-		.forward(request, response);
+
+		request.getRequestDispatcher("/WEB-INF/view/mypage/myreviewupdate.jsp").forward(request, response);
 	}
-	
+
 	/**
 	 * 
 	 * @Author : MinHee
 	 * @Date : 2021. 2. 6.
 	 * @work :
 	 */
-	private void myReviewUpdateImpl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void myReviewUpdateImpl(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		double score = Double.parseDouble(request.getParameter("score"));
 		String wtchDt = request.getParameter("watchDate");
 		String rvContent = request.getParameter("rvContent");
 		int reviewNo = (int) request.getSession().getAttribute("reviewNo");
-		
+
 		Calendar c = Calendar.getInstance();
 		c.set(Calendar.YEAR, Integer.parseInt(wtchDt.substring(0, 4)));
-		c.set(Calendar.MONTH, Integer.parseInt(wtchDt.substring(5, 7))-1);
+		c.set(Calendar.MONTH, Integer.parseInt(wtchDt.substring(5, 7)) - 1);
 		c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(wtchDt.substring(8, 10)));
 		long date = c.getTimeInMillis();
-		
+
 		java.sql.Date watchDate = new java.sql.Date(date);
-		
+
 		UserReview userReview = new UserReview();
 		userReview.setScore(score);
 		userReview.setWatchDate(watchDate);
 		userReview.setRvContent(rvContent);
 		userReview.setReviewNo(reviewNo);
-		
+
 		int res = mypageService.updateReview(userReview);
-		if(res > 0) {
+		if (res > 0) {
 			request.getSession().removeAttribute("reviewNo");
 			request.setAttribute("alertMsg", "영화 후기 수정이 완료되었습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
-			
-			request
-			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
-			.forward(request, response);
+
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		} else {
 			request.setAttribute("alertMsg", "영화 후기 수정 중 에러가 발생했습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
-			
-			request
-			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
-			.forward(request, response);
+
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @Author : MinHee
 	 * @Date : 2021. 2. 6.
 	 * @work :
 	 */
-	private void myLineUpdate(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void myLineUpdate(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		int fmslineNo = (int) Double.parseDouble(request.getParameter("fmslineNo"));
 		Map<String, Object> fmslineContent = mypageService.selectFmslineByFmslineNo(fmslineNo);
 		UserFmsline userFmsline = (UserFmsline) fmslineContent.get("userFmsline");
 		String poster = (String) fmslineContent.get("poster");
-		
+
 		request.setAttribute("userFmsline", userFmsline);
 		request.setAttribute("poster", poster);
 		request.getSession().setAttribute("fmslineNo", userFmsline.getFmslineNo());
-		
-		
-		request.getRequestDispatcher("/WEB-INF/view/mypage/mylineupdate.jsp")
-		.forward(request, response);
+
+		request.getRequestDispatcher("/WEB-INF/view/mypage/mylineupdate.jsp").forward(request, response);
 	}
-	
+
 	/**
 	 * 
 	 * @Author : MinHee
 	 * @Date : 2021. 2. 6.
 	 * @work :
 	 */
-	private void myLineUpdateImpl(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	private void myLineUpdateImpl(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String fmlContent = request.getParameter("fmlContent");
 		int fmslineNo = (int) request.getSession().getAttribute("fmslineNo");
-		
+
 		UserFmsline userFmsline = new UserFmsline();
 		userFmsline.setFmlContent(fmlContent);
 		userFmsline.setFmslineNo(fmslineNo);
-		
+
 		int res = mypageService.updateFmsline(userFmsline);
-		if(res > 0) {
+		if (res > 0) {
 			request.getSession().removeAttribute("fmslineNo");
 			request.setAttribute("alertMsg", "나만의 명대사 수정이 완료되었습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
-			
-			request
-			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
-			.forward(request, response);
+
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		} else {
 			request.setAttribute("alertMsg", "나만의 명대사 수정 중 에러가 발생했습니다.");
 			request.setAttribute("url", "/mypage/mywritelist.do");
-			
-			request
-			.getRequestDispatcher("/WEB-INF/view/common/result.jsp")
-			.forward(request, response);
+
+			request.getRequestDispatcher("/WEB-INF/view/common/result.jsp").forward(request, response);
 		}
 
 	}
-
 
 }
