@@ -16,6 +16,7 @@ import com.kh.simdo.common.util.file.FileVO;
 import com.kh.simdo.communication.model.vo.Communication;
 import com.kh.simdo.communication.model.vo.Notice;
 import com.kh.simdo.movie.model.vo.Movie;
+
 /**
  * 
  * @author 김백관
@@ -56,7 +57,6 @@ public class CommunicationDao {
 	//파일테이블에 파일 정보 저장
 		public int insertFile(Connection conn, FileVO fileData) {
 			int res = 0;
-			System.out.println("이놈아파일");
 			String sql = "insert into tb_file "
 					+ "(f_idx,origin_file_name,rename_file_name,save_path) "
 					+ "values(sc_file_idx.nextval,?,?,?)";
@@ -176,10 +176,10 @@ public class CommunicationDao {
 			PreparedStatement pstm = null;
 			ResultSet rset = null;
 			List<Map<String, Object>> res = new ArrayList();
-			String sql = "select * from (select rownum as num, QSTN_NO, QSTN_TITLE, QSTN_REG_DATE from"
+			String sql = "select * from (select rownum as num, QSTN_NO, QSTN_TITLE, QSTN_REG_DATE from "
 					+ "(select * from comm c join \"USER\" u using(user_no) where user_no = ? order by  QSTN_REG_DATE desc))  "
 					+ "where num >= ? and num <= ?";
-			System.out.println("조건찾는 다오");
+			
 			int pagePerList = 10;
 			int startPage = (page - 1) * pagePerList + 1 ; // 시작
 			int endPage =  startPage + pagePerList - 1 ; // 끝
@@ -195,21 +195,61 @@ public class CommunicationDao {
 					Map<String, Object> commandMap = new HashMap<String, Object>();
 					communication = new Communication();
 					String qnaNo = String.valueOf(rset.getInt("QSTN_NO"));
-					
 					communication.setQstnTitle(rset.getString("QSTN_TITLE"));
 					communication.setQstnRegDate(rset.getDate("QSTN_REG_DATE"));
-					
 					commandMap.put("qnaNo", qnaNo);
 					commandMap.put("comm", communication);
 					res.add(commandMap);
-					
 				}
 				
 				
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.AUTH01, e);
 			} finally {
+				jdt.close(rset, pstm);
+			}
+			
+			return res;
+			
+		}
+		
+		// 관리자용 모든 유저 문의사항 글갖고 오기
+		public List<Map<String, Object>> selectAllQnaList(Connection conn, int page) {
+			Communication communication = null;
+			PreparedStatement pstm = null;
+			ResultSet rset = null;
+			List<Map<String, Object>> res = new ArrayList();
+			String sql = "select * from (select rownum as num, QSTN_NO, QSTN_TITLE, QSTN_REG_DATE, QSTN_COMENT from "
+					+ "(select * from comm c join \"USER\" u using(user_no) order by  QSTN_REG_DATE desc))  "
+					+ "where num >= ? and num <= ?";
+			
+			int pagePerList = 10;
+			int startPage = (page - 1) * pagePerList + 1 ; // 시작
+			int endPage =  startPage + pagePerList - 1 ; // 끝
+			
+			try {
+				pstm = conn.prepareStatement(sql);
+				pstm.setInt(1, startPage);
+				pstm.setInt(2, endPage);
+				rset = pstm.executeQuery();
 				
+				while(rset.next()) {
+					Map<String, Object> commandMap = new HashMap<String, Object>();
+					communication = new Communication();
+					String qnaNo = String.valueOf(rset.getInt("QSTN_NO"));
+					communication.setQstnTitle(rset.getString("QSTN_TITLE"));
+					communication.setQstnRegDate(rset.getDate("QSTN_REG_DATE"));
+					communication.setQstnComent(rset.getString("QSTN_COMENT"));
+					commandMap.put("qnaNo", qnaNo);
+					commandMap.put("comm", communication);
+					res.add(commandMap);
+				}
+				
+				
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.AUTH01, e);
+			} finally {
+				jdt.close(rset, pstm);
 			}
 			
 			return res;
@@ -239,6 +279,7 @@ public class CommunicationDao {
 					comm.setQstnTitle(rset.getString("qstn_title"));
 					comm.setQstnContent(rset.getString("qstn_content"));
 					comm.setQstnComent(rset.getString("qstn_coment"));
+					
 				}
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.SB01, e);
@@ -248,6 +289,26 @@ public class CommunicationDao {
 			return comm;
 		}
 	
+		// 문의상세 관리자 답변 추가하기.
+		public int updateQnaComent(Connection conn, int qstnNo, String coment) {
+			int res = 0;
+			PreparedStatement pstm = null;
+
+			try {
+				String sql = "update comm set qstn_coment = ? where qstn_no = ?";
+				pstm = conn.prepareStatement(sql);
+				pstm.setString(1, coment);
+				pstm.setInt(2, qstnNo);
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				throw new DataAccessException(ErrorCode.UM01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+		}
 		
 		// 	공자사항 페이징 범위 구하기
 		public int[] selectPagingByNotice(Connection conn, int page) {
@@ -313,7 +374,7 @@ public class CommunicationDao {
 			ResultSet rset = null;
 			List<Map<String, Object>> res = new ArrayList<>();
 			String sql = "select * from (select rownum as num, notice_no, nt_title, reg_date from notice order by  reg_date desc) where num >= ? and num <= ?";
-			System.out.println("조건찾는 다오");
+
 			int pagePerList = 10;
 			int startPage = (page - 1) * pagePerList + 1 ; // 시작
 			int endPage =  startPage + pagePerList - 1 ; // 끝
@@ -340,13 +401,12 @@ public class CommunicationDao {
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.AUTH01, e);
 			} finally {
-				
+				jdt.close(rset, pstm);
 			}
 			
 			return res;
 			
 		}
-		
 		
 		
 		/**
@@ -370,6 +430,7 @@ public class CommunicationDao {
 					notice.setNtTitle(rset.getString("nt_title"));
 					notice.setRegDate(rset.getDate("reg_date"));
 					notice.setWriter(rset.getString("writer"));
+					
 				}
 			} catch (SQLException e) {
 				throw new DataAccessException(ErrorCode.SB01, e);
@@ -377,6 +438,94 @@ public class CommunicationDao {
 				jdt.close(rset, pstm);
 			}
 			return notice;
+		}
+		
+		/**
+		 * @author MinHee
+		 */
+		
+		public int insertNotice(Connection conn, Notice notice) {
+			
+			int res = 0;
+			PreparedStatement pstm = null;
+			
+			try {
+				
+				String query = "insert into notice(notice_no, nt_title, nt_content, reg_date, writer) "
+						+ "values(sc_nt_no.nextval, ?, ?, sysdate, '관리자')";
+				pstm = conn.prepareStatement(query);
+				pstm.setString(1, notice.getNtTitle());
+				pstm.setString(2, notice.getNtContent());
+				
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				throw new DataAccessException(ErrorCode.IN01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+			
+		}
+		
+		/**
+		 * @author MinHee
+		 */
+		
+		public int updateNotice(Connection conn, Notice notice) {
+			
+			int res = 0;
+			PreparedStatement pstm = null;
+			
+			try {
+				
+				String query = "update notice set nt_title = ?, nt_content = ?, reg_date = sysdate where notice_no = ?";
+				pstm = conn.prepareStatement(query);
+				pstm.setString(1, notice.getNtTitle());
+				pstm.setString(2, notice.getNtContent());
+				pstm.setInt(3, notice.getNoticeNo());
+				
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				throw new DataAccessException(ErrorCode.UN01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+			
+		}
+		
+		/**
+		 * @author MinHee
+		 */
+		
+		public int deleteNotice(Connection conn, int noticeNo) {
+			
+			int res = 0;
+			PreparedStatement pstm = null;
+			
+			try {
+				
+				String query = "delete from notice where notice_no = ?";
+				pstm = conn.prepareStatement(query);
+				pstm.setInt(1, noticeNo);
+				
+				res = pstm.executeUpdate();
+				
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				throw new DataAccessException(ErrorCode.DN01, e);
+			} finally {
+				jdt.close(pstm);
+			}
+			
+			return res;
+			
 		}
 	
 }

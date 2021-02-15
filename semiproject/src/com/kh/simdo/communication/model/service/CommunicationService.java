@@ -123,6 +123,21 @@ public class CommunicationService {
 		return res;
 		
 	}
+	
+	// 관리자용 모든 유저 문의사항 글갖고 오기
+	public List<Map<String, Object>> selectAllQnaList(int page){
+		Connection conn = jdt.getConnection();
+		List<Map<String, Object>> res = new ArrayList<Map<String, Object>>();
+		try {
+			res = communicationDao.selectAllQnaList(conn, page);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+		
+	}
+	
 	/**
 	 * 
 	 * @Author : 조아영
@@ -164,6 +179,23 @@ public class CommunicationService {
 		return res;
 	}
 	
+	// 문의사항 답변추가
+	public int updateQnaComent(String coment, int qstnNo) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		try {
+			res = communicationDao.updateQnaComent(conn, qstnNo, coment);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+		
+	}
 	
 	/**
 	 * @author 조아영
@@ -180,6 +212,65 @@ public class CommunicationService {
 		
 		return res;
 	}
+	
+	/**
+	 * @author MinHee
+	 */
+	public int insertNotice(Notice notice) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
 		
-			
+		try {
+			res = communicationDao.insertNotice(conn, notice);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * @author MinHee
+	 */
+	public int updateNotice(Notice notice) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = communicationDao.updateNotice(conn, notice);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
+	
+	/**
+	 * @author MinHee
+	 */
+	public int deleteNotice(int noticeNo) {
+		Connection conn = jdt.getConnection();
+		int res = 0;
+		
+		try {
+			res = communicationDao.deleteNotice(conn, noticeNo);
+			jdt.commit(conn);
+		} catch (DataAccessException e) {
+			jdt.rollback(conn);
+			throw new ToAlertException(e.error);
+		} finally {
+			jdt.close(conn);
+		}
+		
+		return res;
+	}
+		
 }

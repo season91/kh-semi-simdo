@@ -98,21 +98,33 @@ table{
     align-items: center;
 }
 
+tbody{
+	box-shadow: 4px 4px 2px 1px grey;
+}
+
+td.cal-top {
+    height: 2.5vh;
+    width: 10vh;
+    padding: 10px;
+    font-weight: bold;
+    vertical-align: top;
+    border: 1px solid #6e6e6e;
+    background: #a0a0a0;
+}
+
 td{
        width: 10vh;
        height: 10vh;
        text-align: center;
        font-size: 20px;
-       font-family: 굴림;
-       border:1px solid blue;
-       border-radius: 8px ;
+       border:1px solid gray;
        padding: 0.5vh;
 
 
 }
 .img-wrap{
-	width: 8vh;
-	height: 9vh;
+	width: 6vh;
+	height: 7vh;
 }
 
 .content{
@@ -121,7 +133,7 @@ td{
 	justify-content: space-around;
 	width: 100%;
 	min-height: 70vh;
-	height:100vh;
+	height:75vh;
 	margin-top: 15vh;
 	/* position: absolute;
 	top: 15vh;
