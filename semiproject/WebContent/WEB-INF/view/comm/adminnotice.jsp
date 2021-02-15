@@ -105,7 +105,6 @@
 	</footer>
 	
 	<script type="text/javascript" src="${context}/resources/js/movie/movie.js"></script>
-	<script type="text/javascript" src="${context}/resources/js/comm/noticedetail.js"></script>
 </body>
 </html>
    

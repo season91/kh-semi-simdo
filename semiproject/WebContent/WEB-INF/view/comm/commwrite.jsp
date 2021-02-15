@@ -52,12 +52,11 @@
    </div>
 
 	<div class="content">
-	<div class="menu">
-   	<br>
-   	<a style="font-weight: bold; font-size:big">커뮤니케이션</a><br>
-   	<a href="/comm/noticelist.do">공지게시판</a><br>
-   	<a href="/comm/write.do">QnA</a>
-   		<%-- 관리자라면 권한메뉴 추가  --%>
+		<div class="menu">
+	   	<p style="font-weight: bold;">커뮤니케이션</p>
+	   	<a href="/comm/noticelist.do">공지게시판</a>
+	   	<a href="/comm/write.do">QnA</a>
+	   	<%-- 관리자라면 권한메뉴 추가  --%>
    		<c:if test="${!empty admin }">
    		<a href="/comm/adminqnalist.do" style="color:white">문의사항답변</a>
    		<a href="/comm/adminnotice.do" style="color:white">공지사항작성</a>

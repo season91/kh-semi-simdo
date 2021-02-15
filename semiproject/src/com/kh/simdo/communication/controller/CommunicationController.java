@@ -79,27 +79,6 @@ public class CommunicationController extends HttpServlet {
 	 * 
 	 * @Author : 조아영
 	   @Date : 2021. 2. 8.
-	   @param res
-	   @return
-	   @work : jsp로 보내기 위해 list->json 파싱
-	 */
-	 protected List parseJson(List res) {
-			List list = new ArrayList();
-			Map<String, Object> commandMap = new HashMap<String, Object>();
-			for (int i = 0; i < res.size(); i++) {
-				String json = new Gson().toJson(res.get(i));
-				//System.out.println("전"+json);
-			commandMap = new Gson().fromJson(json, Map.class);
-			//System.out.println("후"+commandMap.get("qstnNo"));
-				list.add(commandMap);
-			}
-			return list;
-	}
-	 
-	/**
-	 * 
-	 * @Author : 조아영
-	   @Date : 2021. 2. 8.
 	   @param request
 	   @param response
 	   @throws ServletException
@@ -131,7 +110,7 @@ public class CommunicationController extends HttpServlet {
 		
 		List<Map<String, Object>> pageRes = communicationService.selectNoticeList(page);
 		
-		noticeList = parseJson(pageRes);
+		noticeList = communicationService.parseJson(pageRes);
 		request.setAttribute("res", noticeList);
 		request.setAttribute("page", page);
 		// 유저가 관리자임을 알려줄 것
@@ -160,7 +139,7 @@ public class CommunicationController extends HttpServlet {
 		} else {
 			page = Integer.parseInt(text);
 		}
-		int[] res = communicationService.selectPagingByNotice(page);
+		int[] res = communicationService.selectPagingByAllQna(page);
 		if(res != null) {
 			request.setAttribute("start", res[0]);
 			request.setAttribute("end", res[1]);
@@ -171,7 +150,7 @@ public class CommunicationController extends HttpServlet {
 		
 		
 		List<Map<String, Object>> pageRes = communicationService.selectAllQnaList(page);
-		qnaAllList = parseJson(pageRes);
+		qnaAllList = communicationService.parseJson(pageRes);
 		request.setAttribute("res", qnaAllList);
 		request.setAttribute("page", page);
 		// 유저가 관리자임을 알려줄 것

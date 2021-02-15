@@ -3,7 +3,7 @@
 <%@ include file="/WEB-INF/view/include/head.jsp"%>
 <%@ taglib prefix="fmt"  uri="http://java.sun.com/jsp/jstl/fmt"%>
 <link rel="stylesheet" href="${context}/resources/css/common/reset.css">
-<link rel="stylesheet" href="${context}/resources/css/mypage/myqnadetail.css">
+<link rel="stylesheet" href="${context}/resources/css/mypage/myqnaupdate.css">
 <link rel="stylesheet" href="${context}/resources/css/all.css">
 <body>
 	<div class="header-wrapper">
@@ -40,33 +40,19 @@
 	</div>
 	
 	<div class="content">
-		<div class="qna_wrap"> 
+		<form class="qna_wrap" action="/mypage/myqnaupdateimpl.do?qstnno=${res.qstnNo}" method="post"> 
 			<div class="qna-info">
-				<div class="qna_head">나의 문의 & 요청</div>
-				<div class="qna_title">${res.qstnTitle}</div>
-				<div class="qna_info">글번호${res.qstnNo} / 작성일 : ${res.qstnRegDate}</div>
+				<div class="qna_head">나의 문의 & 요청 수정하기</div>
+				<div class="qna_title"><input type="text" name="title" class="title" placeholder="수정할 문의 제목 작성하세요."></div>
 			</div>
 			<div class="qna_write_wrap">
-				<div class="qna_write_head">문의 내용</div>
-				<div class="qna_write_content">${res.qstnContent}</div>
+				<div class="qna_write_head">문의 수정 내용</div>
+				<div ><textarea name="content" class="qna_write_content"  placeholder="수정할 문의 내용 작성하세요."></textarea></div>
 			</div>
-			<div class="admin_answer_wrap">
-				<div class="admin_answer_head">관리자 답변</div>
-				<c:choose>
-					<c:when test="${empty res.qstnComent}">
-						<div class="admin_answer_write">관리자가 문의를 확인 중 입니다.</div>
-					</c:when>
-					<c:otherwise>
-						<div class="admin_answer_write">${res.qstnComent}</div>
-					</c:otherwise>
-				</c:choose>
-				</div>		
-			</div>
-			<div class="qna-bottom">
-				<a href="/mypage/myqnalist.do">목록으로</a>
-				<a href="/mypage/myqnaupdate.do?qstnno=${res.qstnNo}">수정</a>
-				<a href="/mypage/myqnadelete.do?qstnno=${res.qstnNo}">삭제</a>
-			</div>
+			<button class="btn-update">수정하기</button>
+		</form>
+			<a style="color:#696765"href="/mypage/myqnalist.do">목록으로</a>
+			
 	</div>
 		
 	<footer class="bottom">

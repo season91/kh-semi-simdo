@@ -189,14 +189,12 @@ body{
 	padding-top: 1vh;
 }
 .qna_write_wrap{
-	padding:1vh;
 	height: 30vh;
 	border-bottom: 1px solid  #696765;
 	background-color:  #959493;
 	color: #DADAD9;
 }
 .admin_answer_wrap{
-	padding:1vh;
 	height: 20vh;
 	background-color:  #959493;
 	color: #DADAD9;
@@ -210,4 +208,25 @@ body{
 .admin_answer_head{
 	font-size: 3vh;
 	margin-bottom: 1vh;
+}
+
+.qna-bottom{
+	width: 100vh;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.qna_head{
+	font-size: 2vh;
+	font-weight:bold;
+}
+
+.qna-bottom>*{
+	text-align:center;
+	font-weight:bold;
+	width: 30%;
+	background-color:  #959493;
+	color: #DADAD9;
+	
 }
