@@ -27,7 +27,7 @@ public class CommunicationService {
 	 * 게시글 정보/파일 업로드
 	 */
 	
-	public <Int>void insertComm(String userNm, Int userNo,HttpServletRequest request) {
+	public <Int> void insertComm(String userNm, Int userNo,HttpServletRequest request) {
 		Connection conn = jdt.getConnection();
 		//게시글 저장
 		System.out.println("서비스안도니??");

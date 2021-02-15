@@ -219,7 +219,7 @@ public class CommunicationController extends HttpServlet {
 	.forward(request, response);
 
 	}
-
+	
 	
 	private void uploadComm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
