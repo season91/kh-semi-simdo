@@ -1,17 +1,17 @@
 # simdo
 
-### 1. com/kh/simdo/aboutus : SIMDO:wm 서비스에 대한 제작의도와 구현 시 사용한 기술, 개발자에 대해 설명한 페이지로 이동하는 Controller가 존재
+###### 1. com/kh/simdo/aboutus : SIMDO:wm 서비스에 대한 제작의도와 구현 시 사용한 기술, 개발자에 대해 설명한 페이지로 이동하는 Controller가 존재
 
-### 2. com/kh/simdo/common : [공통모듈] 공통주소코드, 공통에러코드, jdbc, 필터, 메일 기능이 있는 패키지
+###### 2. com/kh/simdo/common : [공통모듈] 공통주소코드, 공통에러코드, jdbc, 필터, 메일 기능이 있는 패키지
 
-### 3. com/kh/simdo/communication : 2개의 게시판인 문의사항과 공지사항의 CRUD  기능을 하는 패키지
+###### 3. com/kh/simdo/communication : 2개의 게시판인 문의사항과 공지사항의 CRUD  기능을 하는 패키지
  1. 문의사항 CRUD 기능
  2. 문의사항 댓글 CRUD 기능
  3. 공지사항 CRUD  기능
 
-### 4. com/kh/simdo/index : SIMDO:wm 사이트의 메인 페이지로 이동하는 Controller가 존재
+###### 4. com/kh/simdo/index : SIMDO:wm 사이트의 메인 페이지로 이동하는 Controller가 존재
 
-### 5. com/kh/simdo/movie : 영화정보를 DB에 적재하고, 영화 조회 관련 기능을 하는 패키지
+###### 5. com/kh/simdo/movie : 영화정보를 DB에 적재하고, 영화 조회 관련 기능을 하는 패키지
  1. API 의 영화 정보를 DB 적재하는 기능
  - API통신 후 DB 적재하는 메소드
 
@@ -26,7 +26,7 @@
  - 해당 영화의 후기, 명대사 정보 가져오는 메소드
  - 해당 영화의 평점 구하는 메소드
 
-### 6. com/kh/simdo/mypage : 해당 회원의 영화 후기, 나만의 명대사, 찜목록, 나의 문의&요청의 CRUD 기능을 하는 패키지
+###### 6. com/kh/simdo/mypage : 해당 회원의 영화 후기, 나만의 명대사, 찜목록, 나의 문의&요청의 CRUD 기능을 하는 패키지
 1. 영화 후기 CRUD
 2. 나만의 명대사 CRUD
 3. 나만의 명대사 번역 기능
@@ -34,7 +34,7 @@
 5. 영화 달력을 통한 해당 일자에 작성한 영화 후기 조회
 6. 나의 문의&요청 CRUD
 
-### 7. com/kh/simdo/user : 로그인, 회원 정보 수정 등 회원을 DB에 적재하고 회원 정보를 관리하는 기능을 하는 패키지
+###### 7. com/kh/simdo/user : 로그인, 회원 정보 수정 등 회원을 DB에 적재하고 회원 정보를 관리하는 기능을 하는 패키지
 1. 로그인
 - 사이트 자체 로그인, 네이버 로그인, 카카오 로그인
 2. 회원 가입
